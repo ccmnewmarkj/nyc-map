@@ -32,26 +32,45 @@
 		// When format selected
 		if ($selectedFormat) {
 			// Icons from Google Fonts
-			msg += `<span class="selected-filter-tag"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#686D76"><path d="M160-80q-17 0-28.5-11.5T120-120v-558q0-15 6-25.5t20-16.5l400-160q20-8 37 5.5t17 34.5v120h40q17 0 28.5 11.5T680-680v120h-80v-80H200v480h207l80 80H160Zm200-640h160v-62l-160 62ZM680-80q-83 0-141.5-58.5T480-280q0-83 58.5-141.5T680-480q83 0 141.5 58.5T880-280q0 83-58.5 141.5T680-80Zm-50-100 160-100-160-100v200Zm-430 20v-480 480Z"/></svg>
+			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--format-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--format-color)"><path d="M160-80q-17 0-28.5-11.5T120-120v-558q0-15 6-25.5t20-16.5l400-160q20-8 37 5.5t17 34.5v120h40q17 0 28.5 11.5T680-680v120h-80v-80H200v480h207l80 80H160Zm200-640h160v-62l-160 62ZM680-80q-83 0-141.5-58.5T480-280q0-83 58.5-141.5T680-480q83 0 141.5 58.5T880-280q0 83-58.5 141.5T680-80Zm-50-100 160-100-160-100v200Zm-430 20v-480 480Z"/></svg>
  ${$selectedFormat}</span>`;
 		}
 
-		if ($selectedCommunity) {
-			// replace `,` with `, ` or before the last item, `and`
-			const communityList = $selectedCommunity
-				.toString()
-				.split(',')
-				.map((item) => item.trim());
+		if ($selectedCommunity.ethnicity || $selectedCommunity.religion || $selectedCommunity.theme) {
+			const communityList = [
+				...($selectedCommunity.ethnicity
+					? $selectedCommunity.ethnicity
+							.toString()
+							.split(',')
+							.map((item) => item.trim())
+					: []),
+				...($selectedCommunity.religion
+					? $selectedCommunity.religion
+							.toString()
+							.split(',')
+							.map((item) => item.trim())
+					: []),
+				...($selectedCommunity.theme
+					? $selectedCommunity.theme
+							.toString()
+							.split(',')
+							.map((item) => item.trim())
+					: [])
+			];
+
 			const formattedCommunityList =
 				communityList.length > 1
-					? communityList.slice(0, -1).join(', ') + ' and ' + communityList.slice(-1)
+					? // ? communityList.slice(0, -1).join(', ') + ' and ' + communityList.slice(-1)
+						communityList.slice(0, -1).join(', ') + ', ' + communityList.slice(-1)
 					: communityList[0];
-			msg += `<span class="selected-filter-tag"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#686D76"><path
+			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--community-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--community-color)"><path
 		d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" /></svg>${formattedCommunityList}</span>`;
 		}
 
 		if ($selectedLanguage) {
-			msg += `<span class="selected-filter-tag"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="#686D76"><path d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"/></svg>${$selectedLanguage}</span>`;
+			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--language-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--language-color)"><path d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"/></svg>${$selectedLanguage
+				.toString()
+				.replaceAll(',', ', ')}</span>`;
 		}
 
 		return msg;
@@ -122,7 +141,7 @@
 							? 'Filters'
 							: 'Filter'} applied:</strong
 					>
-					Showing {outletCount} out of {$directoryData?.features.length} outlets</span
+					Showing <strong>{outletCount}</strong> out of {$directoryData?.features.length} outlets</span
 				>
 			</p>
 			<p style="margin-top: 5px; display: flex; flex-wrap: wrap; row-gap: 4px; column-gap: 6px;">
@@ -136,6 +155,12 @@
 				>
 				includes those without a known location and do not appear on the map. Apply filters in the
 				<span class="tab">Search</span> tab to narrow down the list or search for an outlet below.
+				Selecting the <OpenBookIcon
+					width={'16px'}
+					height={'14px'}
+					minY={-1100}
+					ariaLabel={'Book symbol next to outlet names in list below'}
+				/> icon will take you to the outlet's entry in the directory.
 			</p>
 		{/if}
 	</div>
@@ -174,11 +199,7 @@
 					<p class="outlet-name">
 						<span style="display: flex; align-items: center; column-gap: 5px;">
 							{outlet.properties['OUTLET']}
-							<a
-								href={outlet.properties['DIRECTORY URL']}
-								aria-label="Go to Many Voices, One City directory's entry for the outlet"
-								><OpenBookIcon /></a
-							>
+							<a href={outlet.properties['DIRECTORY URL']}><OpenBookIcon /></a>
 						</span>
 					</p>
 					<p class="founded">
