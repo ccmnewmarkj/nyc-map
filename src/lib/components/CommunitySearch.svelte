@@ -75,11 +75,10 @@
 		)
 	];
 
-	let valueEthnicity;
-	let valueReligion;
-	let valueTheme;
 	// Selected values in dropdown remain in place even after going to another panel
-	//let value = $selectedCommunity;
+	let valueEthnicity = $selectedCommunity?.ethnicity;
+	let valueReligion = $selectedCommunity?.religion;
+	let valueTheme = $selectedCommunity?.theme;
 
 	// Text above filter dropdown
 	let communityHeader;
@@ -118,7 +117,6 @@
 	};
 
 	// Inline dropdown to select type of community and send selection to Filters.svelte (parent)
-
 	let selectedCommunityType = 'ethnicity';
 	export let communityType;
 
@@ -178,8 +176,6 @@
 	// const themeLength = $filteredDirectory.features.filter(
 	// 	(d) => d.properties['TARGET COMMUNITY THEME']
 	// ).length;
-
-	$: console.log($selectedCommunity);
 </script>
 
 <form>
