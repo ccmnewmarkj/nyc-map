@@ -12,6 +12,9 @@
 		map
 	} from '$lib/stores.js';
 
+	// Audience type selection stored in Sidebar (grandparent) so value persists when switching between panels
+	export let audienceTypeSelection;
+
 	// List of communities for dropdown menu
 	$: ethnicityList = [
 		...new Set(
@@ -41,16 +44,6 @@
 		)
 	];
 
-	// $: geographyList = [
-	// 	...new Set(
-	// 		$filteredDirectory.features
-	// 			?.filter((d) => d.properties['TARGET COMMUNITY GEOGRAPHY'])
-	// 			.map((d) => d.properties['TARGET GEOGRAPHY'])
-	// 			.flatMap((d) => d)
-	// 			.sort()
-	// 	)
-	// ];
-
 	$: geographyList = [
 		...new Set(
 			$filteredDirectory.features
@@ -72,20 +65,6 @@
 				})
 		)
 	].map((d) => JSON.parse(d));
-
-	// $: geographyList = [
-	// 	...new Set(
-	// 		$filteredDirectory.features
-	// 			?.filter((d) => d.properties['TARGET LOCATION CATEGORY'])
-	// 			// .map((d) => ({
-	// 			// 	category: d.properties['TARGET LOCATION CATEGORY'],
-	// 			// 	label: d.properties['TARGET LOCATION'].toString()
-	// 			// }))
-	// 			.map((d) => d.properties['TARGET LOCATION'])
-	// 			.flatMap((d) => d)
-	// 			.sort()
-	// 	)
-	// ];
 
 	// Selected values in dropdown remain in place even after going to another panel
 	let valueEthnicity = $selectedCommunity?.ethnicity;
@@ -178,9 +157,6 @@
 		)
 	].length;
 
-	// Audience type selection
-	let audienceTypeSelection = 'community';
-
 	// add svelte transition
 	import { fade } from 'svelte/transition';
 
@@ -226,6 +202,7 @@
 		</span>
 	</div>
 
+	<!-- Show dropdown based on category (radio button) selection -->
 	{#if audienceTypeSelection === 'community'}
 		<div in:fade>
 			<!-- Buttons for community categories (ethnicity, religion, theme) -->

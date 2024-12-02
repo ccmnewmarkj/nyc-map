@@ -83,8 +83,8 @@
 		}
 	}
 
-	// Receive selected value from CommunitySearch tab
-	// let communityType = '';
+	// Audience type selection stored in Sidebar (parent) so value persists when switching between panels
+	export let audienceTypeSelection;
 </script>
 
 <!-- Intro -->
@@ -106,7 +106,7 @@
 
 	<!-- Filter by community -->
 	<div class="filter">
-		<CommunitySearch />
+		<CommunitySearch bind:audienceTypeSelection />
 	</div>
 
 	<!-- <hr /> -->
