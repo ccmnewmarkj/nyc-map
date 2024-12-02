@@ -16,7 +16,7 @@
 	const outletNames = $directoryData.features?.map((d) => d.properties['OUTLET']);
 
 	// Set variable for selected outlet name
-	let value;
+	let value = $selectedOutlet;
 
 	// Zoom to outlet location on map when outlet name is selected
 	let lng;
@@ -98,7 +98,7 @@
 	{#if $selectedOutlet}
 		<p class="content" style="font-size: 0.8rem; padding-top: 0; color: #6d6d6d;">
 			To reset the selected outlet and corresponding highlighted circle, select the "Clear outlet"
-			button that will appear on the map.
+			button that appears on the map.
 		</p>
 	{/if}
 </details>

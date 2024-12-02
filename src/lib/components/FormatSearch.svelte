@@ -84,6 +84,11 @@
 		value ? (value = undefined) : null; // clear selected value in filter when outlet is selected
 		$filteredDirectory = $directoryData; // reset filter options
 	}
+
+	// Clear filter when map button selected
+	$: if ($selectedFormat === undefined) {
+		value = undefined;
+	}
 </script>
 
 <form>
@@ -91,8 +96,7 @@
 		<span class:active={$selectedFormat}>{@html formatHeader}</span>
 	</label>
 	<Select
-		--border="0.5px solid var(--format-color)"
-		--border-hover="1px solid var(--format-color)"
+		--border-hover="0.5px solid var(--format-color)"
 		--border-focused="1px solid var(--format-color)"
 		id="format-search"
 		items={formatList}

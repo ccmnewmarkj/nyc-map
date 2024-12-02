@@ -50,31 +50,36 @@
 		$selectedLanguage
 			? languageList.length > 1
 				? languageList.length - value.length === 0
-					? `<span class="filter-field-label">${languageIcon} Search by primary languages <span style="font-weight: 400;">(No more options)</span></span>
+					? `<span class="filter-field-label">${languageIcon} Search by primary language <span style="font-weight: 400;">(No more options)</span></span>
 					<p class="filter-field-description">
 							Map shows ${filteredDirectory.length > 1 ? 'outlets that have' : 'the outlet that has'} content in the ${value.length} selected languages.
 						</p>`
 					: `
 						<span class="filter-field-label">
-							${languageIcon} Search by primary languages <span style="font-weight: 400;">(${languageList.length - value.length} more options)</span></span>
+							${languageIcon} Search by primary language <span style="font-weight: 400;">(${languageList.length - value.length} more options)</span></span>
 						<p class="filter-field-description">
 							Selecting more than 1 language will show outlets that have content in all of those languages.
 						</p>
 					  `
 				: `<span class="filter-field-label">
-							${languageIcon} Search by primary languages <span style="font-weight: 400;">(${languageList.length - value.length} more options)</span></span>
+							${languageIcon} Search by primary language <span style="font-weight: 400;">(${languageList.length - value.length} more options)</span></span>
 						<p class="filter-field-description">
 							No additional languages available.
 						</p>`
 			: //`<span class="filter-field-label" style="color: var(--gray);">${languageIcon} No additional languages available</span>`
 				`
-			<span class="filter-field-label">${languageIcon} Search by primary languages <span style="font-weight: 400;">(${languageList.length} options)</span></span>
+			<span class="filter-field-label">${languageIcon} Search by primary language <span style="font-weight: 400;">(${languageList.length} options)</span></span>
 		  `;
 
 	// Clear/reset selected filter when outlet is selected
 	$: if ($selectedOutlet) {
 		value ? (value = undefined) : null; // clear selected value in filter when outlet is selected
 		$filteredDirectory = $directoryData; // reset filter options
+	}
+
+	// Clear filter when map button selected
+	$: if ($selectedLanguage === undefined) {
+		value = undefined;
 	}
 </script>
 
@@ -83,8 +88,7 @@
 		<span class:active={$selectedLanguage}>{@html languageHeader}</span></label
 	>
 	<Select
-		--border="0.5px solid var(--language-color)"
-		--border-hover="1px solid var(--language-color)"
+		--border-hover="0.5px solid var(--language-color)"
 		--border-focused="1px solid var(--language-color)"
 		id="language-search"
 		items={languageList}
