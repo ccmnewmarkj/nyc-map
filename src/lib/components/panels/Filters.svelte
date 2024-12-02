@@ -21,8 +21,10 @@
 			$filteredDirectory = {
 				type: 'FeatureCollection',
 				features: $directoryData.features?.filter((d) => {
+					// FORMAT
 					let formatState = !$selectedFormat || $selectedFormat === d.properties['PRIMARY FORMAT'];
 
+					// COMMUNITY
 					let communityState =
 						!$selectedCommunity ||
 						(($selectedCommunity.ethnicity?.length
@@ -45,14 +47,32 @@
 											d.properties['TARGET THEME'] && d.properties['TARGET THEME']?.includes(theme)
 									)
 								: true));
+					// 	&&
+					// ($selectedCommunity.geography?.length
+					// 	? $selectedCommunity.geography.every((geography) => {
+					// 			d.properties['TARGET LOCATION'] &&
+					// 				d.properties['TARGET LOCATION']?.includes(geography);
+					// 		})
+					// 	: true)
 
+					let geographyState =
+						!$selectedCommunity ||
+						($selectedCommunity.geography?.length
+							? $selectedCommunity.geography.every(
+									(geography) =>
+										d.properties['TARGET LOCATION'] &&
+										d.properties['TARGET LOCATION']?.includes(geography)
+								)
+							: true);
+
+					// LANGUAGE
 					let languageState =
 						!$selectedLanguage ||
 						$selectedLanguage?.every((language) =>
 							d.properties['PRIMARY LANGUAGE'].includes(language)
 						);
 
-					return formatState && communityState && languageState;
+					return formatState && communityState && geographyState && languageState;
 				})
 			};
 			// Update points on map
@@ -63,8 +83,8 @@
 		}
 	}
 
-	// Receive selected value from CommunitySearch dropdown
-	let communityType = '';
+	// Receive selected value from CommunitySearch tab
+	// let communityType = '';
 </script>
 
 <!-- Intro -->
@@ -82,21 +102,21 @@
 		<FormatSearch />
 	</div>
 
-	<hr />
+	<!-- <hr /> -->
 
 	<!-- Filter by community -->
 	<div class="filter">
-		<CommunitySearch bind:communityType />
+		<CommunitySearch />
 	</div>
 
-	<hr />
+	<!-- <hr /> -->
 
 	<!-- Filter by language -->
 	<div class="filter">
 		<LanguageSearch />
 	</div>
 
-	<hr />
+	<hr style="width: 100%;" />
 
 	<!-- Outlet search -->
 	<div class="filter">
@@ -116,8 +136,7 @@
 
 	hr {
 		width: 90%;
-		margin-left: auto;
-		margin-right: auto;
+		margin: 0rem auto;
 		border-top: 0.5px solid rgba(0, 0, 0, 0.2);
 	}
 </style>
