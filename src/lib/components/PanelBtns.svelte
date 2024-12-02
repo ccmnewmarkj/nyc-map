@@ -26,12 +26,12 @@
 			$aboutPanelVisible = true;
 			$searchPanelVisible = false;
 			$outletPanelVisible = false;
-			if ($selectedOutlet) {
-				$selectedOutlet = undefined;
-				$popup?.remove();
-				$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-				$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-			}
+			// if ($selectedOutlet) {
+			// 	$selectedOutlet = undefined;
+			// 	$popup?.remove();
+			// 	$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+			// 	$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+			// }
 		}}><InfoIcon />About</button
 	>
 
@@ -43,12 +43,12 @@
 			$aboutPanelVisible = false;
 			$searchPanelVisible = true;
 			$outletPanelVisible = false;
-			if ($selectedOutlet) {
-				$selectedOutlet = undefined;
-				$popup?.remove();
-				$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-				$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-			}
+			// if ($selectedOutlet) {
+			// 	$selectedOutlet = undefined;
+			// 	$popup?.remove();
+			// 	$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+			// 	$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+			// }
 		}}><SearchIcon />Search</button
 	>
 
@@ -60,12 +60,12 @@
 			$aboutPanelVisible = false;
 			$searchPanelVisible = false;
 			$outletPanelVisible = true;
-			if ($selectedOutlet) {
-				$selectedOutlet = undefined;
-				$popup?.remove();
-				$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-				$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-			}
+			// if ($selectedOutlet) {
+			// 	$selectedOutlet = undefined;
+			// 	$popup?.remove();
+			// 	$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+			// 	$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+			// }
 		}}
 		><ListIcon />Outlets {#if badgeCount}
 			<span class="badge-count">{badgeCount}</span>

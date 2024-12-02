@@ -15,7 +15,7 @@
 
 	const outletNames = $directoryData.features?.map((d) => d.properties['OUTLET']);
 
-	// Set variable for selected outlet name
+	// Selected values in dropdown remain in place even after going to another panel
 	let value = $selectedOutlet;
 
 	// Zoom to outlet location on map when outlet name is selected
