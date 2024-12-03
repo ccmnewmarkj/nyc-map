@@ -9,7 +9,7 @@
 		directoryData,
 		selectedOutlet,
 		selectedFormat,
-		selectedCommunity,
+		selectedAudience,
 		selectedLanguage
 	} from '$lib/stores.js';
 
@@ -69,7 +69,7 @@
 			bind:value
 			on:change={() => {
 				$selectedFormat ? ($selectedFormat = undefined) : null;
-				$selectedCommunity ? ($selectedCommunity = undefined) : null;
+				$selectedAudience ? ($selectedAudience = undefined) : null;
 				$selectedLanguage ? ($selectedLanguage = undefined) : null;
 				$selectedOutlet = value?.value;
 				$popup?.remove();

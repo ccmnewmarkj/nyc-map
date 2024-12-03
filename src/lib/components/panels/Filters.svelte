@@ -1,7 +1,7 @@
 <script>
 	// Import components
 	import FormatSearch from '$lib/components/FormatSearch.svelte';
-	import CommunitySearch from '$lib/components/CommunitySearch.svelte';
+	import AudienceSearch from '$lib/components/AudienceSearch.svelte';
 	import LanguageSearch from '$lib/components/LanguageSearch.svelte';
 	import OutletSearch from '$lib/components/OutletSearch.svelte';
 
@@ -11,13 +11,13 @@
 		directoryData,
 		filteredDirectory,
 		selectedFormat,
-		selectedCommunity,
+		selectedAudience,
 		selectedLanguage
 	} from '$lib/stores.js';
 
 	// Filter data (filter dropdown selections, map markers, outlet list tab) based on selections from multiple dropdowns
 	$: {
-		if ($selectedFormat || $selectedCommunity || $selectedLanguage) {
+		if ($selectedFormat || $selectedAudience || $selectedLanguage) {
 			$filteredDirectory = {
 				type: 'FeatureCollection',
 				features: $directoryData.features?.filter((d) => {
@@ -26,39 +26,39 @@
 
 					// COMMUNITY
 					let communityState =
-						!$selectedCommunity ||
-						(($selectedCommunity.ethnicity?.length
-							? $selectedCommunity.ethnicity.every(
+						!$selectedAudience ||
+						(($selectedAudience.ethnicity?.length
+							? $selectedAudience.ethnicity.every(
 									(ethnicity) =>
 										d.properties['TARGET ETHNICITY'] &&
 										d.properties['TARGET ETHNICITY']?.includes(ethnicity)
 								)
 							: true) &&
-							($selectedCommunity.religion?.length
-								? $selectedCommunity.religion.every(
+							($selectedAudience.religion?.length
+								? $selectedAudience.religion.every(
 										(religion) =>
 											d.properties['TARGET RELIGION'] &&
 											d.properties['TARGET RELIGION']?.includes(religion)
 									)
 								: true) &&
-							($selectedCommunity.theme?.length
-								? $selectedCommunity.theme.every(
+							($selectedAudience.theme?.length
+								? $selectedAudience.theme.every(
 										(theme) =>
 											d.properties['TARGET THEME'] && d.properties['TARGET THEME']?.includes(theme)
 									)
 								: true));
 					// 	&&
-					// ($selectedCommunity.geography?.length
-					// 	? $selectedCommunity.geography.every((geography) => {
+					// ($selectedAudience.geography?.length
+					// 	? $selectedAudience.geography.every((geography) => {
 					// 			d.properties['TARGET LOCATION'] &&
 					// 				d.properties['TARGET LOCATION']?.includes(geography);
 					// 		})
 					// 	: true)
 
 					let geographyState =
-						!$selectedCommunity ||
-						($selectedCommunity.geography?.length
-							? $selectedCommunity.geography.every(
+						!$selectedAudience ||
+						($selectedAudience.geography?.length
+							? $selectedAudience.geography.every(
 									(geography) =>
 										d.properties['TARGET LOCATION'] &&
 										d.properties['TARGET LOCATION']?.includes(geography)
@@ -85,6 +85,8 @@
 
 	// Audience type selection stored in Sidebar (parent) so value persists when switching between panels
 	export let audienceTypeSelection;
+	// And for tab set for selecting type of community
+	export let selectedAudienceType;
 </script>
 
 <!-- Intro -->
@@ -106,7 +108,7 @@
 
 	<!-- Filter by community -->
 	<div class="filter">
-		<CommunitySearch bind:audienceTypeSelection />
+		<AudienceSearch bind:audienceTypeSelection bind:selectedAudienceType />
 	</div>
 
 	<!-- <hr /> -->

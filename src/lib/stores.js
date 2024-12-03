@@ -15,12 +15,7 @@ export let searchPanelVisible = writable(false);
 export let outletPanelVisible = writable(false);
 
 // Filters
-// export let selectedCommunity = writable({
-// 	ethnicity: [],
-// 	religion: [],
-// 	theme: []
-// }); // Selected community
-export let selectedCommunity = writable(); // Selected community
-export let selectedLanguage = writable(); // Selected language
-export let selectedFormat = writable(); // Selected type
-export let selectedOutlet = writable(); // Selected outlet
+export let selectedAudience = writable();
+export let selectedLanguage = writable();
+export let selectedFormat = writable();
+export let selectedOutlet = writable();

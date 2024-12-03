@@ -5,15 +5,17 @@
 	// Import stores
 	import {
 		filteredDirectory,
-		selectedCommunity,
+		selectedAudience,
 		directoryData,
 		selectedOutlet,
 		popup,
 		map
 	} from '$lib/stores.js';
 
-	// Audience type selection stored in Sidebar (grandparent) so value persists when switching between panels
+	// Audience type selection stored in Sidebar (grandparent) > Filters so value persists when switching between panels
 	export let audienceTypeSelection;
+	// And for tab set for selecting type of community
+	export let selectedAudienceType;
 
 	// List of communities for dropdown menu
 	$: ethnicityList = [
@@ -25,6 +27,7 @@
 				.sort()
 		)
 	];
+
 	$: religionList = [
 		...new Set(
 			$filteredDirectory.features
@@ -48,17 +51,36 @@
 		...new Set(
 			$filteredDirectory.features
 				?.filter((d) => d.properties['TARGET LOCATION CATEGORY'])
+				.flatMap((d) =>
+					d.properties['TARGET LOCATION'].map((label) => ({
+						category: d.properties['TARGET LOCATION CATEGORY'],
+						label: label
+					}))
+				)
 				.map((d) =>
 					JSON.stringify({
-						category: d.properties['TARGET LOCATION CATEGORY'],
-						label: d.properties['TARGET LOCATION']
+						category: d.category,
+						label: d.label
 					})
 				)
 				.sort((a, b) => {
 					const itemA = JSON.parse(a);
 					const itemB = JSON.parse(b);
-					if (itemA.category < itemB.category) return -1;
-					if (itemA.category > itemB.category) return 1;
+					const categoryOrder = [
+						'Bronx',
+						'Brooklyn',
+						'Manhattan',
+						'Queens',
+						'Staten Island',
+						'New York City',
+						'New York State',
+						'Metro Area'
+					]; // Manually set order of location categories
+					const categoryIndexA = categoryOrder.indexOf(itemA.category);
+					const categoryIndexB = categoryOrder.indexOf(itemB.category);
+					if (categoryIndexA !== categoryIndexB) {
+						return categoryIndexA - categoryIndexB;
+					}
 					if (itemA.label < itemB.label) return -1;
 					if (itemA.label > itemB.label) return 1;
 					return 0;
@@ -67,30 +89,28 @@
 	].map((d) => JSON.parse(d));
 
 	// Selected values in dropdown remain in place even after going to another panel
-	let valueEthnicity = $selectedCommunity?.ethnicity;
-	let valueReligion = $selectedCommunity?.religion;
-	let valueTheme = $selectedCommunity?.theme;
-	let valueGeography = $selectedCommunity?.geography;
+	let valueEthnicity = $selectedAudience?.ethnicity;
+	let valueReligion = $selectedAudience?.religion;
+	let valueTheme = $selectedAudience?.theme;
+	let valueGeography = $selectedAudience?.geography;
 
 	// Text above filter dropdown
-	let communityHeader;
-	const communityIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#2da854"><path d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" /></svg>`;
+	let audienceHeader;
+	const audienceIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#2da854"><path d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" /></svg>`;
 
 	const geographyIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#2da854"><path
 		d="m600-120-240-84-186 72q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l212-72 240 84 186-72q20-8 37 4.5t17 33.5v560q0 13-7.5 23T812-192l-212 72Zm-40-98v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z"
 	/></svg>`;
 
 	// Text above filter
-	$: communityHeader =
+	$: audienceHeader =
 		audienceTypeSelection === 'community'
 			? `
-			<span class="filter-field-label">${communityIcon} Search by audience </span>
+			<span class="filter-field-label">${audienceIcon} Search by audience </span>
 			`
 			: `
 			<span class="filter-field-label">${geographyIcon} Search by audience </span>
 			`;
-	// <span style="font-weight: 400;">(Choose a category)</span>
-	// 	<p class="filter-field-description">The number on the tabs indicate how many options are available.</p>
 
 	// Clear/reset selected filter when outlet is selected
 	$: if ($selectedOutlet) {
@@ -105,14 +125,6 @@
 	let floatingConfig = {
 		strategy: 'fixed'
 	};
-
-	// Inline dropdown to select type of community and send selection to Filters.svelte (parent)
-	let selectedCommunityType = 'ethnicity';
-	//let communityType;
-
-	// function setType() {
-	// 	communityType = selectedCommunityType;
-	// }
 
 	const buttonArray = [
 		{
@@ -161,7 +173,7 @@
 	import { fade } from 'svelte/transition';
 
 	// Clear filter when map button selected
-	$: if ($selectedCommunity === undefined) {
+	$: if ($selectedAudience === undefined) {
 		valueEthnicity = undefined;
 		valueReligion = undefined;
 		valueTheme = undefined;
@@ -171,9 +183,9 @@
 
 <form>
 	<!-- Filter label -->
-	<label for="community-search" class="filter-name">
-		<span class:active={$selectedCommunity}>
-			{@html communityHeader}
+	<label for="audience-search" class="filter-name">
+		<span class:active={$selectedAudience}>
+			{@html audienceHeader}
 		</span>
 	</label>
 
@@ -210,9 +222,9 @@
 				{#each buttonArray as button}
 					<button
 						on:click|stopPropagation={() => {
-							selectedCommunityType = button.value;
+							selectedAudienceType = button.value;
 						}}
-						class:active={selectedCommunityType === button.value}
+						class:active={selectedAudienceType === button.value}
 						>{button.text}&nbsp;
 						<span style="font-weight: 400;">
 							({button.value === 'ethnicity'
@@ -225,15 +237,15 @@
 				{/each}
 			</div>
 
-			{#if selectedCommunityType === 'ethnicity'}
+			{#if selectedAudienceType === 'ethnicity'}
 				<Select
 					{floatingConfig}
 					--list-position="fixed"
-					--border-hover="0.5px solid var(--community-color)"
-					--border-focused="1px solid var(--community-color)"
-					id="community-search"
+					--border-hover="0.5px solid var(--audience-color)"
+					--border-focused="1px solid var(--audience-color)"
+					id="audience-search"
 					items={ethnicityList}
-					placeholder="Select community"
+					placeholder="Select ethnicity"
 					multiple
 					clearable={false}
 					bind:value={valueEthnicity}
@@ -244,7 +256,7 @@
 						$map.setFilter('outlet-search-layer', ['in', 'OUTLET', '']);
 					}}
 					on:change={() => {
-						$selectedCommunity = {
+						$selectedAudience = {
 							ethnicity: valueEthnicity?.map((d) => d.value),
 							religion: valueReligion?.map((d) => d.value),
 							theme: valueTheme?.map((d) => d.value),
@@ -254,25 +266,25 @@
 					on:clear={() => {
 						$popup?.remove();
 						if (valueEthnicity === undefined) {
-							$selectedCommunity.ethnicity = undefined;
+							$selectedAudience.ethnicity = undefined;
 							//$filteredDirectory = $directoryData;
 						} else {
-							$selectedCommunity = valueEthnicity.map((d) => d.value);
+							$selectedAudience = valueEthnicity.map((d) => d.value);
 						}
 					}}
 				/>
 			{/if}
 
-			{#if selectedCommunityType === 'religion'}
+			{#if selectedAudienceType === 'religion'}
 				<Select
 					{floatingConfig}
 					--list-position="fixed"
-					--border="0.5px solid var(--community-color)"
-					--border-hover="1px solid var(--community-color)"
-					--border-focused="1px solid var(--community-color)"
-					id="community-search"
+					--border="0.5px solid var(--audience-color)"
+					--border-hover="1px solid var(--audience-color)"
+					--border-focused="1px solid var(--audience-color)"
+					id="audience-search"
 					items={religionList}
-					placeholder="Select community"
+					placeholder="Select religion"
 					multiple
 					clearable={false}
 					bind:value={valueReligion}
@@ -283,7 +295,7 @@
 						$map.setFilter('outlet-search-layer', ['in', 'OUTLET', '']);
 					}}
 					on:change={() => {
-						$selectedCommunity = {
+						$selectedAudience = {
 							ethnicity: valueEthnicity?.map((d) => d.value),
 							religion: valueReligion?.map((d) => d.value),
 							theme: valueTheme?.map((d) => d.value),
@@ -293,24 +305,24 @@
 					on:clear={() => {
 						$popup?.remove();
 						if (valueReligion === undefined) {
-							$selectedCommunity.religion = undefined;
+							$selectedAudience.religion = undefined;
 						} else {
-							$selectedCommunity = valueReligion.map((d) => d.value);
+							$selectedAudience = valueReligion.map((d) => d.value);
 						}
 					}}
 				/>
 			{/if}
 
-			{#if selectedCommunityType === 'theme'}
+			{#if selectedAudienceType === 'theme'}
 				<Select
 					{floatingConfig}
 					--list-position="fixed"
-					--border="0.5px solid var(--community-color)"
-					--border-hover="1px solid var(--community-color)"
-					--border-focused="1px solid var(--community-color)"
-					id="community-search"
+					--border="0.5px solid var(--audience-color)"
+					--border-hover="1px solid var(--audience-color)"
+					--border-focused="1px solid var(--audience-color)"
+					id="audience-search"
 					items={themeList}
-					placeholder="Select community"
+					placeholder="Select theme"
 					multiple
 					clearable={false}
 					bind:value={valueTheme}
@@ -321,7 +333,7 @@
 						$map.setFilter('outlet-search-layer', ['in', 'OUTLET', '']);
 					}}
 					on:change={() => {
-						$selectedCommunity = {
+						$selectedAudience = {
 							ethnicity: valueEthnicity?.map((d) => d.value),
 							religion: valueReligion?.map((d) => d.value),
 							theme: valueTheme?.map((d) => d.value),
@@ -331,9 +343,9 @@
 					on:clear={() => {
 						$popup?.remove();
 						if (valueTheme === undefined) {
-							$selectedCommunity.theme = undefined;
+							$selectedAudience.theme = undefined;
 						} else {
-							$selectedCommunity = valueTheme.map((d) => d.value);
+							$selectedAudience = valueTheme.map((d) => d.value);
 						}
 					}}
 				/>
@@ -344,10 +356,10 @@
 			<Select
 				{floatingConfig}
 				--list-position="fixed"
-				--border="0.5px solid var(--community-color)"
-				--border-hover="1px solid var(--community-color)"
-				--border-focused="1px solid var(--community-color)"
-				id="community-search"
+				--border="0.5px solid var(--audience-color)"
+				--border-hover="1px solid var(--audience-color)"
+				--border-focused="1px solid var(--audience-color)"
+				id="audience-search"
 				items={geographyList}
 				placeholder="Select location"
 				multiple
@@ -362,7 +374,7 @@
 					$map.setFilter('outlet-search-layer', ['in', 'OUTLET', '']);
 				}}
 				on:change={() => {
-					$selectedCommunity = {
+					$selectedAudience = {
 						ethnicity: valueEthnicity?.map((d) => d.value),
 						religion: valueReligion?.map((d) => d.value),
 						theme: valueTheme?.map((d) => d.value),
@@ -372,9 +384,9 @@
 				on:clear={() => {
 					$popup?.remove();
 					if (valueGeography === undefined) {
-						$selectedCommunity.geography = undefined;
+						$selectedAudience.geography = undefined;
 					} else {
-						$selectedCommunity = valueGeography.map((d) => d.label.toString());
+						$selectedAudience = valueGeography.map((d) => d.label.toString());
 					}
 				}}
 			/>
@@ -418,9 +430,9 @@
 		background-color: var(--white);
 		cursor: auto;
 		border-top: 2px solid white;
-		border-top: 1px solid var(--community-color);
-		border-left: 0.5px solid var(--community-color);
-		border-right: 0.5px solid var(--community-color);
+		border-top: 1px solid var(--audience-color);
+		border-left: 0.5px solid var(--audience-color);
+		border-right: 0.5px solid var(--audience-color);
 	}
 
 	button:not(.active) {
@@ -452,6 +464,6 @@
 	}
 
 	input[type='radio'] {
-		accent-color: var(--community-color);
+		accent-color: #2da854;
 	}
 </style>

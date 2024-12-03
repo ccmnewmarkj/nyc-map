@@ -6,7 +6,7 @@
 	import {
 		map,
 		selectedFormat,
-		selectedCommunity,
+		selectedAudience,
 		selectedLanguage,
 		directoryData,
 		filteredDirectory,
@@ -17,7 +17,7 @@
 	// List of formats for dropdown menu:
 	// Show all options when no other filter is applied
 	let formatList;
-	$: if (!$selectedCommunity && !$selectedLanguage) {
+	$: if (!$selectedAudience && !$selectedLanguage) {
 		formatList = [
 			...new Set(
 				$directoryData.features

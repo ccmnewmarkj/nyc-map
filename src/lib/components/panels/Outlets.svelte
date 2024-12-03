@@ -4,7 +4,7 @@
 		map,
 		filteredDirectory,
 		selectedFormat,
-		selectedCommunity,
+		selectedAudience,
 		selectedLanguage,
 		selectedOutlet,
 		directoryData
@@ -37,22 +37,22 @@
  ${$selectedFormat}</span>`;
 		}
 
-		if ($selectedCommunity.ethnicity || $selectedCommunity.religion || $selectedCommunity.theme) {
+		if ($selectedAudience.ethnicity || $selectedAudience.religion || $selectedAudience.theme) {
 			const communityList = [
-				...($selectedCommunity.ethnicity
-					? $selectedCommunity.ethnicity
+				...($selectedAudience.ethnicity
+					? $selectedAudience.ethnicity
 							.toString()
 							.split(',')
 							.map((item) => item.trim())
 					: []),
-				...($selectedCommunity.religion
-					? $selectedCommunity.religion
+				...($selectedAudience.religion
+					? $selectedAudience.religion
 							.toString()
 							.split(',')
 							.map((item) => item.trim())
 					: []),
-				...($selectedCommunity.theme
-					? $selectedCommunity.theme
+				...($selectedAudience.theme
+					? $selectedAudience.theme
 							.toString()
 							.split(',')
 							.map((item) => item.trim())
@@ -63,14 +63,14 @@
 				communityList.length > 1
 					? communityList.slice(0, -1).join(', ') + ', ' + communityList.slice(-1)
 					: communityList[0];
-			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--community-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--community-color)"><path
+			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--audience-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--audience-color)"><path
 		d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" /></svg>${formattedCommunityList}</span>`;
 		}
 
-		if ($selectedCommunity.geography) {
+		if ($selectedAudience.geography) {
 			const geographyList = [
-				...($selectedCommunity.geography
-					? $selectedCommunity.geography
+				...($selectedAudience.geography
+					? $selectedAudience.geography
 							.toString()
 							.split(',')
 							.map((item) => item.trim())
@@ -81,7 +81,7 @@
 				geographyList.length > 1
 					? geographyList.slice(0, -1).join(', ') + ', ' + geographyList.slice(-1)
 					: geographyList[0];
-			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--community-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--community-color)"><path
+			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--audience-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--audience-color)"><path
 		d="m600-120-240-84-186 72q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l212-72 240 84 186-72q20-8 37 4.5t17 33.5v560q0 13-7.5 23T812-192l-212 72Zm-40-98v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z"
 	/></svg>${formattedGeographyList}</span>`;
 		}
@@ -95,7 +95,7 @@
 		return msg;
 	}
 
-	$: if (!$selectedFormat && !$selectedCommunity & !$selectedLanguage) {
+	$: if (!$selectedFormat && !$selectedAudience & !$selectedLanguage) {
 		filterMsg = ''; // No filters applied
 	} else if (outletCount === 0) {
 		filterMsg = 'No outlets found';
@@ -156,17 +156,16 @@
 			<p>
 				<span style="font-family: 'Roboto Condensed'; display: flex; align-items: center; gap: 4px;"
 					><SearchIcon /><strong
-						>{[$selectedCommunity, $selectedFormat, $selectedLanguage].filter(Boolean).length >=
-							2 ||
-						($selectedFormat && $selectedCommunity) ||
+						>{[$selectedAudience, $selectedFormat, $selectedLanguage].filter(Boolean).length >= 2 ||
+						($selectedFormat && $selectedAudience) ||
 						($selectedFormat && $selectedLanguage) ||
-						($selectedCommunity && $selectedLanguage) ||
-						($selectedCommunity.ethnicity && $selectedCommunity.religion) ||
-						($selectedCommunity.ethnicity && $selectedCommunity.theme) ||
-						($selectedCommunity.ethnicity && $selectedCommunity.geography) ||
-						($selectedCommunity.religion && $selectedCommunity.theme) ||
-						($selectedCommunity.religion && $selectedCommunity.geography) ||
-						($selectedCommunity.theme && $selectedCommunity.geography)
+						($selectedAudience && $selectedLanguage) ||
+						($selectedAudience.ethnicity && $selectedAudience.religion) ||
+						($selectedAudience.ethnicity && $selectedAudience.theme) ||
+						($selectedAudience.ethnicity && $selectedAudience.geography) ||
+						($selectedAudience.religion && $selectedAudience.theme) ||
+						($selectedAudience.religion && $selectedAudience.geography) ||
+						($selectedAudience.theme && $selectedAudience.geography)
 							? 'Filters'
 							: 'Filter'} applied:</strong
 					>
@@ -226,7 +225,8 @@
 				<!-- Card header row -->
 				<div class="header-row">
 					<p class="outlet-name">
-						<span style="display: flex; align-items: center; column-gap: 5px;">
+						<span>
+							<!-- <span style="display: flex; align-items: center; column-gap: 5px;"> -->
 							{outlet.properties['OUTLET']}
 							<a href={outlet.properties['DIRECTORY URL']}><OpenBookIcon /></a>
 						</span>
@@ -358,7 +358,8 @@
 							<span style="color: #41B06E;"
 								>{outlet.properties['CITY']}, {outlet.properties['STATE']
 									.replace('New York', 'NY')
-									.replace('New Jersey', 'NJ', 'Connecticut', 'CT')}</span
+									.replace('New Jersey', 'NJ')
+									.replace('Connecticut', 'CT')}</span
 							>
 						{:else}
 							<span style="color: gray;">Location unavailable</span>
@@ -446,6 +447,7 @@
 		font-size: 1rem;
 		font-weight: 600;
 		font-family: 'Roboto Condensed', sans-serif;
+		line-height: 1;
 	}
 
 	.header-row,
@@ -466,6 +468,12 @@
 		background-color: #f0f0f0;
 		padding: 0.4rem 0.5rem 0.35rem 0.5rem;
 	}
+
+	/* text-wrap source: https://www.youtube.com/watch?v=3ugXM3ZDUuE */
+	/* .footer-row > * {
+		min-width: fit-content;
+		flex: 1;
+	} */
 
 	.body-container {
 		padding: 0.25rem 0.5rem;
@@ -505,6 +513,9 @@
 
 	.founded {
 		font-weight: 400;
+		min-width: fit-content;
+		flex: 1;
+		text-align: right;
 	}
 
 	.action-btns {
@@ -514,8 +525,10 @@
 	}
 
 	.location {
-		width: 26%;
+		/* width: 24%; */
 		text-align: right;
+		flex: 1;
+		text-wrap: balance;
 	}
 
 	.card-btn {
