@@ -26,8 +26,10 @@
 	// Outlet count
 	$: outletCount = $filteredDirectory.features?.length;
 
-	// Audience type selection stored in Sidebar (grandparent) so value persists when switching between panels
+	// Audience type selection stored here (down to Filters > AudienceSearch) so value persists when switching between panels
 	let audienceTypeSelection = 'community';
+	// And for tab set for selecting type of community
+	let selectedCommunityType = 'ethnicity';
 </script>
 
 <header>
@@ -53,7 +55,7 @@
 	</main>
 {:else if $searchPanelVisible}
 	<main class="panel-body" in:fade>
-		<SearchPanel bind:audienceTypeSelection />
+		<SearchPanel bind:audienceTypeSelection bind:selectedCommunityType />
 	</main>
 {:else if $outletPanelVisible}
 	<main class="panel-body" in:fade>

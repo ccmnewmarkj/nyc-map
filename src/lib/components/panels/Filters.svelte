@@ -86,7 +86,7 @@
 	// Audience type selection stored in Sidebar (parent) so value persists when switching between panels
 	export let audienceTypeSelection;
 	// And for tab set for selecting type of community
-	export let selectedAudienceType;
+	export let selectedCommunityType;
 </script>
 
 <!-- Intro -->
@@ -108,7 +108,7 @@
 
 	<!-- Filter by community -->
 	<div class="filter">
-		<AudienceSearch bind:audienceTypeSelection bind:selectedAudienceType />
+		<AudienceSearch bind:audienceTypeSelection bind:selectedCommunityType />
 	</div>
 
 	<!-- <hr /> -->

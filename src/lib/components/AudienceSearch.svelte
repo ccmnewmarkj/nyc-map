@@ -15,7 +15,7 @@
 	// Audience type selection stored in Sidebar (grandparent) > Filters so value persists when switching between panels
 	export let audienceTypeSelection;
 	// And for tab set for selecting type of community
-	export let selectedAudienceType;
+	export let selectedCommunityType;
 
 	// List of communities for dropdown menu
 	$: ethnicityList = [
@@ -222,9 +222,9 @@
 				{#each buttonArray as button}
 					<button
 						on:click|stopPropagation={() => {
-							selectedAudienceType = button.value;
+							selectedCommunityType = button.value;
 						}}
-						class:active={selectedAudienceType === button.value}
+						class:active={selectedCommunityType === button.value}
 						>{button.text}&nbsp;
 						<span style="font-weight: 400;">
 							({button.value === 'ethnicity'
@@ -237,7 +237,7 @@
 				{/each}
 			</div>
 
-			{#if selectedAudienceType === 'ethnicity'}
+			{#if selectedCommunityType === 'ethnicity'}
 				<Select
 					{floatingConfig}
 					--list-position="fixed"
@@ -275,7 +275,7 @@
 				/>
 			{/if}
 
-			{#if selectedAudienceType === 'religion'}
+			{#if selectedCommunityType === 'religion'}
 				<Select
 					{floatingConfig}
 					--list-position="fixed"
@@ -313,7 +313,7 @@
 				/>
 			{/if}
 
-			{#if selectedAudienceType === 'theme'}
+			{#if selectedCommunityType === 'theme'}
 				<Select
 					{floatingConfig}
 					--list-position="fixed"
