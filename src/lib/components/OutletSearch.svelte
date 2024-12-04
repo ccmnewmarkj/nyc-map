@@ -13,8 +13,9 @@
 		selectedLanguage
 	} from '$lib/stores.js';
 
-	const outletNames = $directoryData.features?.map((d) => d.properties['OUTLET']);
-
+	const outletNames = $directoryData.features
+		?.filter((d) => d.geometry['coordinates'][0])
+		.map((d) => d.properties['OUTLET']);
 	// Selected values in dropdown remain in place even after going to another panel
 	let value = $selectedOutlet;
 
@@ -56,12 +57,14 @@
 <details on:toggle={toggleAccordion} open>
 	<summary>Search by Outlet</summary>
 
-	<p class="content">
-		When an outlet is selected, any applied filters above will be cleared. The map will then zoom in
-		to the outlet's location. Select the highlighted marker for more details about the outlet.
-	</p>
+	<div class="content">
+		<p style="padding-bottom: 0.75rem;">
+			Look for an outlet on the map, out of the <strong
+				>{$directoryData.features.filter((d) => d.geometry['coordinates'][0]).length}</strong
+			> with known locations. The map will then zoom in to its location. Select the highlighted marker
+			for more details about the outlet.
+		</p>
 
-	<form>
 		<Select
 			id="outlet-search"
 			items={outletNames}
@@ -73,8 +76,7 @@
 				$selectedLanguage ? ($selectedLanguage = undefined) : null;
 				$selectedOutlet = value?.value;
 				$popup?.remove();
-			}}
-			on:change={() => {
+
 				lng = $directoryData.features
 					?.filter((d) => d.properties['OUTLET'] === $selectedOutlet)
 					.map((d) => d.geometry.coordinates[0]);
@@ -82,9 +84,10 @@
 					?.filter((d) => d.properties['OUTLET'] === $selectedOutlet)
 					.map((d) => d.geometry.coordinates[1]);
 
-				$directoryData.features?.map((d) => d.properties['LATITUDE'])[0] !== undefined
-					? flyTo(10, [lng, lat])
-					: null;
+				flyTo(10, [lng, lat]);
+				// $directoryData.features.map((d) => d.properties['LATITUDE'])[0] !== undefined
+				// 	? flyTo(10, [lng, lat])
+				// 	: null;
 			}}
 			on:change={highlightOutlet}
 			on:clear={() => {
@@ -94,13 +97,15 @@
 				$map.setFilter('outlet-search-layer', ['in', 'OUTLET', '']);
 			}}
 		/>
-	</form>
-	{#if $selectedOutlet}
-		<p class="content" style="font-size: 0.8rem; padding-top: 0; color: #6d6d6d;">
+	</div>
+	<p class="content" style="font-size: 0.8rem; padding-top: 0; color: #6d6d6d;">
+		{#if $selectedOutlet}
 			To reset the selected outlet and corresponding highlighted circle, select the "Clear outlet"
 			button that appears on the map.
-		</p>
-	{/if}
+		{:else}
+			When an outlet is selected, any applied filters above will be cleared.
+		{/if}
+	</p>
 </details>
 
 <style>
@@ -140,9 +145,5 @@
 	details > .content {
 		font-size: 0.8rem;
 		padding: 0.75rem;
-	}
-
-	form {
-		padding: 0 0.75rem 0.75rem;
 	}
 </style>
