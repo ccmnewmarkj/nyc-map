@@ -1,11 +1,6 @@
 <script>
 	// Color by format
-	const newspaperFormat = '250, 112, 112',
-		tvFormat = '64, 162, 227',
-		radioFormat = '181, 112, 250',
-		magazineFormat = '115, 144, 114',
-		digitalFormat = '255, 201, 74',
-		otherFormat = '179, 200, 207';
+	export let newspaperFormat, tvFormat, radioFormat, magazineFormat, digitalFormat, otherFormat;
 
 	const legendItems = [
 		{ label: 'Newspaper', color: newspaperFormat },
