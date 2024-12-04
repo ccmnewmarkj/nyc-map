@@ -10,21 +10,13 @@
 	import CloseIcon from '$lib/components/icons/CloseCircle.svelte';
 
 	// Import stores
-	import {
-		filteredDirectory,
-		aboutPanelVisible,
-		searchPanelVisible,
-		outletPanelVisible
-	} from '$lib/stores.js';
+	import { aboutPanelVisible, searchPanelVisible, outletPanelVisible } from '$lib/stores.js';
 
 	// Import transition
 	import { fade } from 'svelte/transition';
 
 	// Set state of sidebar
 	export let sidebarVisible;
-
-	// Outlet count
-	$: outletCount = $filteredDirectory.features?.length;
 
 	// Audience type selection stored here (down to Filters > AudienceSearch) so value persists when switching between panels
 	let audienceTypeSelection = 'community';
@@ -46,12 +38,12 @@
 </header>
 
 <nav>
-	<PanelBtns badgeCount={outletCount} />
+	<PanelBtns />
 </nav>
 
 {#if $aboutPanelVisible}
 	<main class="panel-body" style="padding: 0;" in:fade>
-		<AboutPanel {outletCount} />
+		<AboutPanel />
 	</main>
 {:else if $searchPanelVisible}
 	<main class="panel-body" in:fade>
@@ -59,7 +51,7 @@
 	</main>
 {:else if $outletPanelVisible}
 	<main class="panel-body" in:fade>
-		<OutletPanel {outletCount} />
+		<OutletPanel />
 	</main>
 {/if}
 

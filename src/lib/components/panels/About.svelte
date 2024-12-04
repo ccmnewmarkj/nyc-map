@@ -1,5 +1,6 @@
 <script>
-	export let outletCount;
+	// Import stores
+	import { outletCount } from '$lib/stores.js';
 
 	// Import icon components
 	import MapPin from '$lib/components/icons/MapPin.svelte';
@@ -13,7 +14,7 @@
 	<p>
 		This map of <span style="font-weight: 800;"
 			>community media outlets in the New York City metro area</span
-		>, includes {outletCount}
+		>, includes {$outletCount}
 		outlets serving communities of color, immigrants, and hyperlocal audiences. The map accompanies the
 		<strong
 			><a href="http://ccm-directory.journalism.cuny.edu">Many Voices, One City directory</a
