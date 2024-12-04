@@ -12,9 +12,14 @@
 	--gray: #747474;
 	--alice-blue: rgba(216, 224, 232, 1);
 	--alice-blue-light: rgba(216, 224, 232, 0.4);
+	--format-color: #333;
+	--format-color: #333;
+	--audience-color: #333;
+	--language-color: #333;
+	/* --format-color: #eb7100;
 	--format-color: #eb7100;
-	--community-color: #2da854;
-	--language-color: #024caa;
+	--audience-color: #006a67;
+	--language-color: #640d5f; */
 }
 
 /* Source: https://gwfh.mranftl.com/fonts */
@@ -265,7 +270,7 @@ mapboxgl-ctrl-group,
 	display: flex;
 	justify-content: space-between;
 	align-items: start;
-	line-height: 1.2;
+	line-height: 1.1;
 	font-size: 0.85rem;
 }
 
@@ -277,7 +282,7 @@ mapboxgl-ctrl-group,
 	color: var(--gray);
 	display: flex;
 	align-items: center;
-	gap: 2px;
+	gap: 3px;
 }
 
 .popup-category-value {
