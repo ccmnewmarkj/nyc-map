@@ -32,7 +32,7 @@
 		// When format selected
 		if ($selectedFormat) {
 			// Icons from Google Fonts
-			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--format-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--format-color)"><path d="M160-80q-17 0-28.5-11.5T120-120v-558q0-15 6-25.5t20-16.5l400-160q20-8 37 5.5t17 34.5v120h40q17 0 28.5 11.5T680-680v120h-80v-80H200v480h207l80 80H160Zm200-640h160v-62l-160 62ZM680-80q-83 0-141.5-58.5T480-280q0-83 58.5-141.5T680-480q83 0 141.5 58.5T880-280q0 83-58.5 141.5T680-80Zm-50-100 160-100-160-100v200Zm-430 20v-480 480Z"/></svg>
+			msg += `<span class="selected-filter-tag"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--format-color)"><path d="M160-80q-17 0-28.5-11.5T120-120v-558q0-15 6-25.5t20-16.5l400-160q20-8 37 5.5t17 34.5v120h40q17 0 28.5 11.5T680-680v120h-80v-80H200v480h207l80 80H160Zm200-640h160v-62l-160 62ZM680-80q-83 0-141.5-58.5T480-280q0-83 58.5-141.5T680-480q83 0 141.5 58.5T880-280q0 83-58.5 141.5T680-80Zm-50-100 160-100-160-100v200Zm-430 20v-480 480Z"/></svg>
  ${$selectedFormat}</span>`;
 		}
 
@@ -63,7 +63,7 @@
 					? communityList.slice(0, -1).join(', ') + ', ' + communityList.slice(-1)
 					: communityList[0];
 
-			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--audience-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--audience-color)"><path
+			msg += `<span class="selected-filter-tag"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--audience-color)"><path
 		d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" /></svg>${formattedCommunityList}</span>`;
 		}
 
@@ -81,13 +81,13 @@
 				geographyList.length > 1
 					? geographyList.slice(0, -1).join(', ') + ', ' + geographyList.slice(-1)
 					: geographyList[0];
-			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--audience-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--audience-color)"><path
+			msg += `<span class="selected-filter-tag"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--audience-color)"><path
 		d="m600-120-240-84-186 72q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l212-72 240 84 186-72q20-8 37 4.5t17 33.5v560q0 13-7.5 23T812-192l-212 72Zm-40-98v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z"
 	/></svg>${formattedGeographyList}</span>`;
 		}
 
 		if ($selectedLanguage) {
-			msg += `<span class="selected-filter-tag" style="border: 0.5px solid var(--language-color);"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--language-color)"><path d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"/></svg>${$selectedLanguage
+			msg += `<span class="selected-filter-tag"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="var(--language-color)"><path d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"/></svg>${$selectedLanguage
 				.toString()
 				.replaceAll(',', ', ')}</span>`;
 		}
@@ -169,7 +169,8 @@
 							? 'Filters'
 							: 'Filter'} applied:</strong
 					>
-					Showing <strong>{$outletCount}</strong> out of {$directoryData?.features.length} outlets</span
+					Showing <strong>{$filteredDirectory?.features.length}</strong> out of {$directoryData
+						?.features.length} outlets</span
 				>
 			</p>
 			<p style="margin-top: 5px; display: flex; flex-wrap: wrap; row-gap: 4px; column-gap: 6px;">
