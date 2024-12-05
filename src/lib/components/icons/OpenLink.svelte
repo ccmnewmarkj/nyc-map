@@ -1,5 +1,5 @@
 <!-- Source: https://iconoir.com/ --><svg
-	aria-hidden="true"
+	aria-label="Open website in a new tab"
 	width="12px"
 	height="12px"
 	viewBox="0 0 24 24"

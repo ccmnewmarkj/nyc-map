@@ -5,6 +5,7 @@
 </script>
 
 <svg
+	aria-hidden="true"
 	xmlns="http://www.w3.org/2000/svg"
 	{height}
 	viewBox="50 -960 960 960"
