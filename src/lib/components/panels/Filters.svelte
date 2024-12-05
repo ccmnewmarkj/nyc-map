@@ -12,7 +12,8 @@
 		filteredDirectory,
 		selectedFormat,
 		selectedAudience,
-		selectedLanguage
+		selectedLanguage,
+		popup
 	} from '$lib/stores.js';
 
 	// Filter data (filter dropdown selections, map markers, outlet list tab) based on selections from multiple dropdowns
@@ -47,13 +48,6 @@
 											d.properties['TARGET THEME'] && d.properties['TARGET THEME']?.includes(theme)
 									)
 								: true));
-					// 	&&
-					// ($selectedAudience.geography?.length
-					// 	? $selectedAudience.geography.every((geography) => {
-					// 			d.properties['TARGET LOCATION'] &&
-					// 				d.properties['TARGET LOCATION']?.includes(geography);
-					// 		})
-					// 	: true)
 
 					let geographyState =
 						!$selectedAudience ||
@@ -87,6 +81,9 @@
 	export let audienceTypeSelection;
 	// And for tab set for selecting type of community
 	export let selectedCommunityType;
+
+	// Import transition
+	import { fade } from 'svelte/transition';
 </script>
 
 <!-- Intro -->
@@ -118,6 +115,27 @@
 		<LanguageSearch />
 	</div>
 
+	<!-- Clear filters -->
+	{#if $selectedFormat || $selectedAudience || $selectedLanguage}
+		<div class="filter-reset-container" transition:fade={{ duration: 100 }}>
+			<button
+				aria-label="Clear any applied filters"
+				on:click|stopPropagation={() => {
+					$selectedFormat = undefined;
+					$selectedAudience = undefined;
+					$selectedLanguage = undefined;
+					filteredDirectory.set($directoryData);
+					$popup?.remove();
+					$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+					$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+				}}
+				><span style="color: red; font-weight: 800;">✕</span
+				>{#if ($selectedFormat && $selectedAudience) || ($selectedFormat && $selectedLanguage) || ($selectedAudience && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}Clear
+					all filters{:else}Clear filter{/if}</button
+			>
+		</div>
+	{/if}
+
 	<hr style="width: 100%;" />
 
 	<!-- Outlet search -->
@@ -140,5 +158,9 @@
 		width: 90%;
 		margin: 0rem auto;
 		border-top: 0.5px solid rgba(0, 0, 0, 0.2);
+	}
+
+	.filter-reset-container {
+		margin-bottom: 1rem;
 	}
 </style>
