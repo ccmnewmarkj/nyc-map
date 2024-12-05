@@ -6,15 +6,14 @@
 
 	// Import stores
 	import {
-		map,
-		popup,
 		aboutPanelVisible,
 		searchPanelVisible,
 		outletPanelVisible,
-		selectedOutlet
+		filteredDirectory,
+		selectedOutlet,
+		popup,
+		map
 	} from '$lib/stores.js';
-
-	export let badgeCount = '';
 </script>
 
 <div class="btn-container">
@@ -26,12 +25,12 @@
 			$aboutPanelVisible = true;
 			$searchPanelVisible = false;
 			$outletPanelVisible = false;
-			// if ($selectedOutlet) {
-			// 	$selectedOutlet = undefined;
-			// 	$popup?.remove();
-			// 	$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-			// 	$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-			// }
+			if ($selectedOutlet) {
+				$selectedOutlet = undefined;
+				$popup?.remove();
+				$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+				$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+			}
 		}}><InfoIcon />About</button
 	>
 
@@ -43,12 +42,12 @@
 			$aboutPanelVisible = false;
 			$searchPanelVisible = true;
 			$outletPanelVisible = false;
-			// if ($selectedOutlet) {
-			// 	$selectedOutlet = undefined;
-			// 	$popup?.remove();
-			// 	$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-			// 	$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-			// }
+			if ($selectedOutlet) {
+				$selectedOutlet = undefined;
+				$popup?.remove();
+				$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+				$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+			}
 		}}><SearchIcon />Search</button
 	>
 
@@ -60,17 +59,16 @@
 			$aboutPanelVisible = false;
 			$searchPanelVisible = false;
 			$outletPanelVisible = true;
-			// if ($selectedOutlet) {
-			// 	$selectedOutlet = undefined;
-			// 	$popup?.remove();
-			// 	$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-			// 	$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-			// }
+			if ($selectedOutlet) {
+				$selectedOutlet = undefined;
+				$popup?.remove();
+				$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+				$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+			}
 		}}
-		><ListIcon />Outlets {#if badgeCount}
-			<span class="badge-count">{badgeCount}</span>
-		{/if}</button
-	>
+		><ListIcon />Outlets
+		<span class="badge-count">{$filteredDirectory.features?.length}</span>
+	</button>
 </div>
 
 <style>
@@ -124,5 +122,10 @@
 		text-align: center;
 		background-color: var(--cerulean);
 		border-radius: 10px;
+	}
+
+	button:focus-visible {
+		outline: 2px solid var(--cerulean);
+		outline-offset: -2px;
 	}
 </style>
