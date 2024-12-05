@@ -1,9 +1,10 @@
 <!-- Icons from Google Fonts -->
 <script>
-	export let width = '20px';
-	export let height = '20px';
-	export let minY = '-1030';
-	export let ariaLabel = "Go to outlet's entry in the directory";
+	export let width = '18px';
+	export let height = '18px';
+	// export let minY = '-1030';
+	export let minY = '-1150';
+	export let ariaLabel = "Open outlet's directory entry in a new tab";
 </script>
 
 <svg
