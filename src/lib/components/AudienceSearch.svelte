@@ -200,7 +200,11 @@
 				value="community"
 				bind:group={audienceTypeSelection}
 			/>
-			<label for="community">Community</label>
+			<label for="community"
+				>{#if $selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme}Community<span
+						style="font-weight: 400;">*</span
+					>{:else}Community{/if}</label
+			>
 		</span>
 		<span>
 			<input
@@ -210,7 +214,10 @@
 				value="geography"
 				bind:group={audienceTypeSelection}
 			/>
-			<label for="geography">Geography</label>
+			<label for="geography"
+				>{#if $selectedAudience?.geography}Geography<span style="font-weight: 400;">*</span
+					>{:else}Geography{/if}</label
+			>
 		</span>
 	</div>
 
@@ -221,6 +228,7 @@
 			<div class="btn-container">
 				{#each buttonArray as button}
 					<button
+						tabindex="0"
 						on:click|stopPropagation={() => {
 							selectedCommunityType = button.value;
 						}}
@@ -353,6 +361,9 @@
 		</div>
 	{:else if audienceTypeSelection === 'geography'}
 		<div in:fade>
+			<p class="filter-field-description" style="margin: 3px 0;">
+				This filter only includes outlets that serve an audience based on geographic location.
+			</p>
 			<Select
 				{floatingConfig}
 				--list-position="fixed"
@@ -421,7 +432,6 @@
 		padding: 5px 0;
 		display: flex;
 		justify-content: center;
-
 		flex: 1; /* make buttons equal width */
 		border-top: 2px solid white;
 	}
@@ -445,13 +455,18 @@
 		transition: 0.5s;
 	}
 
+	button:focus-visible {
+		outline: 2px solid var(--cerulean);
+		outline-offset: -2px;
+	}
+
 	/* Radio buttons for type of audience */
 	.audience-selection {
 		font-family: 'Roboto Condensed', sans-serif;
 		font-size: 0.85rem;
 		display: flex;
 		column-gap: 15px;
-		margin-bottom: 5px;
+		margin-bottom: 3px;
 	}
 
 	.audience-selection > span {
