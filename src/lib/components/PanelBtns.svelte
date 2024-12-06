@@ -120,7 +120,7 @@
 		line-height: 1.4;
 		color: var(--white);
 		text-align: center;
-		background-color: var(--cerulean);
+		background-color: var(--dark-cerulean);
 		border-radius: 10px;
 	}
 

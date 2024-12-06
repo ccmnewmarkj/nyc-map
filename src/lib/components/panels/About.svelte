@@ -56,8 +56,9 @@
 <section id="about-footer" aria-label="About the Advertising Boost Initiative">
 	<p>
 		The mission of the <strong
-			><a href="https://www.journalism.cuny.edu/centers/center-community-media/"
-				>Center for Community Media</a
+			><a
+				href="https://www.journalism.cuny.edu/centers/center-community-media/"
+				style="color: #0072a4;">Center for Community Media</a
 			></strong
 		> is to serve news organizations that provide essential local coverage for populations whose voices
 		and issues are underrepresented in mainstream media. The Center serves as a hub of information, resources,
@@ -76,6 +77,7 @@
 			alt="Newmark J-School logo"
 			width="310"
 			height="auto"
+			loading="lazy"
 		/></a
 	>
 </section>

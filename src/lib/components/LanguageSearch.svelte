@@ -114,7 +114,6 @@
 
 	.filter-name {
 		font-weight: 800;
-		/* text-transform: uppercase; */
 		font-size: 0.85rem;
 	}
 </style>

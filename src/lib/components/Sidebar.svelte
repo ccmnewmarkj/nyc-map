@@ -29,7 +29,7 @@
 	<p style="font-size: 0.85rem;">
 		A map of media outlets in the New York City metro area, created by the <strong
 			><a
-				style="text-decoration: none;"
+				style="text-decoration: none; color: #0072a4;"
 				href="https://www.journalism.cuny.edu/centers/center-community-media/"
 				>Center for Community Media</a
 			></strong
