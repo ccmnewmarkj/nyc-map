@@ -74,8 +74,9 @@
 <style>
 	.btn-container {
 		display: flex;
-		border-top: 1px solid rgba(248, 181, 0, 0.5);
-		border-bottom: 2px solid rgba(248, 181, 0, 0.45);
+		/* border-top: 1px solid rgba(248, 181, 0, 0.5); */
+		/* border-top: 1px solid var(--alice-blue); */
+		border-bottom: 1px solid rgba(248, 181, 0, 0.5);
 	}
 
 	button {
@@ -99,9 +100,13 @@
 		border-right: 1px solid #fffffd;
 	}
 
-	.active {
+	button.active {
 		background-color: var(--white);
 		cursor: auto;
+	}
+
+	button:not(.active) {
+		border-top: 2px solid #fff2bc;
 	}
 
 	/* Add hover effect to buttons that are not active */
