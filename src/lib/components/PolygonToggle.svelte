@@ -6,24 +6,24 @@
 	export let polygonType;
 
 	function showPolygons() {
-		if (polygonType === 'Counties') {
-			$map?.setLayoutProperty('county-border-layer', 'visibility', 'visible');
-			$map?.setLayoutProperty('county-labels', 'visibility', 'visible');
-		}
 		if (polygonType === 'Neighborhoods') {
 			$map?.setLayoutProperty('nta-border-layer', 'visibility', 'visible');
 			$map?.setLayoutProperty('nta-labels', 'visibility', 'visible');
 		}
+		if (polygonType === 'Counties') {
+			$map?.setLayoutProperty('county-border-layer', 'visibility', 'visible');
+			$map?.setLayoutProperty('county-labels', 'visibility', 'visible');
+		}
 	}
 
 	function clearPolygons() {
-		if (polygonType === 'Counties') {
-			$map?.setLayoutProperty('county-border-layer', 'visibility', 'none');
-			$map?.setLayoutProperty('county-labels', 'visibility', 'none');
-		}
 		if (polygonType === 'Neighborhoods') {
 			$map?.setLayoutProperty('nta-border-layer', 'visibility', 'none');
 			$map?.setLayoutProperty('nta-labels', 'visibility', 'none');
+		}
+		if (polygonType === 'Counties') {
+			$map?.setLayoutProperty('county-border-layer', 'visibility', 'none');
+			$map?.setLayoutProperty('county-labels', 'visibility', 'none');
 		}
 	}
 </script>
@@ -70,6 +70,12 @@
 		text-transform: uppercase;
 		font-size: 0.8rem;
 		font-weight: 800;
+		text-shadow:
+			0 0 5px #fff,
+			0 0 10px #fff,
+			0 0 20px #fff,
+			0 0 30px #fff,
+			0 0 40px #fff;
 	}
 
 	/* checkbox */

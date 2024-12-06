@@ -117,7 +117,7 @@
 
 	<!-- Clear filters -->
 	{#if $selectedFormat || $selectedAudience || $selectedLanguage}
-		<div class="filter-reset-container" transition:fade={{ duration: 100 }}>
+		<div class="reset-container" transition:fade={{ duration: 100 }}>
 			<button
 				aria-label="Clear any applied filters"
 				on:click|stopPropagation={() => {
@@ -160,7 +160,7 @@
 		border-top: 0.5px solid rgba(0, 0, 0, 0.2);
 	}
 
-	.filter-reset-container {
+	.reset-container {
 		margin-bottom: 1rem;
 	}
 </style>

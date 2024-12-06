@@ -6,6 +6,8 @@
 
 	// Import icon components
 	import NYCIcon from '$lib/components/icons/NYC.svelte';
+	import CloseIcon from './icons/CloseCircle.svelte';
+	import PlusIcon from './icons/PlusCircle.svelte';
 
 	// Initialize map
 	import { onMount, onDestroy } from 'svelte';
@@ -30,7 +32,7 @@
 	} from '$lib/stores.js';
 
 	// Import transition
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 
 	let mapContainer;
 	const centerMap = { lng: -74, lat: 40.7 };
@@ -688,6 +690,9 @@ ${
 	$: if ($selectedOutlet) {
 		$map.setFilter('outlet-search-layer', ['any', ['in', $selectedOutlet, ['get', 'OUTLET']]]);
 	}
+
+	// Toggle on-screen map elements (excludes "clear filters" and "reset" buttons)
+	let mapElementsVisible = true;
 </script>
 
 <!-- Geocoder CSS -->
@@ -706,8 +711,8 @@ ${
 
 <!-- Container for map elements -->
 <section id="map-elements-container" aria-label="Map tools and features">
-	<!-- Search -->
-	<div class="map-elements geocoder-container">
+	<!-- Address search -->
+	<div class="geocoder-container">
 		<fieldset>
 			<legend style="width: 85px; text-align: right; line-height: 1.15;"
 				>Search by NYS location</legend
@@ -716,32 +721,51 @@ ${
 		</fieldset>
 	</div>
 
-	<!-- Toggle polygon filters -->
-	<fieldset class="map-elements toggle-container">
-		<legend class="sr-only">Geographic boundaries</legend>
+	<!-- Button + toggles + legend -->
+	<div class="on-screen-elements-container">
+		<button on:click|stopPropagation={() => (mapElementsVisible = !mapElementsVisible)}
+			>Map Features
+			{#if mapElementsVisible}
+				<CloseIcon
+					width={'20px'}
+					height={'20px'}
+					fillColor={'var(--dark-cerulean)'}
+					iconTitle={'Hide the option to show neighborhood and county borders and the color legend for the map markers'}
+				/>
+			{:else}
+				<PlusIcon
+					width={'20px'}
+					height={'20px'}
+					fillColor={'var(--dark-cerulean)'}
+					iconTitle={'Show neighborhood and county borders toggle and marker color legend'}
+				/>
+			{/if}
+		</button>
+		<!-- Map elements to show/hide -->
+		{#if mapElementsVisible}
+			<div class="on-screen-elements" transition:slide={{ y: -200, duration: 500 }}>
+				<!-- Toggle polygon filters -->
+				<fieldset class="toggle-container">
+					<legend class="sr-only">Geographic boundaries</legend>
 
-		<PolygonToggle bind:checked={showCounties} polygonType="Counties" />
+					<PolygonToggle bind:checked={showNTAs} polygonType="Neighborhoods" />
 
-		<PolygonToggle bind:checked={showNTAs} polygonType="Neighborhoods" />
-	</fieldset>
+					<PolygonToggle bind:checked={showCounties} polygonType="Counties" />
+				</fieldset>
 
-	<!-- <hr class="map-elements" style="top: 8.5rem;" /> -->
+				<!-- <hr class="map-elements" style="top: 8.5rem;" /> -->
 
-	<!-- Legend -->
-	<div class="map-elements legend-container">
-		<Legend
-			{newspaperFormat}
-			{tvFormat}
-			{radioFormat}
-			{magazineFormat}
-			{digitalFormat}
-			{otherFormat}
-		/>
+				<!-- Legend -->
+				<div class="legend-container">
+					<Legend {newspaperFormat} {tvFormat} {radioFormat} {magazineFormat} {digitalFormat} />
+				</div>
+			</div>
+		{/if}
 	</div>
 
 	<!-- Button: Reset applied filters -->
 	{#if $selectedFormat || $selectedAudience || $selectedLanguage}
-		<div class="map-elements filter-reset-container" transition:fade={{ duration: 100 }}>
+		<div class="reset-container" transition:fade={{ duration: 100 }}>
 			<!-- <hr /> -->
 			<button
 				aria-label="Clear any applied filters"
@@ -764,11 +788,10 @@ ${
 
 	<!-- Button: Reset highlighted outlet -->
 	{#if $selectedOutlet}
-		<div class="map-elements highlight-reset-container" transition:fade={{ duration: 100 }}>
+		<div class="reset-container" transition:fade={{ duration: 100 }}>
 			<!-- <hr /> -->
 			<button
 				aria-label="Remove highlight around map marker for selected outlet"
-				style="font-family: 'Roboto Condensed', sans-serif; font-weight: 800; display: flex; gap: 5px;"
 				on:click|stopPropagation={() => {
 					$selectedOutlet = undefined;
 					$popup?.remove();
@@ -782,7 +805,7 @@ ${
 
 <!-- Reset button -->
 {#if initialCenterLng?.toFixed(1) !== movedCenterLng?.toFixed(1)}
-	<div class="reset-container" transition:fade={{ duration: 100 }}>
+	<div class="reset-map-container" transition:fade={{ duration: 100 }}>
 		RESET
 		<span>MAP</span>
 
@@ -798,20 +821,15 @@ ${
 		bottom: 0;
 	}
 
-	.map-elements {
+	#map-elements-container {
 		position: absolute;
+		top: 1rem;
 		right: 10px;
+		pointer-events: none;
 	}
 
-	/* hr {
-		border-top: 0.5px solid rgba(0, 0, 0, 0.5);
-		width: 125px;
-		margin: 0.75rem 0;
-	} */
-
+	/* geocoder */
 	.geocoder-container {
-		z-index: 1;
-		margin-bottom: 0.75rem;
 		display: flex;
 		gap: 10px;
 		align-items: center;
@@ -822,42 +840,80 @@ ${
 		text-transform: uppercase;
 		font-size: 0.8rem;
 		font-weight: 800;
+		text-shadow:
+			0 0 5px #fff,
+			0 0 10px #fff,
+			0 0 20px #fff,
+			0 0 30px #fff,
+			0 0 40px #fff;
 	}
 
+	.on-screen-elements-container,
+	.legend-container,
+	.reset-container {
+		margin-left: auto;
+		width: fit-content;
+	}
+
+	.on-screen-elements-container {
+		margin-top: 1.5rem;
+	}
+
+	/* toggle button for showing/hiding polygon filters + legend*/
+	.on-screen-elements-container button {
+		padding: 3px 6px;
+		margin-right: -5px;
+		margin-left: auto;
+		pointer-events: auto;
+		display: flex;
+		align-items: center;
+		column-gap: 5px;
+		font-size: 1rem;
+		font-weight: 800;
+		text-transform: uppercase;
+		color: var(--dark-cerulean);
+		text-shadow:
+			0 0 5px #fff,
+			0 0 10px #fff,
+			0 0 20px #fff,
+			0 0 30px #fff,
+			0 0 40px #fff;
+	}
+
+	.on-screen-elements {
+		margin-right: 9px;
+		padding-right: 10px;
+		border-right: 1.5px dotted var(--dark-cerulean);
+	}
+
+	/* toggle button for polygon filters */
 	.toggle-container {
-		margin-top: 0.75rem;
-		margin-bottom: 0.25rem;
+		margin-top: 0.4rem;
+		pointer-events: auto;
+		width: fit-content;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-		top: 4rem;
+	}
+
+	/* legend */
+	/* when filter applied or outlet selected */
+	.legend-container,
+	.reset-container {
+		pointer-events: auto;
 	}
 
 	.legend-container {
-		margin-top: 0.25rem;
-		top: 9rem;
+		margin-top: 1rem;
 	}
 
-	/* when filter applied */
-	.filter-reset-container {
-		top: 17.5rem;
-	}
-
-	/* when outlet selected */
-	.highlight-reset-container {
-		font-size: 12px;
-		/* background-color: rgba(249, 232, 151, 0.5);
-		border: 1px solid var(--yellow); */
-		/* border-radius: 3px; */
-		top: 17.5rem;
-	}
-
-	.highlight-reset-container button {
-		padding: 2px 5px;
+	/* when filter applied or outlet selected */
+	.reset-container {
+		margin-top: 1.5rem;
 	}
 
 	/* reset map button */
-	.reset-container {
+	.reset-map-container {
 		position: absolute;
 		bottom: 100px;
 		right: 10px;
@@ -869,6 +925,12 @@ ${
 		font-size: 12px;
 		font-weight: 600;
 		font-family: 'Roboto Condensed', sans-serif;
+		text-shadow:
+			0 0 5px #fff,
+			0 0 10px #fff,
+			0 0 20px #fff,
+			0 0 30px #fff,
+			0 0 40px #fff;
 	}
 
 	@media only screen and (max-device-width: 512px) {
@@ -876,23 +938,11 @@ ${
 			display: none;
 		}
 
-		.toggle-container {
-			top: 10px;
+		.on-screen-elements-container {
+			margin: 0;
 		}
 
-		.legend-container {
-			top: 100px;
-		}
-
-		.filter-reset-container {
-			top: 250px;
-		}
-
-		.highlight-reset-container {
-			bottom: 175px;
-		}
-
-		.reset-container {
+		.reset-map-container {
 			bottom: 125px;
 		}
 	}

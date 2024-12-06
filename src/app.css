@@ -16,6 +16,7 @@
 	--format-color: #333;
 	--audience-color: #333;
 	--language-color: #333;
+	--dark-cerulean: #146590;
 	/* --format-color: #eb7100;
 	--format-color: #eb7100;
 	--audience-color: #006a67;
@@ -381,12 +382,8 @@ hr.outlet-card-divider {
 	margin-bottom: 3px;
 }
 
-/* when filter applied */
-.filter-reset-container {
-	top: 17.5rem;
-}
-
-.filter-reset-container button {
+/* reset filter or selected outlet */
+.reset-container button {
 	padding: 2px 5px;
 	background-color: rgba(249, 232, 151, 0.5);
 	border: 1px solid var(--yellow);

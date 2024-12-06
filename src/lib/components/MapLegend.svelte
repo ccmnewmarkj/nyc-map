@@ -1,6 +1,6 @@
 <script>
 	// Color by format
-	export let newspaperFormat, tvFormat, radioFormat, magazineFormat, digitalFormat, otherFormat;
+	export let newspaperFormat, tvFormat, radioFormat, magazineFormat, digitalFormat;
 
 	const legendItems = [
 		{ label: 'Newspaper', color: newspaperFormat },
@@ -45,6 +45,12 @@
 
 	.legend-item {
 		line-height: 1.15;
+		text-shadow:
+			0 0 5px #fff,
+			0 0 10px #fff,
+			0 0 20px #fff,
+			0 0 30px #fff,
+			0 0 40px #fff;
 	}
 
 	.bullet {
