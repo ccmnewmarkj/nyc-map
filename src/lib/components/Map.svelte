@@ -5,7 +5,7 @@
 	import Legend from '$lib/components/MapLegend.svelte';
 
 	// Import icon components
-	import NYSIcon from '$lib/components/icons/NYS.svelte';
+	import NYCIcon from '$lib/components/icons/NYC.svelte';
 
 	// Initialize map
 	import { onMount, onDestroy } from 'svelte';
@@ -65,7 +65,8 @@
 	const newspaperFormat = '250, 112, 112',
 		tvFormat = '64, 162, 227',
 		// radioFormat = '168, 136, 181',
-		radioFormat = '165, 148, 249',
+		// radioFormat = '165, 148, 249',
+		radioFormat = '177, 156, 217',
 		// magazineFormat = '115, 144, 114',
 		magazineFormat = '114, 191, 120',
 		digitalFormat = '255, 201, 74',
@@ -178,9 +179,9 @@
 					'text-size': {
 						base: 0,
 						stops: [
-							[6, 0],
-							[8, 12],
-							[10, 14]
+							[5, 0.5],
+							[6, 1],
+							[8, 1.25]
 						]
 					}
 				},
@@ -218,9 +219,9 @@
 					'line-width': {
 						base: 0,
 						stops: [
-							[5, 0.5],
-							[6, 1],
-							[8, 1.25]
+							[5, 0.25],
+							[6, 0.75],
+							[8, 1]
 						]
 					}
 				}
@@ -655,7 +656,7 @@ ${
 				// ]);
 
 				// set zoom level
-				$map.setZoom(5);
+				$map.setZoom(8);
 			}
 
 			// "Disable map rotation using right click + drag"
@@ -783,7 +784,9 @@ ${
 {#if initialCenterLng?.toFixed(1) !== movedCenterLng?.toFixed(1)}
 	<div class="reset-container" transition:fade={{ duration: 100 }}>
 		RESET
-		<ResetMap {centerMap} {isMobile}><NYSIcon /></ResetMap>
+		<span>MAP</span>
+
+		<ResetMap {centerMap} {isMobile}><NYCIcon /></ResetMap>
 	</div>
 {/if}
 
@@ -843,9 +846,9 @@ ${
 	/* when outlet selected */
 	.highlight-reset-container {
 		font-size: 12px;
-		background-color: rgba(249, 232, 151, 0.5);
-		border: 1px solid var(--yellow);
-		border-radius: 3px;
+		/* background-color: rgba(249, 232, 151, 0.5);
+		border: 1px solid var(--yellow); */
+		/* border-radius: 3px; */
 		top: 17.5rem;
 	}
 
@@ -861,7 +864,8 @@ ${
 		z-index: 1;
 		display: flex;
 		flex-direction: column;
-		align-items: flex-end;
+		align-items: center;
+		line-height: 0.95;
 		font-size: 12px;
 		font-weight: 600;
 		font-family: 'Roboto Condensed', sans-serif;

@@ -6,7 +6,7 @@
 	import { map, directoryData } from '$lib/stores.js';
 
 	// Import icon components
-	import NYSIcon from '$lib/components/icons/NYS.svelte';
+	import NYCIcon from '$lib/components/icons/NYC.svelte';
 
 	// Create promise that resolves when map and data have loaded
 	let loadData = Promise.all([$map, $directoryData]);
@@ -37,7 +37,7 @@
 
 {#await loadData}
 	<div class="page-container">
-		<div style="width: 50px; height: 50px;"><NYSIcon /></div>
+		<div style="width: 80px; height: 60px;"><NYCIcon /></div>
 
 		<p>Loading...</p>
 		<div class="loader"></div>
