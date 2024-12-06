@@ -60,8 +60,7 @@
 <style>
 	label {
 		display: block;
-		padding: 4px 4px 6px 6px;
-
+		padding: 4px 0 4px;
 		cursor: pointer;
 		font-family: 'Roboto Condensed', 'sans-serif;';
 	}
