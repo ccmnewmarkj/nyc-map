@@ -12,7 +12,7 @@
 		$map.flyTo({
 			center: [centerMap.lng, centerMap.lat],
 			essential: true, // "this animation is considered essential with respect to prefers-reduced-motion"
-			zoom: !isMobile ? 7.25 : 5,
+			zoom: !isMobile ? 7.25 : 8,
 			speed: 1,
 			curve: 1
 		});
@@ -30,9 +30,10 @@
 		/* align-items: center; */
 		width: 30px;
 		height: 30px;
-		box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15);
+		/* box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15); */
 		border: 0px solid rgba(0, 0, 0, 0.25);
+		border: 1px solid rgba(249, 232, 151, 1);
 		cursor: pointer;
-		box-shadow: 0 0 5px 3px var(--yellow); /* outer glow */
+		box-shadow: 0 0 4px 4px rgba(249, 232, 151, 0.55); /* outer glow */
 	}
 </style>
