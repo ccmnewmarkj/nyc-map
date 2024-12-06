@@ -54,7 +54,7 @@
 	}
 </script>
 
-<details on:toggle={toggleAccordion} open>
+<details on:toggle={toggleAccordion} close>
 	<summary>Search by Outlet</summary>
 
 	<div class="content">
