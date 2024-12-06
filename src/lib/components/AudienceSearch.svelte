@@ -425,7 +425,7 @@
 	}
 
 	button {
-		background-color: var(--light-gray);
+		background-color: #e0e2e4;
 		font-size: 0.8rem;
 		font-weight: 600;
 		/* text-transform: uppercase; */
@@ -433,20 +433,18 @@
 		display: flex;
 		justify-content: center;
 		flex: 1; /* make buttons equal width */
-		border-top: 2px solid white;
 	}
 
 	button.active {
 		background-color: var(--white);
 		cursor: auto;
-		border-top: 2px solid white;
 		border-top: 1px solid var(--audience-color);
 		border-left: 0.5px solid var(--audience-color);
 		border-right: 0.5px solid var(--audience-color);
 	}
 
 	button:not(.active) {
-		color: var(--gray);
+		border-top: 2px solid rgba(238, 238, 238, 1);
 	}
 
 	/* Add hover effect to buttons that are not active */
