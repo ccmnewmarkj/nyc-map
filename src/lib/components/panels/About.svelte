@@ -15,12 +15,12 @@
 		This map of <span style="font-weight: 800;"
 			>community media outlets in the New York City metro area</span
 		>, includes {$outletCount}
-		outlets serving communities of color, immigrants, and hyperlocal audiences. The map accompanies the
+		outlets serving communities of color, immigrants, and hyperlocal audiences. Accompanying the
 		<strong
 			><a href="http://ccm-directory.journalism.cuny.edu">Many Voices, One City directory</a
 			></strong
-		>, which together serve as a resource for advertisers, journalists, community organizers, and
-		others who want to connect with the community media sector in the state.
+		>, it serves as a resource for advertisers, journalists, community organizers, and others who
+		want to connect with the community media sector in the state.
 	</p>
 
 	<h2>How to use the map</h2>
