@@ -88,79 +88,92 @@
 
 <!-- Intro -->
 <section id="search-filters" aria-labelledby="search-btn">
-	<p style="font-size: 0.85rem;">
-		Select options from one or more of the three filters to narrow down your search. Once you make a
-		selection, the three filters will only show the remaining options based on the option(s) you
-		have chosen.
-	</p>
+	<div class="header" in:fade>
+		<p>
+			Select options from one or more of the three filters to narrow down your search. Once you make
+			a selection, the three filters will only show the remaining options based on the option(s) you
+			have chosen.
+		</p>
+	</div>
 
 	<!-- Filters -->
-
-	<!-- Filter by format -->
-	<div class="filter">
-		<FormatSearch />
-	</div>
-
-	<!-- <hr /> -->
-
-	<!-- Filter by community -->
-	<div class="filter">
-		<AudienceSearch bind:audienceTypeSelection bind:selectedCommunityType />
-	</div>
-
-	<!-- <hr /> -->
-
-	<!-- Filter by language -->
-	<div class="filter">
-		<LanguageSearch />
-	</div>
-
-	<!-- Clear filters -->
-	{#if $selectedFormat || $selectedAudience || $selectedLanguage}
-		<div class="reset-container" transition:fade={{ duration: 100 }}>
-			<button
-				aria-label="Clear any applied filters"
-				on:click|stopPropagation={() => {
-					$selectedFormat = undefined;
-					$selectedAudience = undefined;
-					$selectedLanguage = undefined;
-					filteredDirectory.set($directoryData);
-					$popup?.remove();
-					$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-					$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-				}}
-				><span style="color: red; font-weight: 800;">✕</span
-				>{#if ($selectedFormat && $selectedAudience) || ($selectedFormat && $selectedLanguage) || ($selectedAudience && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}Clear
-					all filters{:else}Clear filter{/if}</button
-			>
+	<div class="filters-container">
+		<!-- Filter by format -->
+		<div class="filter">
+			<FormatSearch />
 		</div>
-	{/if}
 
-	<hr style="width: 100%;" />
+		<!-- <hr /> -->
+
+		<!-- Filter by community -->
+		<div class="filter">
+			<AudienceSearch bind:audienceTypeSelection bind:selectedCommunityType />
+		</div>
+
+		<!-- <hr /> -->
+
+		<!-- Filter by language -->
+		<div class="filter">
+			<LanguageSearch />
+		</div>
+
+		<!-- Clear filters -->
+		{#if $selectedFormat || $selectedAudience || $selectedLanguage}
+			<div class="reset-container" transition:fade={{ duration: 100 }}>
+				<button
+					aria-label="Clear any applied filters"
+					on:click|stopPropagation={() => {
+						$selectedFormat = undefined;
+						$selectedAudience = undefined;
+						$selectedLanguage = undefined;
+						filteredDirectory.set($directoryData);
+						$popup?.remove();
+						$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+						$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+					}}
+					><span style="color: red; font-weight: 800;">✕</span
+					>{#if ($selectedFormat && $selectedAudience) || ($selectedFormat && $selectedLanguage) || ($selectedAudience && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}Clear
+						all filters{:else}Clear filter{/if}</button
+				>
+			</div>
+		{/if}
+	</div>
 
 	<!-- Outlet search -->
-	<div class="filter">
+	<div class="filter outlet-search-container">
 		<OutletSearch />
 	</div>
 </section>
 
 <style>
-	p:not(:first-of-type) {
+	.header {
+		padding: 1rem;
+	}
+
+	.filters-container {
+		background-color: rgba(238, 238, 238, 0.5);
+		padding: 1rem;
+	}
+
+	.filter:not(:first-of-type) {
 		margin-top: 1rem;
 	}
 
-	.filter {
-		margin-top: 1rem;
-		margin-bottom: 1.5rem;
+	.filter:not(:last-of-type) {
+		margin-bottom: 1.75rem;
 	}
 
-	hr {
+	/* hr {
 		width: 90%;
 		margin: 0rem auto;
 		border-top: 0.5px solid rgba(0, 0, 0, 0.2);
-	}
+	} */
 
 	.reset-container {
 		margin-bottom: 1rem;
+	}
+
+	.outlet-search-container {
+		padding: 0 1rem 1rem;
 	}
 </style>

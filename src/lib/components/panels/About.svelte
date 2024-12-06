@@ -93,7 +93,7 @@
 
 	#about-footer {
 		padding: 1rem;
-		background-color: var(--light-gray);
+		background-color: rgba(238, 238, 238, 0.5);
 		/* display: flex;
 		flex-direction: column;
 		align-items: center;

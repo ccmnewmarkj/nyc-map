@@ -146,11 +146,14 @@
 			sectionRef.scrollIntoView({ behavior: 'smooth' });
 		}
 	}
+
+	// Import transition
+	import { fade } from 'svelte/transition';
 </script>
 
 <section id="outlet-cards" aria-label="List of media outlets">
 	<!-- Intro text -->
-	<div class="header" class:filters-active={filterMsg}>
+	<div class="header" class:filters-active={filterMsg} in:fade>
 		<!-- Message when filter has been applied -->
 		{#if filterMsg}
 			<p>
@@ -177,50 +180,56 @@
 				{@html filterMsg}
 			</p>
 		{:else}
-			<p style="margin-bottom: 5px;">
+			<p>
 				This list of all <span style="font-weight: 600;"
 					>{$outletCount}
 					outlets</span
 				>
 				includes those without a known location and do not appear on the map. Apply filters in the
 				<span class="tab">Search</span> tab to narrow down the list or search for an outlet below.
+			</p>
+		{/if}
+
+		<!-- Search through cards field -->
+		{#if $filteredDirectory.features.length > 1}
+			<div class="search-field">
+				<label for="search-input" class="visually-hidden"
+					>Enter outlet name to find it in the list</label
+				>
+				<input
+					type="text"
+					id="search-input"
+					placeholder="Search cards by outlet name"
+					bind:value={searchQuery}
+					aria-label="Search cards by outlet name"
+				/>
+
+				<!-- Show clear search button when text has been entered -->
+				{#if searchQuery}
+					<button
+						on:click={() => (searchQuery = '')}
+						aria-label="Clear search terms"
+						class="clear-form-btn">✕</button
+					>
+				{/if}
+			</div>
+		{/if}
+	</div>
+
+	<!-- Cards -->
+	<div class="cards-container">
+		<p>
+			{#if filteredDirectoryBySearch.length > 0}
 				Selecting the <OpenBookIcon
 					width={'16px'}
 					height={'14px'}
 					minY={-1100}
 					ariaLabel={'Book symbol next to outlet names in list below'}
 				/> icon will take you to the outlet's entry in the directory.
-			</p>
-		{/if}
-	</div>
-
-	<!-- Search through cards field -->
-	{#if $filteredDirectory.features.length > 1}
-		<div class="search-field">
-			<label for="search-input" class="visually-hidden"
-				>Enter outlet name to find it in the list</label
-			>
-			<input
-				type="text"
-				id="search-input"
-				placeholder="Search cards by outlet name"
-				bind:value={searchQuery}
-				aria-label="Search cards by outlet name"
-			/>
-
-			<!-- Show clear search button when text has been entered -->
-			{#if searchQuery}
-				<button
-					on:click={() => (searchQuery = '')}
-					aria-label="Clear search terms"
-					class="clear-form-btn">✕</button
-				>
+			{:else}
+				No outlets found. Please try a different search term.
 			{/if}
-		</div>
-	{/if}
-
-	<!-- Cards -->
-	<div class="cards">
+		</p>
 		{#each paginatedDirectory as outlet}
 			<div class="outlet-card">
 				<!-- Card header row -->
@@ -372,7 +381,7 @@
 	</div>
 
 	<!-- Page buttons -->
-	<div class="page-btns">
+	<div class="page-btns-container">
 		<!-- previous button -->
 		<button
 			aria-label="Previous page of outlets"
@@ -386,7 +395,7 @@
 
 		<!-- # of # -->
 		<span
-			><strong>{currentPage + 1}</strong> of
+			><strong>{filteredDirectoryBySearch.length === 0 ? currentPage : currentPage + 1}</strong> of
 			<strong>{Math.ceil(filteredDirectoryBySearch.length / itemsPerPage)}</strong></span
 		>
 
@@ -409,23 +418,21 @@
 </section>
 
 <style>
+	/* intro + search bar */
 	.header {
-		border-radius: 1px;
+		border-radius: 7px;
 		color: var(--text-color-black);
 		font-size: 0.85rem;
-		padding: 0.25rem;
+		background-color: var(--white);
+		padding: 1rem;
 	}
 
-	.filters-active {
-		background-color: var(--alice-blue-light);
-		padding: 0.75rem;
-		margin-bottom: 1rem;
-		border-radius: 3px;
+	.header p {
+		margin-bottom: 5px;
 	}
 
 	.search-field {
-		margin-top: 0;
-		margin-bottom: 2rem;
+		margin-top: 0.5rem;
 	}
 
 	.search-field input {
@@ -436,9 +443,20 @@
 		border-radius: 4px;
 	}
 
+	/* cards */
+	.cards-container {
+		padding: 1rem 1rem 0.25rem;
+		background-color: rgba(238, 238, 238, 0.5);
+	}
+
+	.cards-container > p {
+		padding-bottom: 1rem;
+	}
+
 	.outlet-card {
 		background-color: var(--white-blue);
-		border: 1px solid #dee2e6;
+		/* border: 1px solid #dee2e6; */
+		border: 1px solid #cfd5dc;
 		border-radius: 3px;
 		margin-bottom: 1.75rem;
 		box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.1);
@@ -455,7 +473,6 @@
 	.footer-row {
 		display: flex;
 		justify-content: space-between;
-		/* gap: 10px; */
 		align-items: baseline;
 	}
 
@@ -466,8 +483,10 @@
 
 	.footer-row {
 		align-items: center;
-		background-color: #f0f0f0;
-		padding: 0.4rem 0.5rem 0.35rem 0.5rem;
+		/* background-color: #f0f0f0; */
+		background-color: rgba(238, 238, 238, 1);
+		padding: 0.45rem 0.5rem;
+		border-top: 0.5px solid #cfd5dc;
 	}
 
 	.body-container {
@@ -560,14 +579,16 @@
 		transition: 0.5s;
 	}
 
-	.page-btns {
+	/* pagination */
+	.page-btns-container {
+		padding: 1rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		font-family: 'Roboto Condensed', sans-serif;
 	}
 
-	.page-btns button.disabled {
+	.page-btns-container button.disabled {
 		visibility: hidden;
 	}
 
@@ -589,8 +610,8 @@
 
 	.clear-form-btn {
 		position: absolute;
-		top: 55%;
-		transform: translateY(-60%);
+		top: 50%;
+		transform: translateY(-50%);
 		right: 2px;
 		font-weight: 800;
 	}
