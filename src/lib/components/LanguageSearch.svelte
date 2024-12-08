@@ -63,10 +63,11 @@
 	// Clear/reset selected filter when outlet is selected
 	$: if ($selectedOutlet) {
 		value ? (value = undefined) : null; // clear selected value in filter when outlet is selected
-		$filteredDirectory = $directoryData; // reset filter options
+		//$filteredDirectory = $directoryData; // reset filter options
+		$selectedLanguage ? ($selectedLanguage = undefined) : null;
 	}
 
-	// Clear filter when map button selected
+	// Clear value from dropdown when language filter is reset (via clear filter button)
 	$: if ($selectedLanguage === undefined) {
 		value = undefined;
 	}
@@ -77,9 +78,9 @@
 		<span class:active={$selectedLanguage}>{@html languageHeader}</span></label
 	>
 	<Select
-		--border-hover="0.5px solid var(--language-color)"
-		--border-focused="1px solid var(--language-color)"
 		id="language-search"
+		--border-focused="1px solid rgba(var(--cerulean), 0.75)"
+		--item-hover-bg="rgba(var(--cerulean), 0.1)"
 		items={languageList}
 		placeholder="Select primary language"
 		multiple
@@ -98,7 +99,7 @@
 			$popup?.remove();
 			if (value === undefined) {
 				$selectedLanguage = undefined;
-				$filteredDirectory = $directoryData;
+				//$filteredDirectory = $directoryData;
 			} else {
 				$selectedLanguage = value.map((d) => d.value);
 			}

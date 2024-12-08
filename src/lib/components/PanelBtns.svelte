@@ -80,7 +80,7 @@
 	}
 
 	button {
-		background-color: var(--light-gray);
+		background-color: rgba(var(--light-gray), 1);
 		font-size: 1rem;
 		font-weight: 600;
 		text-transform: uppercase;
@@ -101,7 +101,7 @@
 	}
 
 	button.active {
-		background-color: var(--white);
+		background-color: rgba(var(--white), 1);
 		cursor: auto;
 	}
 
@@ -111,9 +111,23 @@
 
 	/* Add hover effect to buttons that are not active */
 	button:not(.active):hover {
-		background-color: var(--alice-blue);
+		background-color: rgba(var(--light-blue-gray), 1);
 		transition: 0.5s;
 	}
+
+	/* .badge-count {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-left: 0.1rem;
+		font-size: 0.7rem;
+		color: white;
+		text-align: center;
+		background-color: var(--dark-cerulean);
+		border-radius: 50%;
+		width: 23px;
+		height: 23px;
+	} */
 
 	.badge-count {
 		display: flex;
@@ -123,14 +137,14 @@
 		margin-left: 0.1rem;
 		font-size: 0.75rem;
 		line-height: 1.4;
-		color: var(--white);
+		color: rgba(var(--white), 1);
 		text-align: center;
-		background-color: var(--dark-cerulean);
+		background-color: rgba(var(--dark-cerulean), 1);
 		border-radius: 10px;
 	}
 
 	button:focus-visible {
-		outline: 2px solid var(--cerulean);
+		outline: 2px solid rgba(var(--cerulean), 1);
 		outline-offset: -2px;
 	}
 </style>

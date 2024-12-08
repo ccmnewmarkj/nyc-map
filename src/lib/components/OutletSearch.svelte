@@ -54,7 +54,7 @@
 	}
 </script>
 
-<details on:toggle={toggleAccordion} close>
+<details on:toggle={toggleAccordion} open>
 	<summary>Search by Outlet</summary>
 
 	<div class="content">
@@ -112,12 +112,13 @@
 	/* accordion styles from https://css-tricks.com/how-to-animate-the-details-element/ */
 	details {
 		box-sizing: border-box;
-		background-color: var(--alice-blue-light);
+		background-color: rgba(var(--light-blue-gray), 0.5);
+		border-radius: 0 0 5px 5px;
 	}
 
 	details > summary {
 		padding: 0.5rem;
-		background-color: var(--blue-gray);
+		background-color: rgba(var(--blue-gray), 1);
 		font-weight: 600;
 		color: white;
 		cursor: pointer;
@@ -132,10 +133,10 @@
 
 	/* style arrow marker */
 	summary::-webkit-details-marker {
-		color: var(--yellow-orange);
+		color: rgb(var(--yellow-orange), 1);
 	}
 	summary::marker {
-		color: var(--yellow-orange);
+		color: rgb(var(--yellow-orange), 1);
 	}
 
 	details[open] > summary:before {

@@ -21,7 +21,7 @@
 
 <style>
 	button.reset-map {
-		background-color: var(--white);
+		background-color: rgba(var(--white), 1);
 		padding: 2px;
 		border-radius: 4px;
 		margin-left: auto;

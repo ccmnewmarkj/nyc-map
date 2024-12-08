@@ -94,7 +94,7 @@
 		});
 
 		// Set filteredDirectory to include all outlets as its initial state
-		filteredDirectory.set($directoryData);
+		//filteredDirectory.set($directoryData);
 
 		// COUNTIES
 		// Add centroid point for polygon labels
@@ -161,7 +161,7 @@
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;
-		border: 0.75px solid var(--blue-gray);
+		border: 0.5px solid rgba(var(--blue-gray), 0.75);
 	}
 
 	.sidebar-collapsed {

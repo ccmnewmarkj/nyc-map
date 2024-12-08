@@ -71,11 +71,11 @@
 		font-size: 0.8rem;
 		font-weight: 800;
 		text-shadow:
-			0 0 5px #fff,
-			0 0 10px #fff,
-			0 0 20px #fff,
-			0 0 30px #fff,
-			0 0 40px #fff;
+			0 0 5px rgba(var(--white), 1),
+			0 0 10px rgba(var(--white), 1),
+			0 0 20px rgba(var(--white), 1),
+			0 0 30px rgba(var(--white), 1),
+			0 0 40px rgba(var(--white), 1);
 	}
 
 	/* checkbox */
@@ -89,8 +89,9 @@
 		position: relative;
 		top: 1px;
 		display: inline-block;
-		border: 1.5px solid white;
+		border: 1.5px solid rgba(var(--white), 1);
 		background-color: rgba(204, 204, 204, 1);
+		background-color: rgba(var(--blue-gray), 0.5);
 		width: 42px;
 		height: 21px;
 		border-radius: 10px;
@@ -98,7 +99,7 @@
 
 	/* toggle-container when switch checked */
 	label input[role='switch']:checked ~ .toggle-state > .toggle-container {
-		background-color: rgba(71, 147, 175, 0.75);
+		background: rgba(var(--cerulean), 0.6);
 	}
 
 	/* switch */
@@ -110,7 +111,7 @@
 		border-radius: 9px;
 		width: 14px;
 		height: 14px;
-		background: white;
+		background: rgba(var(--white), 1);
 		-webkit-transition: 0.4s;
 		transition: 0.4s;
 	}
@@ -128,7 +129,7 @@
 	label input[role='switch'] ~ .toggle-state > .toggle-container > .active {
 		right: auto;
 		left: 4px;
-		color: var(--white);
+		color: rgba(var(--white), 1);
 	}
 
 	/* switch checked */
@@ -144,7 +145,7 @@
 
 	/* focus outline */
 	label input[role='switch']:focus-visible ~ .toggle-state > .toggle-container {
-		outline: 2px solid var(--cerulean);
+		outline: 2px solid rgba(var(--cerulean), 1);
 		outline-offset: 2px;
 	}
 </style>

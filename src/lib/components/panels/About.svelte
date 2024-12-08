@@ -17,7 +17,8 @@
 		>, includes {$outletCount}
 		outlets serving communities of color, immigrants, and hyperlocal audiences. Accompanying the
 		<strong
-			><a href="http://ccm-directory.journalism.cuny.edu">Many Voices, One City directory</a
+			><a href="https://directory-ccm.journalism.cuny.edu" target="_blank"
+				>Many Voices, One City directory</a
 			></strong
 		>, it serves as a resource for advertisers, journalists, community organizers, and others who
 		want to connect with the community media sector in the state.
@@ -31,7 +32,7 @@
 		<span class="tab">Outlets</span> tab will update accordingly.
 	</p>
 	<p class="address-search">
-		You can also <span class="tab" style="background-color:transparent; padding:0;"
+		You can also <span class="tab" style="background-color:transparent; padding:0; border: none;"
 			>search by address</span
 		>
 		or city using the search bar. The map will then zoom in to the location, with a <MapPin
@@ -93,12 +94,9 @@
 
 	#about-footer {
 		padding: 1rem;
-		background-color: rgba(238, 238, 238, 0.5);
-		/* display: flex;
-		flex-direction: column;
-		align-items: center;
-		row-gap: 20px; */
+		background-color: rgba(var(--light-gray), 0.5);
 		font-size: 0.85rem;
+		border-top: 0.5px solid rgba(var(--gray), 0.5);
 	}
 
 	@media only screen and (max-device-width: 512px) {
