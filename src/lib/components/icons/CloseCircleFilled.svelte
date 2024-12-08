@@ -1,4 +1,5 @@
 <script>
+	export let ariaHidden = false;
 	export let width = '23px';
 	export let height = '23px';
 	export let fillColor = '#333333';
@@ -9,6 +10,7 @@
 <svg
 	role="img"
 	aria-labelledby="iconTitle"
+	aria-hidden={ariaHidden}
 	{width}
 	{height}
 	viewBox="0 0 24 24"

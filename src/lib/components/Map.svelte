@@ -6,7 +6,7 @@
 
 	// Import icon components
 	import NYCIcon from '$lib/components/icons/NYC.svelte';
-	import CloseIcon from './icons/CloseCircle.svelte';
+	import CloseFilledIcon from './icons/CloseCircleFilled.svelte';
 	import PlusIcon from './icons/PlusCircle.svelte';
 
 	// Initialize map
@@ -138,7 +138,7 @@
 				source: 'counties',
 				layout: {},
 				paint: {
-					'line-color': 'rgba(155, 176, 193, 0.75)',
+					'line-color': 'rgba(81, 130, 155, 0.5)',
 					'line-width': {
 						base: 0,
 						stops: [
@@ -514,7 +514,8 @@
 				}
 
 				let linkValue = e.features[0].properties['URL']
-					? `<a href="${e.features[0].properties['URL']}" target="_blank" class="popup-link-btn" style="color: rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 1); border: 1px solid rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 1);">Visit Website ${openLinkIcon}</a>`
+					? `<a href="${e.features[0].properties['URL']}" target="_blank" class="popup-link-btn" style="color: rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 1); border: 1px solid rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 1); box-shadow: rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 0.25) 0 -2px 0 inset;"  onmouseover="this.style.boxShadow='rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 0.5) 0 -2px 0 inset';"
+   onmouseout="this.style.boxShadow='rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 0.25) 0 -2px 0 inset';">Visit Website ${openLinkIcon}</a>`
 					: '';
 
 				let locationNotes = e.features[0].properties['LOCATION STATUS']
@@ -726,17 +727,17 @@ ${
 		<button on:click|stopPropagation={() => (mapElementsVisible = !mapElementsVisible)}
 			>Map Features
 			{#if mapElementsVisible}
-				<CloseIcon
+				<CloseFilledIcon
 					width={'20px'}
 					height={'20px'}
-					fillColor={'var(--dark-cerulean)'}
+					fillColor={'rgba(var(--dark-cerulean), 1)'}
 					iconTitle={'Hide the option to show neighborhood and county borders and the color legend for the map markers'}
 				/>
 			{:else}
 				<PlusIcon
 					width={'20px'}
 					height={'20px'}
-					fillColor={'var(--dark-cerulean)'}
+					fillColor={'rgba(var(--dark-cerulean), 1)'}
 					iconTitle={'Show neighborhood and county borders toggle and marker color legend'}
 				/>
 			{/if}
@@ -764,41 +765,56 @@ ${
 	</div>
 
 	<!-- Button: Reset applied filters -->
-	{#if $selectedFormat || $selectedAudience || $selectedLanguage}
+	{#if $selectedFormat || $selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme || $selectedAudience?.geography || $selectedLanguage || $selectedOutlet}
 		<div class="reset-container" transition:fade={{ duration: 100 }}>
-			<!-- <hr /> -->
-			<button
-				aria-label="Clear any applied filters"
-				on:click|stopPropagation={() => {
-					$selectedFormat = undefined;
-					$selectedAudience = undefined;
-					$selectedLanguage = undefined;
-					$selectedOutlet = undefined;
-					filteredDirectory.set($directoryData);
-					$popup?.remove();
-					$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-					$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-				}}
-				><span style="color: red; font-weight: 800;">✕</span
-				>{#if ($selectedFormat && $selectedAudience) || ($selectedFormat && $selectedLanguage) || ($selectedAudience && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}Clear
-					all filters{:else}Clear filter{/if}</button
-			>
-		</div>
-	{/if}
+			{#if $selectedFormat || $selectedAudience.ethnicity || $selectedAudience.religion || $selectedAudience.theme || $selectedAudience.geography || $selectedLanguage}
+				<button
+					aria-label="Clear any applied filters"
+					on:click|stopPropagation={() => {
+						$selectedFormat = undefined;
+						$selectedAudience = undefined;
+						$selectedLanguage = undefined;
+						$selectedOutlet = undefined;
+						// filteredDirectory.set($directoryData);
+						$popup?.remove();
+						// $map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+						// $map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+						$map.getSource('outlets').setData($filteredDirectory);
+					}}
+					>{#if ($selectedFormat && $selectedAudience) || ($selectedFormat && $selectedLanguage) || ($selectedAudience && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}Clear
+						filters{:else}Clear filter{/if}
+					<!-- <CloseFilledIcon
+						ariaHidden="true"
+						width="18px"
+						height="18px"
+						fillColor="#EF5A6F"
+					/> -->
+					<span style="color: rgba(var(--light-red), 1);">✕</span></button
+				>
+			{/if}
 
-	<!-- Button: Reset highlighted outlet -->
-	{#if $selectedOutlet}
-		<div class="reset-container" transition:fade={{ duration: 100 }}>
-			<!-- <hr /> -->
-			<button
-				aria-label="Remove highlight around map marker for selected outlet"
-				on:click|stopPropagation={() => {
-					$selectedOutlet = undefined;
-					$popup?.remove();
-					$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-					$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-				}}><span style="color: red; font-weight: 800;">✕</span>Clear outlet</button
-			>
+			<!-- Button: Reset highlighted outlet -->
+			{#if $selectedOutlet}
+				<!-- <hr /> -->
+				<button
+					class="reset-selected-outlet"
+					aria-label="Remove outlet selection"
+					on:click|stopPropagation={() => {
+						$selectedOutlet = undefined;
+						$popup?.remove();
+						$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+						$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+					}}
+					>Clear outlet
+					<!-- <CloseFilledIcon
+						ariaHidden="true"
+						width="18px"
+						height="18px"
+						fillColor="#EF5A6F"
+					/>	 -->
+					<span style="color: rgba(var(--yellow-orange), 1);">✕</span>
+				</button>
+			{/if}
 		</div>
 	{/if}
 </section>
@@ -871,7 +887,7 @@ ${
 		font-size: 1rem;
 		font-weight: 800;
 		text-transform: uppercase;
-		color: var(--dark-cerulean);
+		color: rgba(var(--dark-cerulean), 1);
 		text-shadow:
 			0 0 5px #fff,
 			0 0 10px #fff,
@@ -883,7 +899,7 @@ ${
 	.on-screen-elements {
 		margin-right: 9px;
 		padding-right: 10px;
-		border-right: 1.5px dotted var(--dark-cerulean);
+		border-right: 1.5px dotted rgba(var(--dark-cerulean), 1);
 	}
 
 	/* toggle button for polygon filters */
@@ -910,6 +926,10 @@ ${
 	/* when filter applied or outlet selected */
 	.reset-container {
 		margin-top: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		row-gap: 10px;
 	}
 
 	/* reset map button */
@@ -931,6 +951,14 @@ ${
 			0 0 20px #fff,
 			0 0 30px #fff,
 			0 0 40px #fff;
+	}
+
+	button.reset-selected-outlet {
+		box-shadow: rgba(var(--yellow-orange), 1) 0 -2px 0 inset;
+	}
+
+	button.reset-selected-outlet:hover {
+		color: rgba(var(--yellow-orange), 1);
 	}
 
 	@media only screen and (max-device-width: 512px) {
