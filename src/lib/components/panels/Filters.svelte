@@ -19,56 +19,6 @@
 	// Filter data (filter dropdown selections, map markers, outlet list tab) based on selections from multiple dropdowns
 	$: {
 		if ($selectedFormat || $selectedAudience || $selectedLanguage) {
-			$filteredDirectory = {
-				type: 'FeatureCollection',
-				features: $directoryData.features?.filter((d) => {
-					// FORMAT
-					let formatState = !$selectedFormat || $selectedFormat === d.properties['PRIMARY FORMAT'];
-
-					// COMMUNITY
-					let communityState =
-						!$selectedAudience ||
-						(($selectedAudience.ethnicity?.length
-							? $selectedAudience.ethnicity.every(
-									(ethnicity) =>
-										d.properties['TARGET ETHNICITY'] &&
-										d.properties['TARGET ETHNICITY']?.includes(ethnicity)
-								)
-							: true) &&
-							($selectedAudience.religion?.length
-								? $selectedAudience.religion.every(
-										(religion) =>
-											d.properties['TARGET RELIGION'] &&
-											d.properties['TARGET RELIGION']?.includes(religion)
-									)
-								: true) &&
-							($selectedAudience.theme?.length
-								? $selectedAudience.theme.every(
-										(theme) =>
-											d.properties['TARGET THEME'] && d.properties['TARGET THEME']?.includes(theme)
-									)
-								: true));
-
-					let geographyState =
-						!$selectedAudience ||
-						($selectedAudience.geography?.length
-							? $selectedAudience.geography.every(
-									(geography) =>
-										d.properties['TARGET LOCATION'] &&
-										d.properties['TARGET LOCATION']?.includes(geography)
-								)
-							: true);
-
-					// LANGUAGE
-					let languageState =
-						!$selectedLanguage ||
-						$selectedLanguage?.every((language) =>
-							d.properties['PRIMARY LANGUAGE'].includes(language)
-						);
-
-					return formatState && communityState && geographyState && languageState;
-				})
-			};
 			// Update points on map
 			$map.getSource('outlets').setData($filteredDirectory);
 		} else {
@@ -103,22 +53,23 @@
 			<FormatSearch />
 		</div>
 
-		<!-- <hr /> -->
+		<hr />
 
 		<!-- Filter by community -->
 		<div class="filter">
 			<AudienceSearch bind:audienceTypeSelection bind:selectedCommunityType />
 		</div>
 
-		<!-- <hr /> -->
+		<hr />
 
 		<!-- Filter by language -->
 		<div class="filter">
 			<LanguageSearch />
 		</div>
 
-		<!-- Clear filters -->
-		{#if $selectedFormat || $selectedAudience || $selectedLanguage}
+		<!-- Clear multiple filters -->
+		{#if ($selectedFormat && $selectedAudience) || ($selectedFormat && $selectedLanguage) || ($selectedAudience && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}
+			<hr />
 			<div class="reset-container" transition:fade={{ duration: 100 }}>
 				<button
 					aria-label="Clear any applied filters"
@@ -128,12 +79,10 @@
 						$selectedLanguage = undefined;
 						filteredDirectory.set($directoryData);
 						$popup?.remove();
-						$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-						$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
-					}}
-					><span style="color: red; font-weight: 800;">✕</span
-					>{#if ($selectedFormat && $selectedAudience) || ($selectedFormat && $selectedLanguage) || ($selectedAudience && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}Clear
-						all filters{:else}Clear filter{/if}</button
+						//$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
+						//$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
+						$map.getSource('outlets').setData($filteredDirectory);
+					}}>Clear filters <span style="color: rgba(var(--light-red), 1);">✕</span></button
 				>
 			</div>
 		{/if}
@@ -151,26 +100,21 @@
 	}
 
 	.filters-container {
-		background-color: rgba(238, 238, 238, 0.5);
+		background-color: rgba(var(--light-gray), 0.5);
 		padding: 1rem;
+		position: relative;
+		border-top: 0.5px solid rgba(var(--gray), 0.5);
+		border-bottom: 0.5px solid rgba(var(--gray), 0.5);
 	}
 
 	.filter:not(:first-of-type) {
 		margin-top: 1rem;
 	}
 
-	.filter:not(:last-of-type) {
-		margin-bottom: 1.75rem;
-	}
-
-	/* hr {
-		width: 90%;
-		margin: 0rem auto;
-		border-top: 0.5px solid rgba(0, 0, 0, 0.2);
-	} */
-
-	.reset-container {
-		margin-bottom: 1rem;
+	hr {
+		width: 95%;
+		margin: 1rem auto;
+		border-top: 0.5px solid rgba(var(--gray), 1);
 	}
 
 	.outlet-search-container {
