@@ -96,9 +96,9 @@
 
 	// Text above filter dropdown
 	let audienceHeader;
-	const audienceIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="var(--audience-color)"><path d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" /></svg>`;
+	const audienceIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px"><path d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z" /></svg>`;
 
-	const geographyIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="var(--audience-color)"><path
+	const geographyIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px"><path
 		d="m600-120-240-84-186 72q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l212-72 240 84 186-72q20-8 37 4.5t17 33.5v560q0 13-7.5 23T812-192l-212 72Zm-40-98v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z"
 	/></svg>`;
 
@@ -118,8 +118,35 @@
 		valueReligion = undefined;
 		valueTheme = undefined;
 		valueGeography = undefined;
-		$filteredDirectory = $directoryData; // reset filter options
+		//$filteredDirectory = $directoryData; // reset filter options
+		$selectedAudience?.ethnicity ? ($selectedAudience.ethnicity = undefined) : null;
+		$selectedAudience?.religion ? ($selectedAudience.religion = undefined) : null;
+		$selectedAudience?.theme ? ($selectedAudience.theme = undefined) : null;
 	}
+
+	// If audience values are reset (via clear filter buttons), clear values in dropdown
+	$: if ($selectedAudience === undefined) {
+		valueEthnicity = undefined;
+		valueReligion = undefined;
+		valueTheme = undefined;
+		valueGeography = undefined;
+	}
+	// $: if (
+	// 	$selectedAudience?.ethnicity === undefined &&
+	// 	$selectedAudience?.religion === undefined &&
+	// 	$selectedAudience?.theme === undefined
+	// ) {
+	// 	valueEthnicity = undefined; // clear selected value in filter when outlet is selected
+	// 	valueReligion = undefined;
+	// 	valueTheme = undefined;
+	// 	valueGeography = undefined;
+	// }
+	// $: if ($selectedAudience === undefined) {
+	// 	valueEthnicity = undefined;
+	// 	valueReligion = undefined;
+	// 	valueTheme = undefined;
+	// 	valueGeography = undefined;
+	// }
 
 	// For opened dropdown menu to appear on top of other elements
 	let floatingConfig = {
@@ -171,14 +198,6 @@
 
 	// add svelte transition
 	import { fade } from 'svelte/transition';
-
-	// Clear filter when map button selected
-	$: if ($selectedAudience === undefined) {
-		valueEthnicity = undefined;
-		valueReligion = undefined;
-		valueTheme = undefined;
-		valueGeography = undefined;
-	}
 </script>
 
 <form>
@@ -249,8 +268,8 @@
 				<Select
 					{floatingConfig}
 					--list-position="fixed"
-					--border-hover="0.5px solid var(--audience-color)"
-					--border-focused="1px solid var(--audience-color)"
+					--border-focused="1px solid rgba(var(--cerulean), 0.75)"
+					--item-hover-bg="rgba(var(--cerulean), 0.1)"
 					id="audience-search"
 					items={ethnicityList}
 					placeholder="Select ethnicity"
@@ -273,12 +292,13 @@
 					}}
 					on:clear={() => {
 						$popup?.remove();
-						if (valueEthnicity === undefined) {
-							$selectedAudience.ethnicity = undefined;
-							//$filteredDirectory = $directoryData;
-						} else {
-							$selectedAudience = valueEthnicity.map((d) => d.value);
-						}
+						$selectedAudience.ethnicity = undefined;
+						// if (valueEthnicity === undefined) {
+						// 	$selectedAudience.ethnicity = undefined;
+						// 	//$filteredDirectory = $directoryData;
+						// } else {
+						// 	$selectedAudience = valueEthnicity.map((d) => d.value);
+						// }
 					}}
 				/>
 			{/if}
@@ -287,9 +307,8 @@
 				<Select
 					{floatingConfig}
 					--list-position="fixed"
-					--border="0.5px solid var(--audience-color)"
-					--border-hover="1px solid var(--audience-color)"
-					--border-focused="1px solid var(--audience-color)"
+					--border-focused="1px solid rgba(var(--cerulean), 0.75)"
+					--item-hover-bg="rgba(var(--cerulean), 0.1)"
 					id="audience-search"
 					items={religionList}
 					placeholder="Select religion"
@@ -325,9 +344,8 @@
 				<Select
 					{floatingConfig}
 					--list-position="fixed"
-					--border="0.5px solid var(--audience-color)"
-					--border-hover="1px solid var(--audience-color)"
-					--border-focused="1px solid var(--audience-color)"
+					--border-focused="1px solid rgba(var(--cerulean), 0.75)"
+					--item-hover-bg="rgba(var(--cerulean), 0.1)"
 					id="audience-search"
 					items={themeList}
 					placeholder="Select theme"
@@ -367,9 +385,8 @@
 			<Select
 				{floatingConfig}
 				--list-position="fixed"
-				--border="0.5px solid var(--audience-color)"
-				--border-hover="1px solid var(--audience-color)"
-				--border-focused="1px solid var(--audience-color)"
+				--border-focused="1px solid rgba(var(--cerulean), 0.75)"
+				--item-hover-bg="rgba(var(--cerulean), 0.1)"
 				id="audience-search"
 				items={geographyList}
 				placeholder="Select location"
@@ -425,7 +442,7 @@
 	}
 
 	button {
-		background-color: #e0e2e4;
+		background-color: rgba(var(--gray), 0.12);
 		font-size: 0.8rem;
 		font-weight: 600;
 		/* text-transform: uppercase; */
@@ -436,25 +453,25 @@
 	}
 
 	button.active {
-		background-color: var(--white);
+		background-color: rgba(var(--white), 1);
 		cursor: auto;
-		border-top: 1px solid var(--audience-color);
-		border-left: 0.5px solid var(--audience-color);
-		border-right: 0.5px solid var(--audience-color);
+		border-top: 1px solid rgba(var(--black), 1);
+		border-left: 0.5px solid rgba(var(--black), 1);
+		border-right: 0.5px solid rgba(var(--black), 1);
 	}
 
 	button:not(.active) {
-		border-top: 2px solid rgba(238, 238, 238, 1);
+		border-top: 2px solid rgba(var(--light-gray), 1);
 	}
 
 	/* Add hover effect to buttons that are not active */
 	button:not(.active):hover {
-		background-color: var(--alice-blue);
+		background-color: rgba(var(--light-blue-gray), 1);
 		transition: 0.5s;
 	}
 
 	button:focus-visible {
-		outline: 2px solid var(--cerulean);
+		outline: 2px solid rgba(var(--cerulean), 1);
 		outline-offset: -2px;
 	}
 
@@ -477,6 +494,6 @@
 	}
 
 	input[type='radio'] {
-		accent-color: #2da854;
+		accent-color: rgba(var(--cerulean), 1);
 	}
 </style>
