@@ -4,7 +4,7 @@ export let map = writable();
 export let popup = writable(); // Map popup
 
 export let directoryData = writable([]); // Raw directory data
-export let filteredDirectory = writable([]); // Directory data with any filters applied
+//export let filteredDirectory = writable([]); // Directory data with any filters applied
 
 export let countyPolygons = writable(); // County polygons
 export let ntaPolygons = writable(); // Neighborhood tabulation area polygons
@@ -27,3 +27,69 @@ export let outletCount = derived([directoryData], ([$directoryData]) => {
 		//return '257';
 	}
 });
+
+export let filteredDirectory = derived(
+	[directoryData, selectedFormat, selectedAudience, selectedLanguage],
+	([$directoryData, $selectedFormat, $selectedAudience, $selectedLanguage]) => {
+		if (
+			$selectedFormat ||
+			$selectedAudience?.ethnicity ||
+			$selectedAudience?.religion ||
+			$selectedAudience?.theme ||
+			$selectedAudience?.geography ||
+			$selectedLanguage
+		) {
+			return {
+				type: 'FeatureCollection',
+				features: $directoryData.features?.filter((d) => {
+					// FORMAT
+					let formatState = !$selectedFormat || $selectedFormat === d.properties['PRIMARY FORMAT'];
+
+					// COMMUNITY
+					let communityState =
+						($selectedAudience.ethnicity?.length
+							? $selectedAudience.ethnicity.every(
+									(ethnicity) =>
+										d.properties['TARGET ETHNICITY'] &&
+										d.properties['TARGET ETHNICITY']?.includes(ethnicity)
+								)
+							: true) &&
+						($selectedAudience.religion?.length
+							? $selectedAudience.religion.every(
+									(religion) =>
+										d.properties['TARGET RELIGION'] &&
+										d.properties['TARGET RELIGION']?.includes(religion)
+								)
+							: true) &&
+						($selectedAudience.theme?.length
+							? $selectedAudience.theme.every(
+									(theme) =>
+										d.properties['TARGET THEME'] && d.properties['TARGET THEME']?.includes(theme)
+								)
+							: true);
+
+					let geographyState =
+						!$selectedAudience ||
+						($selectedAudience.geography?.length
+							? $selectedAudience.geography.every(
+									(geography) =>
+										d.properties['TARGET LOCATION'] &&
+										d.properties['TARGET LOCATION']?.includes(geography)
+								)
+							: true);
+
+					// LANGUAGE
+					let languageState =
+						!$selectedLanguage ||
+						$selectedLanguage?.every((language) =>
+							d.properties['PRIMARY LANGUAGE'].includes(language)
+						);
+
+					return formatState && communityState && geographyState && languageState;
+				})
+			};
+		} else {
+			return $directoryData;
+		}
+	}
+);
