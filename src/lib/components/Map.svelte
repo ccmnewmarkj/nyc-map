@@ -767,7 +767,7 @@ ${
 	<!-- Button: Reset applied filters -->
 	{#if $selectedFormat || $selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme || $selectedAudience?.geography || $selectedLanguage || $selectedOutlet}
 		<div class="reset-container" transition:fade={{ duration: 100 }}>
-			{#if $selectedFormat || $selectedAudience.ethnicity || $selectedAudience.religion || $selectedAudience.theme || $selectedAudience.geography || $selectedLanguage}
+			{#if $selectedFormat || $selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme || $selectedAudience?.geography || $selectedLanguage}
 				<button
 					aria-label="Clear any applied filters"
 					on:click|stopPropagation={() => {
@@ -781,7 +781,7 @@ ${
 						// $map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
 						$map.getSource('outlets').setData($filteredDirectory);
 					}}
-					>{#if ($selectedFormat && $selectedAudience) || ($selectedFormat && $selectedLanguage) || ($selectedAudience && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}Clear
+					>{#if ($selectedFormat && ($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme)) || ($selectedFormat && $selectedLanguage) || (($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme) && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}Clear
 						filters{:else}Clear filter{/if}
 					<!-- <CloseFilledIcon
 						ariaHidden="true"

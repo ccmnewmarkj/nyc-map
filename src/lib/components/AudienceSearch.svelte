@@ -331,11 +331,12 @@
 					}}
 					on:clear={() => {
 						$popup?.remove();
-						if (valueReligion === undefined) {
-							$selectedAudience.religion = undefined;
-						} else {
-							$selectedAudience = valueReligion.map((d) => d.value);
-						}
+						$selectedAudience.religion = undefined;
+						// if (valueReligion === undefined) {
+						// 	$selectedAudience.religion = undefined;
+						// } else {
+						// 	$selectedAudience = valueReligion.map((d) => d.value);
+						// }
 					}}
 				/>
 			{/if}
@@ -368,11 +369,12 @@
 					}}
 					on:clear={() => {
 						$popup?.remove();
-						if (valueTheme === undefined) {
-							$selectedAudience.theme = undefined;
-						} else {
-							$selectedAudience = valueTheme.map((d) => d.value);
-						}
+						$selectedAudience.theme = undefined;
+						// if (valueTheme === undefined) {
+						// 	$selectedAudience.theme = undefined;
+						// } else {
+						// 	$selectedAudience = valueTheme.map((d) => d.value);
+						// }
 					}}
 				/>
 			{/if}
@@ -411,11 +413,12 @@
 				}}
 				on:clear={() => {
 					$popup?.remove();
-					if (valueGeography === undefined) {
-						$selectedAudience.geography = undefined;
-					} else {
-						$selectedAudience = valueGeography.map((d) => d.label.toString());
-					}
+					$selectedAudience.geography = undefined;
+					// if (valueGeography === undefined) {
+					// 	$selectedAudience.geography = undefined;
+					// } else {
+					// 	$selectedAudience = valueGeography.map((d) => d.label.toString());
+					// }
 				}}
 			/>
 		</div>

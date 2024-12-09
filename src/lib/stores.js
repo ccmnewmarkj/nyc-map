@@ -46,37 +46,35 @@ export let filteredDirectory = derived(
 					let formatState = !$selectedFormat || $selectedFormat === d.properties['PRIMARY FORMAT'];
 
 					// COMMUNITY
-					let communityState =
-						($selectedAudience.ethnicity?.length
+					let audienceState =
+						!$selectedAudience ||
+						(($selectedAudience?.ethnicity
 							? $selectedAudience.ethnicity.every(
 									(ethnicity) =>
 										d.properties['TARGET ETHNICITY'] &&
 										d.properties['TARGET ETHNICITY']?.includes(ethnicity)
 								)
 							: true) &&
-						($selectedAudience.religion?.length
-							? $selectedAudience.religion.every(
-									(religion) =>
-										d.properties['TARGET RELIGION'] &&
-										d.properties['TARGET RELIGION']?.includes(religion)
-								)
-							: true) &&
-						($selectedAudience.theme?.length
-							? $selectedAudience.theme.every(
-									(theme) =>
-										d.properties['TARGET THEME'] && d.properties['TARGET THEME']?.includes(theme)
-								)
-							: true);
-
-					let geographyState =
-						!$selectedAudience ||
-						($selectedAudience.geography?.length
-							? $selectedAudience.geography.every(
-									(geography) =>
-										d.properties['TARGET LOCATION'] &&
-										d.properties['TARGET LOCATION']?.includes(geography)
-								)
-							: true);
+							($selectedAudience?.religion
+								? $selectedAudience.religion.every(
+										(religion) =>
+											d.properties['TARGET RELIGION'] &&
+											d.properties['TARGET RELIGION']?.includes(religion)
+									)
+								: true) &&
+							($selectedAudience?.theme
+								? $selectedAudience.theme.every(
+										(theme) =>
+											d.properties['TARGET THEME'] && d.properties['TARGET THEME']?.includes(theme)
+									)
+								: true) &&
+							($selectedAudience?.geography
+								? $selectedAudience.geography.every(
+										(geography) =>
+											d.properties['TARGET LOCATION'] &&
+											d.properties['TARGET LOCATION']?.includes(geography)
+									)
+								: true));
 
 					// LANGUAGE
 					let languageState =
@@ -85,7 +83,7 @@ export let filteredDirectory = derived(
 							d.properties['PRIMARY LANGUAGE'].includes(language)
 						);
 
-					return formatState && communityState && geographyState && languageState;
+					return formatState && audienceState && languageState;
 				})
 			};
 		} else {

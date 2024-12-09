@@ -18,7 +18,14 @@
 
 	// Filter data (filter dropdown selections, map markers, outlet list tab) based on selections from multiple dropdowns
 	$: {
-		if ($selectedFormat || $selectedAudience || $selectedLanguage) {
+		if (
+			$selectedFormat ||
+			$selectedAudience?.ethnicity ||
+			$selectedAudience?.religion ||
+			$selectedAudience?.theme ||
+			$selectedAudience?.geography ||
+			$selectedLanguage
+		) {
 			// Update points on map
 			$map.getSource('outlets').setData($filteredDirectory);
 		} else {
@@ -41,8 +48,7 @@
 	<div class="header" in:fade>
 		<p>
 			Select options from one or more of the three filters to narrow down your search. Once you make
-			a selection, the three filters will only show the remaining options based on the option(s) you
-			have chosen.
+			a selection, the three filters will only show the remaining options.
 		</p>
 	</div>
 
@@ -68,7 +74,7 @@
 		</div>
 
 		<!-- Clear multiple filters -->
-		{#if ($selectedFormat && $selectedAudience) || ($selectedFormat && $selectedLanguage) || ($selectedAudience && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}
+		{#if ($selectedFormat && ($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme)) || ($selectedFormat && $selectedLanguage) || (($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme) && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}
 			<hr />
 			<div class="reset-container" transition:fade={{ duration: 100 }}>
 				<button
@@ -77,7 +83,7 @@
 						$selectedFormat = undefined;
 						$selectedAudience = undefined;
 						$selectedLanguage = undefined;
-						filteredDirectory.set($directoryData);
+						//filteredDirectory.set($directoryData);
 						$popup?.remove();
 						//$map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
 						//$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
@@ -114,7 +120,7 @@
 	hr {
 		width: 95%;
 		margin: 1rem auto;
-		border-top: 0.5px solid rgba(var(--gray), 1);
+		border-top: 0.5px solid rgba(var(--blue-gray), 0.5);
 	}
 
 	.outlet-search-container {
