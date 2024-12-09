@@ -26,21 +26,75 @@
 
 	let searchQuery = ''; // Search through cards via outlet name
 
-	let formattedCommunityList;
-	$: if ($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme) {
-		const communityList = [
+	// let formattedCommunityList;
+	// $: if ($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme) {
+	// 	const communityList = [
+	// 		...($selectedAudience.ethnicity
+	// 			? $selectedAudience.ethnicity
+	// 					.toString()
+	// 					.split(',')
+	// 					.map((item) => item.trim())
+	// 			: []),
+	// 		...($selectedAudience.religion
+	// 			? $selectedAudience.religion
+	// 					.toString()
+	// 					.split(',')
+	// 					.map((item) => item.trim())
+	// 			: []),
+	// 		...($selectedAudience.theme
+	// 			? $selectedAudience.theme
+	// 					.toString()
+	// 					.split(',')
+	// 					.map((item) => item.trim())
+	// 			: [])
+	// 	];
+
+	// 	formattedCommunityList =
+	// 		communityList.length > 1
+	// 			? communityList.slice(0, -1).join(', ') + ', ' + communityList.slice(-1)
+	// 			: communityList[0];
+	// }
+
+	// generating ethnicity tag
+	let formattedEthnicityList;
+	$: if ($selectedAudience?.ethnicity) {
+		const ethnicityList = [
 			...($selectedAudience.ethnicity
 				? $selectedAudience.ethnicity
 						.toString()
 						.split(',')
 						.map((item) => item.trim())
-				: []),
+				: [])
+		];
+
+		formattedEthnicityList =
+			ethnicityList.length > 1
+				? ethnicityList.slice(0, -1).join(', ') + ', ' + ethnicityList.slice(-1)
+				: ethnicityList[0];
+	}
+
+	// generating religion tag
+	let formattedReligionList;
+	$: if ($selectedAudience?.religion) {
+		const religionList = [
 			...($selectedAudience.religion
 				? $selectedAudience.religion
 						.toString()
 						.split(',')
 						.map((item) => item.trim())
-				: []),
+				: [])
+		];
+
+		formattedReligionList =
+			religionList.length > 1
+				? religionList.slice(0, -1).join(', ') + ', ' + religionList.slice(-1)
+				: religionList[0];
+	}
+
+	// generating theme tag
+	let formattedThemeList;
+	$: if ($selectedAudience?.theme) {
+		const themeList = [
 			...($selectedAudience.theme
 				? $selectedAudience.theme
 						.toString()
@@ -49,12 +103,13 @@
 				: [])
 		];
 
-		formattedCommunityList =
-			communityList.length > 1
-				? communityList.slice(0, -1).join(', ') + ', ' + communityList.slice(-1)
-				: communityList[0];
+		formattedThemeList =
+			themeList.length > 1
+				? themeList.slice(0, -1).join(', ') + ', ' + themeList.slice(-1)
+				: themeList[0];
 	}
 
+	// generating geography tag
 	let formattedGeographyList;
 	$: if ($selectedAudience?.geography) {
 		const geographyList = [
@@ -123,8 +178,8 @@
 <section id="outlet-cards" aria-label="List of media outlets">
 	<!-- Intro text -->
 	<div class="header" in:fade>
-		<!-- Message when filter has been applied -->
 		{#if $selectedFormat || $selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme || $selectedAudience?.geography || $selectedLanguage}
+			<!-- Message when filter has been applied -->
 			<p class="filter-applied">
 				<SearchIcon /><strong
 					>{[$selectedAudience, $selectedFormat, $selectedLanguage].filter(Boolean).length >= 2 ||
@@ -145,7 +200,10 @@
 						?.features.length} outlets</span
 				>
 			</p>
+
+			<!-- Filter tags -->
 			<p class="filter-applied tags-container">
+				<!-- format -->
 				{#if $selectedFormat}
 					<span class="filter-tag"
 						><svg
@@ -170,7 +228,9 @@
 						></span
 					>
 				{/if}
-				{#if $selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme}
+
+				<!-- community -->
+				<!-- {#if $selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme}
 					<span class="filter-tag"
 						><svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +253,80 @@
 							}}>×</button
 						></span
 					>
+				{/if} -->
+
+				<!-- ethnicity -->
+				{#if $selectedAudience?.ethnicity}
+					<span class="filter-tag"
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="18px"
+							viewBox="0 -960 960 960"
+							width="18px"
+							fill="rgba(var(--gold), 1)"
+							><path
+								d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z"
+							/></svg
+						>{formattedEthnicityList}<button
+							class="filter-tag-close"
+							on:click|stopPropagation={() => {
+								$selectedAudience.ethnicity = undefined;
+								$popup?.remove();
+								$map.getSource('outlets').setData($filteredDirectory);
+							}}>×</button
+						></span
+					>
 				{/if}
+
+				<!-- religion -->
+				{#if $selectedAudience?.religion}
+					<span class="filter-tag"
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="18px"
+							viewBox="0 -960 960 960"
+							width="18px"
+							fill="rgba(var(--gold), 1)"
+							><path
+								d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z"
+							/></svg
+						>{formattedReligionList}<button
+							class="filter-tag-close"
+							on:click|stopPropagation={() => {
+								$selectedAudience.religion = undefined;
+
+								$popup?.remove();
+								$map.getSource('outlets').setData($filteredDirectory);
+							}}>×</button
+						></span
+					>
+				{/if}
+
+				<!-- theme -->
+				{#if $selectedAudience?.theme}
+					<span class="filter-tag"
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							height="18px"
+							viewBox="0 -960 960 960"
+							width="18px"
+							fill="rgba(var(--gold), 1)"
+							><path
+								d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z"
+							/></svg
+						>{formattedThemeList}<button
+							class="filter-tag-close"
+							on:click|stopPropagation={() => {
+								$selectedAudience.theme = undefined;
+
+								$popup?.remove();
+								$map.getSource('outlets').setData($filteredDirectory);
+							}}>×</button
+						></span
+					>
+				{/if}
+
+				<!-- geography -->
 				{#if $selectedAudience?.geography}
 					<span class="filter-tag"
 						><svg
@@ -217,6 +350,7 @@
 					>
 				{/if}
 
+				<!-- language -->
 				{#if $selectedLanguage}
 					<span class="filter-tag"
 						><svg
