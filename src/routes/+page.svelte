@@ -18,7 +18,7 @@
 
 	// Import directory data
 	export let data; // Airtable directory data
-	import { directoryData, filteredDirectory, countyPolygons, ntaPolygons } from '$lib/stores.js';
+	import { directoryData, countyPolygons, ntaPolygons } from '$lib/stores.js';
 
 	// Create Turf modules
 	import centroid from '@turf/centroid';
@@ -46,6 +46,7 @@
 							STATUS: d['STATUS'],
 							CITY: d['CITY'],
 							STATE: d['STATE'],
+							REGION: d['REGION'],
 							'LOCATION STATUS': d['LOCATION STATUS'],
 							'PRIMARY FORMAT': d['PRIMARY FORMAT'],
 							FOUNDED: d['FOUNDED'],
@@ -76,18 +77,18 @@
 
 		// Check for duplicate coordinates
 		$directoryData.features.forEach((d) => {
-			longitudeValue = d.properties.LONGITUDE;
+			longitudeValue = d.geometry.coordinates[0];
 			if (
 				$directoryData.features
 					.filter((e) => e.properties['OUTLET'] !== d.properties['OUTLET'])
-					.filter((e) => e.properties.LONGITUDE)
-					.filter((e) => e.properties.LATITUDE === longitudeValue).length > 0
+					.filter((e) => e.geometry.coordinates[0])
+					.filter((e) => e.geometry.coordinates[0] === longitudeValue).length > 0
 			) {
 				// Add column indicating duplicate coordinates
 				d.properties.duplicateCoords = true;
 				// Nudge coordinates apart
-				(d.geometry.coordinates[0] = d.geometry.coordinates[0] + (Math.random() - 0.5) * 0.002),
-					(d.geometry.coordinates[1] = d.geometry.coordinates[1] + (Math.random() - 0.5) * 0.002);
+				(d.geometry.coordinates[0] = d.geometry.coordinates[0] + (Math.random() - 0.5) * 0.003),
+					(d.geometry.coordinates[1] = d.geometry.coordinates[1] + (Math.random() - 0.5) * 0.003);
 			} else {
 				d.properties.duplicateCoords = false;
 			}
