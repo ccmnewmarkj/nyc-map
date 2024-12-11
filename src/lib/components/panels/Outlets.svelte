@@ -384,18 +384,16 @@
 				<span class="tab">Search</span> tab to narrow down the list or search for an outlet below.
 			</p>
 		{/if}
-		<!-- Search through cards field -->
+		<!-- Search cards by outlet name -->
 		{#if $filteredDirectory.features.length > 1}
 			<div class="search-field">
-				<label for="search-input" class="visually-hidden"
-					>Enter outlet name to find it in the list</label
-				>
+				<label for="search-input">Search cards for an outlet name</label>
 				<input
 					type="text"
 					id="search-input"
-					placeholder="Search cards by outlet name"
+					placeholder="Enter outlet name"
 					bind:value={searchQuery}
-					aria-label="Search cards by outlet name"
+					aria-label="Enter outlet name to find it in the list"
 				/>
 
 				<!-- Show clear search button when text has been entered -->
@@ -550,6 +548,7 @@
 									lng = outlet.geometry.coordinates[0];
 									lat = outlet.geometry.coordinates[1];
 
+									$popup?.remove();
 									outlet.geometry.coordinates[0] !== undefined ? flyTo(10, [lng, lat]) : null;
 								}}><MapPinIcon strokeColor="rgba(var(--green), 1)" /> Find on map</button
 							>
@@ -612,9 +611,9 @@
 <style>
 	/* intro + search bar */
 	.header {
-		border-radius: 7px;
 		font-size: 0.85rem;
 		padding: 1rem;
+		/* box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1); */
 	}
 
 	.header p {
@@ -644,7 +643,7 @@
 		-webkit-box-decoration-break: clone;
 		box-decoration-break: clone;
 		font-family: 'Roboto Condensed', sans-serif;
-		font-weight: 700;
+		font-weight: 600;
 		font-size: 0.75rem;
 		display: flex;
 		align-items: center;
@@ -669,6 +668,10 @@
 	/* search field */
 	.search-field {
 		margin-top: 1rem;
+		font-family: 'Roboto Condensed', sans-serif;
+		font-weight: 600;
+		text-transform: uppercase;
+		font-size: 0.8rem;
 	}
 
 	.search-field input {
@@ -677,6 +680,7 @@
 		font-size: 1rem;
 		border: 1px solid rgba(var(--gray), 0.25);
 		border-radius: 4px;
+		margin-top: 2px;
 	}
 
 	/* cards */
@@ -847,7 +851,7 @@
 	}
 
 	/* Visually hidden label for screen readers */
-	.visually-hidden {
+	/* .visually-hidden {
 		position: absolute;
 		width: 1px;
 		height: 1px;
@@ -856,7 +860,7 @@
 		overflow: hidden;
 		clip: rect(0, 0, 0, 0);
 		border: 0;
-	}
+	} */
 
 	.search-field {
 		position: relative;
