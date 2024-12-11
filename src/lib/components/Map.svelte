@@ -1,6 +1,6 @@
 <script>
 	// Import components
-	import ResetMap from '$lib/components/ResetBtn.svelte';
+	import ResetMap from '$lib/components/ResetMap.svelte';
 	import PolygonToggle from '$lib/components/PolygonToggle.svelte';
 	import Legend from '$lib/components/MapLegend.svelte';
 
@@ -138,13 +138,14 @@
 				source: 'counties',
 				layout: {},
 				paint: {
-					'line-color': 'rgba(81, 130, 155, 0.5)',
+					'line-color': 'rgba(81, 130, 155, 0.75)',
 					'line-width': {
 						base: 0,
 						stops: [
 							[5, 0],
-							[6, 0.75],
-							[8, 1]
+							[6, 0.5]
+							// [8, 0.75],
+							//[10, 0.75]
 						]
 					}
 				}
@@ -155,10 +156,11 @@
 				type: 'geojson',
 				data: {
 					type: 'FeatureCollection',
-					features: $countyPolygons.features?.map((d) => ({
+					features: $countyPolygons?.features.map((d) => ({
 						type: 'Feature',
 						properties: {
-							name: `${d.properties.name.split(' County')[0]}`
+							// name: `${d.properties.name.split(' County')[0]}`
+							name: `${d.properties.name.split(',')[0]}`
 						},
 						geometry: {
 							type: 'Point',
@@ -181,14 +183,14 @@
 					'text-size': {
 						base: 0,
 						stops: [
-							[5, 0.5],
-							[6, 1],
-							[8, 1.25]
+							[5, 10],
+							[8, 14],
+							[11, 18]
 						]
 					}
 				},
 				paint: {
-					'text-color': '#596d7d'
+					'text-color': 'rgba(81, 130, 155, 1)'
 				}
 			});
 
@@ -217,13 +219,15 @@
 				source: 'nta',
 				layout: {},
 				paint: {
-					'line-color': '#51829b',
+					'line-color': 'rgba(226, 162, 0, 1)',
 					'line-width': {
 						base: 0,
 						stops: [
-							[5, 0.25],
-							[6, 0.75],
-							[8, 1]
+							[5, 0],
+							[6, 0.5]
+							// [5, 0.25],
+							// [6, 0.75],
+							// [8, 1]
 						]
 					}
 				}
@@ -260,14 +264,17 @@
 					'text-size': {
 						base: 0,
 						stops: [
-							[6, 0],
-							[8, 12],
-							[10, 14]
+							[5, 0],
+							[8, 10],
+							[11, 14]
+							// [5, 10],
+							// [8, 14],
+							// [11, 18]
 						]
 					}
 				},
 				paint: {
-					'text-color': '#0c485f'
+					'text-color': '#a65c02'
 				}
 			});
 
@@ -416,7 +423,7 @@
 					stroke-width="2.1"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
-					color="#000000"
+					color="rgba(var(--black), 1)"
 					><path
 						d="M21 3L15 3M21 3L12 12M21 3V9"
 						stroke="rgba(${popupColor}, 1)"
@@ -441,22 +448,22 @@
 					viewBox="0 0 24 24"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
-					color="#000000"
+					color="rgba(var(--black), 1)"
 					><path
 						d="M12 11.5V16.5"
-						stroke="#000000"
+						stroke="rgba(var(--black), 1)"
 						stroke-width="2.5"
 						stroke-linecap="round"
 						stroke-linejoin="round"
 					></path><path
 						d="M12 7.51L12.01 7.49889"
-						stroke="#000000"
+						stroke="rgba(var(--black), 1)"
 						stroke-width="2.5"
 						stroke-linecap="round"
 						stroke-linejoin="round"
 					></path><path
 						d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-						stroke="#000000"
+						stroke="rgba(var(--black), 1)"
 						stroke-width="2.1"
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -518,14 +525,16 @@
    onmouseout="this.style.boxShadow='rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 0.25) 0 -2px 0 inset';">Visit Website ${openLinkIcon}</a>`
 					: '';
 
-				let locationNotes = e.features[0].properties['LOCATION STATUS']
-					? `${infoIcon} Map location is approximate`
-					: '';
+				let locationNotes =
+					e.features[0].properties['LOCATION STATUS'] == 'Location approximate' ||
+					e.features[0].properties.duplicateCoords
+						? `${infoIcon} Map location is approximate`
+						: '';
 
 				// POPUP CONTENT
 				const popupContent = `
 				
-			<div class="popup-header" style="background-color: rgba(${popupColor}, 0.5);">
+			<div class="popup-header ${e.features[0].properties['REGION'] === 'NYC' ? 'nyc' : e.features[0].properties['REGION'] === 'NYS' ? 'nys' : e.features[0].properties['REGION'] === 'LI' ? 'li' : e.features[0].properties['REGION'] === 'NJ' ? 'nj' : 'ct'}" style="background-color: ${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? `rgba(${popupColor}, 0.75)` : `rgba(${popupColor}, 0.5)`};">
 				<p class="popup-outlet-name">${e.features[0].properties['OUTLET']}</p>
 				<p class="popup-location">
 					${e.features[0].properties['CITY']}, 
@@ -625,7 +634,7 @@ ${
 			});
 
 			///////////////////////////
-			// RESET MAP, MOBILE
+			// RESET MAP + MOBILE
 			///////////////////////////
 
 			// Establish initial center longtitude value
@@ -742,6 +751,7 @@ ${
 				/>
 			{/if}
 		</button>
+
 		<!-- Map elements to show/hide -->
 		{#if mapElementsVisible}
 			<div class="on-screen-elements" transition:slide={{ y: -200, duration: 500 }}>
