@@ -9,6 +9,9 @@
 		{ label: 'Magazine', color: magazineFormat },
 		{ label: 'Digital-only', color: digitalFormat }
 	];
+
+	// Import store
+	import { selectedFormat } from '$lib/stores.js';
 </script>
 
 <div class="legend-container">
@@ -17,14 +20,14 @@
 	</p>
 	<div class="legend">
 		{#each legendItems as item}
-			<div class="legend-item">
+			<button class="legend-item" on:click={() => ($selectedFormat = item.label)}>
 				<span class="label">{item.label}</span>
 				<span
 					class="bullet"
-					style="color: rgb({item.color}); background-color: rgba({item.color}, 0.1); text-shadow: 1px 0px 5px #ffffff;"
+					style="color: rgb({item.color}); background-color: rgba({item.color}, 0.1); text-shadow: 1px 0px 5px rgba(var(--white), 1);"
 					>●</span
 				>
-			</div>
+			</button>
 		{/each}
 	</div>
 </div>

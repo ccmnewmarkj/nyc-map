@@ -62,8 +62,16 @@
 	}
 
 	// Clear filter when map reset button selected
+	// $: if ($selectedFormat === undefined) {
+	// 	value = undefined;
+	// }
+
+	// Clear filter when map reset button selected
 	$: if ($selectedFormat === undefined) {
 		value = undefined;
+	} else if ($selectedFormat) {
+		// Set format based on map legend selection
+		value = { value: $selectedFormat, label: $selectedFormat };
 	}
 </script>
 
