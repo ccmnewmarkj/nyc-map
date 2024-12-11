@@ -73,9 +73,17 @@
 			<LanguageSearch />
 		</div>
 
+		<!-- error msg: -->
+		{#if $filteredDirectory?.features.length === 0}
+			<hr />
+			<div class="error-msg" transition:fade={{ duration: 100 }}>
+				<p style="">No outlets found. Please change your filter selections.</p>
+			</div>
+		{/if}
+
 		<!-- Clear multiple filters -->
 		{#if ($selectedFormat && ($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme)) || ($selectedFormat && $selectedLanguage) || (($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme) && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}
-			<hr />
+			{#if $filteredDirectory?.features.length !== 0}<hr />{/if}
 			<div class="reset-container" transition:fade={{ duration: 100 }}>
 				<button
 					aria-label="Clear any applied filters"
@@ -125,5 +133,10 @@
 
 	.outlet-search-container {
 		padding: 0 1rem 1rem;
+	}
+
+	.error-msg {
+		color: rgba(var(--light-red), 1);
+		font-size: 0.8rem;
 	}
 </style>
