@@ -24,6 +24,12 @@
 		want to connect with the community media sector in the state.
 	</p>
 
+	<p class="callout" style="margin-top: 1rem;">
+		For community media outlets in the state, visit CCM's <strong
+			><a href="http://nysmap.journalism.cuny.edu">New York State Media Map</a></strong
+		>.
+	</p>
+
 	<h2>How to use the map</h2>
 	<p>
 		Select the <span class="tab">Search</span> tab to apply filters that will narrow down the number
@@ -103,5 +109,11 @@
 		p.address-search {
 			display: none;
 		}
+	}
+
+	.callout {
+		padding: 10px;
+		font-size: 0.8rem;
+		background-color: rgba(var(--light-blue-gray), 0.5);
 	}
 </style>
