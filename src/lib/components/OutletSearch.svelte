@@ -48,7 +48,7 @@
 		}
 	}
 
-	// Clear any selected filter values when an outlet has been selected (in search box) (and vice versa)
+	// If a selected outlet is cleared/reset (ex. by a clear button elsewhere), clear any outlet value in the dropdown
 	$: if ($selectedOutlet === undefined) {
 		value = undefined;
 	}
