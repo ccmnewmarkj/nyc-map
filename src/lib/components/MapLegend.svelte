@@ -8,10 +8,10 @@
 		{ label: 'Radio', color: radioFormat },
 		{ label: 'Magazine', color: magazineFormat },
 		{ label: 'Digital-only', color: digitalFormat }
-	];
+	].sort((a, b) => a.label.localeCompare(b.label));
 
 	// Import store
-	import { selectedFormat } from '$lib/stores.js';
+	import { selectedFormat, filteredDirectory, map } from '$lib/stores.js';
 </script>
 
 <div class="legend-container">
@@ -20,7 +20,13 @@
 	</p>
 	<div class="legend">
 		{#each legendItems as item}
-			<button class="legend-item" on:click={() => ($selectedFormat = item.label)}>
+			<button
+				class="legend-item"
+				on:click={() => {
+					$selectedFormat = item.label;
+					$map.getSource('outlets').setData($filteredDirectory);
+				}}
+			>
 				<span class="label">{item.label}</span>
 				<span
 					class="bullet"
