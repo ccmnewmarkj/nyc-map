@@ -379,7 +379,7 @@
 						'Magazine',
 						`rgba(${magazineFormat}, 1)`,
 						'Digital-only',
-						`rgba(${digitalFormat}, 1)`,
+						`rgba(252, 199, 55, 1)`,
 						/* other */ `rgba(${otherFormat}, 1)`
 					]
 				}
