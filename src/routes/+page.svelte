@@ -18,7 +18,7 @@
 
 	// Import directory data
 	export let data; // Airtable directory data
-	import { directoryData, countyPolygons, ntaPolygons } from '$lib/stores.js';
+	import { directoryData, countyPolygons, ntaPolygons, filteredDirectory } from '$lib/stores.js';
 
 	// Create Turf modules
 	import centroid from '@turf/centroid';
@@ -150,7 +150,8 @@
 <style>
 	.sidebar-content {
 		position: relative;
-		max-width: 375px;
+		/* max-width: 375px; */
+		max-width: clamp(300px, 90%, 375px);
 		max-height: calc(100vh - 3rem);
 		max-height: calc(100svh - 3rem);
 		border-radius: 5px;
