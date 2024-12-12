@@ -60,11 +60,10 @@
 			<span class="filter-field-label">${languageIcon} Search by primary language <span style="font-weight: 400;">(${languageList.length} options)</span></span>
 		  `;
 
-	// Clear/reset selected filter when outlet is selected
+	// Clear/reset any value(s) in language filter (and store) when an outlet is selected
 	$: if ($selectedOutlet) {
-		value ? (value = undefined) : null; // clear selected value in filter when outlet is selected
-		//$filteredDirectory = $directoryData; // reset filter options
-		$selectedLanguage ? ($selectedLanguage = undefined) : null;
+		value ? (value = undefined) : null; // clear selected value(s) in filter
+		$selectedLanguage ? ($selectedLanguage = undefined) : null; // clear store
 	}
 
 	// Clear value from dropdown when language filter is reset (via clear filter button)

@@ -54,11 +54,10 @@
 					Only one format can be selected at a time.
 				</p>`;
 
-	// Clear/reset filter when outlet is selected
+	// Clear/reset any value(s) in format filter (and store) when an outlet is selected
 	$: if ($selectedOutlet) {
-		value ? (value = undefined) : null; // clear selected value in filter when outlet is selected
-		//$filteredDirectory = $directoryData; // reset filter options
-		$selectedFormat ? ($selectedFormat = undefined) : null; // clear selected format
+		value ? (value = undefined) : null; // clear selected value(s) in filter
+		$selectedFormat ? ($selectedFormat = undefined) : null; // clear store
 	}
 
 	// Clear filter when map reset button selected

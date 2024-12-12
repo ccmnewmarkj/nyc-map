@@ -112,13 +112,15 @@
 			<span class="filter-field-label">${geographyIcon} Search by audience </span>
 			`;
 
-	// Clear/reset selected filter when outlet is selected
+	// Clear/reset any value(s) in audience filter (and store) when an outlet is selected
 	$: if ($selectedOutlet) {
-		valueEthnicity = undefined; // clear selected value in filter when outlet is selected
+		// clear selected value(s) in filter:
+		valueEthnicity = undefined;
 		valueReligion = undefined;
 		valueTheme = undefined;
 		valueGeography = undefined;
-		//$filteredDirectory = $directoryData; // reset filter options
+
+		// clear store:
 		$selectedAudience?.ethnicity ? ($selectedAudience.ethnicity = undefined) : null;
 		$selectedAudience?.religion ? ($selectedAudience.religion = undefined) : null;
 		$selectedAudience?.theme ? ($selectedAudience.theme = undefined) : null;
