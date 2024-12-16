@@ -47,7 +47,7 @@
 			}
 		}}
 	/><span class="toggle-state">
-		<span class="toggle-container">
+		<span class="toggle-container" class:ntaToggle={polygonType === 'Neighborhoods'}>
 			<span class="text" class:active={checked} aria-hidden="true"
 				>{#if checked}On
 				{:else}Off{/if}</span
@@ -84,14 +84,14 @@
 		height: 0;
 	}
 
-	/* toggle-container */
+	/* toggle-container when "off" */
 	label input[role='switch'] ~ .toggle-state > .toggle-container {
 		position: relative;
 		top: 1px;
 		display: inline-block;
 		border: 1.5px solid rgba(var(--white), 1);
-		background-color: rgba(204, 204, 204, 1);
-		background-color: rgba(var(--blue-gray), 0.5);
+		background-color: rgba(204, 204, 204, 0.75);
+		/* background-color: rgba(var(--blue-gray), 0.5); */
 		width: 42px;
 		height: 21px;
 		border-radius: 10px;
@@ -99,7 +99,17 @@
 
 	/* toggle-container when switch checked */
 	label input[role='switch']:checked ~ .toggle-state > .toggle-container {
-		background: rgba(var(--cerulean), 0.6);
+		/* background: rgba(var(--cerulean), 0.6); */
+		background-color: rgba(var(--blue-gray), 1);
+	}
+
+	/* change toggle color for NTAs */
+	/* label input[role='switch'] ~ .toggle-state > .ntaToggle {
+		background-color: rgba(var(--gold), 0.5);
+	} */
+
+	label input[role='switch']:checked ~ .toggle-state > .ntaToggle {
+		background-color: rgba(var(--gold), 0.75);
 	}
 
 	/* switch */
