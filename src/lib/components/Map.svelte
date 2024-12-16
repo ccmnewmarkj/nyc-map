@@ -91,7 +91,7 @@
 				center: [centerMap.lng, centerMap.lat],
 				minZoom: 5,
 				zoom: 7.25,
-				maxZoom: 13
+				maxZoom: 14
 			})
 		);
 
@@ -274,7 +274,7 @@
 					}
 				},
 				paint: {
-					'text-color': '#a65c02'
+					'text-color': 'rgba(166, 92, 2, 1)'
 				}
 			});
 
@@ -306,7 +306,7 @@
 						base: 1.75,
 						stops: [
 							[8, 6],
-							[15, 18]
+							[15, 10]
 						]
 					},
 					'circle-stroke-width': 1.5,
@@ -473,7 +473,7 @@
 
 				// Conditional popup values
 				let yearFoundedValue = e.features[0].properties['FOUNDED']
-					? ` • Since ${e.features[0].properties['FOUNDED']}`
+					? ` • <span style="font-weight: 400;">Since ${e.features[0].properties['FOUNDED']}</span>`
 					: '';
 
 				let communityLabelValue;
