@@ -567,6 +567,11 @@
 						{/if}
 					</p>
 				</div>
+
+				<!-- Card number -->
+				<div class="card-number-container">
+					<p class="card-number">{$filteredDirectory.features.indexOf(outlet) + 1}</p>
+				</div>
 			</div>
 		{/each}
 	</div>
@@ -704,6 +709,7 @@
 		margin-bottom: 1.75rem;
 		box-shadow: 0 2px 2px rgba(var(--black), 0.1);
 		font-family: 'Roboto Condensed', 'sans-serif';
+		position: relative; /* to add card number */
 	}
 
 	.outlet-name {
@@ -872,5 +878,20 @@
 		transform: translateY(-50%);
 		right: 2px;
 		font-weight: 800;
+	}
+
+	.card-number-container {
+		position: absolute;
+		top: -10px;
+		left: 8px;
+		background-color: rgba(var(--cerulean), 0.9);
+		border-radius: 2px;
+		padding: 2px 4px;
+	}
+
+	.card-number {
+		font-size: 0.7rem;
+		color: rgba(var(--white), 1);
+		font-weight: 600;
 	}
 </style>
