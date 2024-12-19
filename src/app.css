@@ -442,7 +442,8 @@ hr.outlet-card-divider {
 }
 
 .reset-container button:hover {
-	color: rgba(var(--light-red), 1);
+	/* color: rgba(var(--light-red), 1); */
+	color: #f67685;
 }
 
 /* .reset-container button {
