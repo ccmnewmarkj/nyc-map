@@ -969,9 +969,12 @@ ${
 		}
 	}
 
-	fieldset.toggle-container {
+	fieldset {
 		border: none;
 		padding: 0;
+	}
+
+	fieldset.toggle-container {
 		position: relative;
 	}
 
