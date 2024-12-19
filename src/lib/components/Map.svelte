@@ -3,11 +3,14 @@
 	import ResetMap from '$lib/components/ResetMap.svelte';
 	import PolygonToggle from '$lib/components/PolygonToggle.svelte';
 	import Legend from '$lib/components/MapLegend.svelte';
+	import Vis from '$lib/components/Visualizations.svelte';
 
 	// Import icon components
 	import NYCIcon from '$lib/components/icons/NYC.svelte';
 	import CloseFilledIcon from './icons/CloseCircleFilled.svelte';
 	import PlusIcon from './icons/PlusCircle.svelte';
+	import BarChartOpenIcon from './icons/BarChartOpen.svelte';
+	import BarChartCloseIcon from './icons/BarChartClose.svelte';
 
 	// Initialize map
 	import { onMount, onDestroy } from 'svelte';
@@ -703,6 +706,9 @@ ${
 
 	// Toggle on-screen map elements (excludes "clear filters" and "reset" buttons)
 	let mapElementsVisible = true;
+
+	// Toggle vis
+	let toggleVis = false;
 </script>
 
 <!-- Geocoder CSS -->
@@ -813,15 +819,41 @@ ${
 	{/if}
 </section>
 
-<!-- Reset button -->
-{#if initialCenterLng?.toFixed(1) !== movedCenterLng?.toFixed(1)}
-	<div class="reset-map-container" transition:fade={{ duration: 100 }}>
-		RESET
-		<span>MAP</span>
+<section id="bottom-elements-container">
+	<!-- Reset button -->
+	{#if initialCenterLng?.toFixed(1) !== movedCenterLng?.toFixed(1)}
+		<div class="reset-map-container" transition:fade={{ duration: 100 }}>
+			RESET
+			<span>MAP</span>
 
-		<ResetMap {centerMap} {isMobile}><NYCIcon /></ResetMap>
-	</div>
-{/if}
+			<ResetMap {centerMap} {isMobile}><NYCIcon /></ResetMap>
+		</div>
+	{/if}
+
+	<!-- Visualizations -->
+	{#if $filteredDirectory.features && !$selectedFormat}
+		<div class="vis-container">
+			{#if !toggleVis}
+				<div class="vis-btn-container">
+					Charts <button on:click={() => (toggleVis = !toggleVis)}><BarChartOpenIcon /></button>
+				</div>
+			{:else}
+				<div class="vis-btn-container">
+					Charts<button on:click={() => (toggleVis = !toggleVis)}><BarChartCloseIcon /></button>
+				</div>
+			{/if}
+			{#if toggleVis}
+				<div class="vis-element-container">
+					<span class="header">Primary Format</span>
+					<div class="vis-element" in:fade={{ duration: 100 }}>
+						<Vis />
+					</div>
+					<!-- <span class="footer">Is an outlet missing? Let us know.</span> -->
+				</div>
+			{/if}
+		</div>
+	{/if}
+</section>
 
 <style>
 	.map {
@@ -926,12 +958,89 @@ ${
 		row-gap: 10px;
 	}
 
-	/* reset map button */
-	.reset-map-container {
+	/* elements above zoom controls: vis, reset map */
+	#bottom-elements-container {
 		position: absolute;
 		bottom: 100px;
 		right: 10px;
-		z-index: 1;
+		pointer-events: auto;
+		display: flex;
+		flex-direction: column;
+		row-gap: 18px;
+	}
+
+	.vis-container,
+	.reset-map-container {
+		margin-left: auto;
+		width: fit-content;
+	}
+
+	/* visualizations */
+	.vis-container {
+		position: relative;
+		right: -5px !important;
+	}
+
+	.vis-btn-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		/* text */
+		font-family: 'Roboto Condensed', sans-serif;
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	.vis-btn-container button {
+		background: rgba(var(--black), 1);
+		border-radius: 20px;
+		padding: 5px 5px 3px 5px;
+		width: fit-content;
+
+		box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1); /* outer glow */
+	}
+
+	.vis-element-container {
+		position: absolute;
+		right: 50px;
+		bottom: 30px;
+		background-color: rgba(var(--white), 1);
+		border-radius: 8px;
+		box-shadow: 0 0 5px rgba(var(--black), 0.2);
+		border: 0.5px solid rgba(var(--dark-cerulean), 0.5);
+		border-bottom: 2px solid rgba(var(--gold), 1);
+	}
+
+	.vis-element {
+		padding: 5px 10px 0;
+	}
+
+	.vis-element-container > .header {
+		background-color: rgba(var(--black), 1);
+		color: rgba(var(--white), 1);
+		padding: 2px 5px;
+		font-size: 10px;
+		font-weight: 600;
+		text-transform: uppercase;
+		display: block;
+		border-radius: 8px 8px 0 0;
+	}
+
+	.vis-element-container > .footer {
+		font-family: 'DM Sans', sans-serif;
+		background-color: rgba(var(--gold), 0.3);
+		padding: 2px 5px;
+		font-size: 11px;
+		display: block;
+		border-radius: 0 0 8px 8px;
+	}
+
+	/* reset map button */
+	.reset-map-container {
+		/* position: absolute; */
+		/* bottom: 100px; */
 		display: flex;
 		flex-direction: column;
 		align-items: center;
