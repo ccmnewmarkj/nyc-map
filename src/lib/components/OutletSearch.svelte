@@ -33,7 +33,7 @@
 	// Highlight selected outlet on map
 	function highlightOutlet() {
 		if ($selectedOutlet) {
-			$map.setPaintProperty('outlet-layer', 'circle-opacity', 0.25);
+			$map.setPaintProperty('outlet-layer', 'circle-opacity', 0.35);
 		}
 	}
 
