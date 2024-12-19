@@ -384,6 +384,7 @@
 				<span class="tab">Search</span> tab to narrow down the list or search for an outlet below.
 			</p>
 		{/if}
+
 		<!-- Search cards by outlet name -->
 		{#if $filteredDirectory.features.length > 1}
 			<div class="search-field">
@@ -567,11 +568,6 @@
 						{/if}
 					</p>
 				</div>
-
-				<!-- Card number -->
-				<div class="card-number-container">
-					<p class="card-number">{$filteredDirectory.features.indexOf(outlet) + 1}</p>
-				</div>
 			</div>
 		{/each}
 	</div>
@@ -729,6 +725,7 @@
 	.header-row {
 		border-bottom: 1px solid rgba(var(--cerulean), 0.25);
 		padding: 0.4rem 0.5rem;
+		position: relative;
 	}
 
 	.footer-row {
@@ -880,18 +877,27 @@
 		font-weight: 800;
 	}
 
-	.card-number-container {
+	/* outlet card number: */
+	/* create variable for counter */
+	:root {
+		counter-reset: outlet-cards;
+	}
+
+	/* increment counter */
+	.outlet-name {
+		counter-increment: outlet-cards;
+	}
+
+	.outlet-name::before {
 		position: absolute;
 		top: -10px;
 		left: 8px;
 		background-color: rgba(var(--cerulean), 0.9);
 		border-radius: 2px;
 		padding: 2px 4px;
-	}
-
-	.card-number {
 		font-size: 0.7rem;
 		color: rgba(var(--white), 1);
 		font-weight: 600;
+		content: counter(outlet-cards);
 	}
 </style>
