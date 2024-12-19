@@ -785,27 +785,17 @@ ${
 						$selectedAudience = undefined;
 						$selectedLanguage = undefined;
 						$selectedOutlet = undefined;
-						// filteredDirectory.set($directoryData);
 						$popup?.remove();
-						// $map.setPaintProperty('outlet-layer', 'circle-opacity', 1);
-						// $map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
 						$map.getSource('outlets').setData($filteredDirectory);
 					}}
 					>{#if ($selectedFormat && ($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme)) || ($selectedFormat && $selectedLanguage) || (($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme) && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography)}Clear
 						filters{:else}Clear filter{/if}
-					<!-- <CloseFilledIcon
-						ariaHidden="true"
-						width="18px"
-						height="18px"
-						fillColor="#EF5A6F"
-					/> -->
 					<span style="color: rgba(var(--light-red), 1);">✕</span></button
 				>
 			{/if}
 
 			<!-- Button: Reset highlighted outlet -->
 			{#if $selectedOutlet}
-				<!-- <hr /> -->
 				<button
 					class="reset-selected-outlet"
 					aria-label="Remove outlet selection"
@@ -816,12 +806,6 @@ ${
 						$map.setFilter('outlet-search-layer', ['in', 'Media Outlet', '']);
 					}}
 					>Clear outlet
-					<!-- <CloseFilledIcon
-						ariaHidden="true"
-						width="18px"
-						height="18px"
-						fillColor="#EF5A6F"
-					/>	 -->
 					<span style="color: rgba(var(--yellow-orange), 1);">✕</span>
 				</button>
 			{/if}
@@ -985,9 +969,10 @@ ${
 		}
 	}
 
-	fieldset {
+	fieldset.toggle-container {
 		border: none;
 		padding: 0;
+		position: relative;
 	}
 
 	/* source: https://guides.18f.gov/accessibility/hidden-content/ */

@@ -24,7 +24,6 @@ export let selectedOutlet = writable();
 export let outletCount = derived([directoryData], ([$directoryData]) => {
 	if ($directoryData.features) {
 		return $directoryData.features.length;
-		//return '257';
 	}
 });
 
