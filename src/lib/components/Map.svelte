@@ -652,14 +652,17 @@ ${
 				$map?.setMaxBounds(mapBounds);
 			});
 
-			// Hide sidebar on mobile if map touched
 			$map.on('click', () => {
+				// Hide sidebar on mobile if map touched
 				if (
 					window.matchMedia('(max-width: 480px), (max-height: 480px)').matches &&
 					sidebarVisible
 				) {
 					sidebarVisible = false;
 				}
+
+				// If vis popup visible, touching map will close the popup
+				toggleVis ? (toggleVis = false) : null;
 			});
 
 			// For mobile
@@ -709,6 +712,8 @@ ${
 
 	// Toggle vis
 	let toggleVis = false;
+
+	import Draggable from '$lib/components/Draggable.svelte';
 </script>
 
 <!-- Geocoder CSS -->
@@ -831,7 +836,7 @@ ${
 	{/if}
 
 	<!-- Visualizations -->
-	{#if $filteredDirectory.features && !$selectedFormat}
+	{#if $filteredDirectory.features}
 		<div class="vis-container">
 			{#if !toggleVis}
 				<div class="vis-btn-container">
@@ -841,15 +846,13 @@ ${
 				<div class="vis-btn-container">
 					Charts<button on:click={() => (toggleVis = !toggleVis)}><BarChartCloseIcon /></button>
 				</div>
-			{/if}
-			{#if toggleVis}
-				<div class="vis-element-container">
-					<span class="header">Primary Format</span>
-					<div class="vis-element" in:fade={{ duration: 100 }}>
+
+				<Draggable>
+					<div class="vis-element-container">
 						<Vis />
+						<button on:click={() => (toggleVis = !toggleVis)} class="close-vis">✕</button>
 					</div>
-					<!-- <span class="footer">Is an outlet missing? Let us know.</span> -->
-				</div>
+				</Draggable>
 			{/if}
 		</div>
 	{/if}
@@ -998,7 +1001,6 @@ ${
 		border-radius: 20px;
 		padding: 5px 5px 3px 5px;
 		width: fit-content;
-
 		box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1); /* outer glow */
 	}
 
@@ -1009,33 +1011,34 @@ ${
 		background-color: rgba(var(--white), 1);
 		border-radius: 8px;
 		box-shadow: 0 0 5px rgba(var(--black), 0.2);
-		border: 0.5px solid rgba(var(--dark-cerulean), 0.5);
-		border-bottom: 2px solid rgba(var(--gold), 1);
+		border: 0.5px solid rgba(var(--dark-cerulean), 0.75);
+		/* border-top: 2px solid rgba(var(--cerulean), 1);
+		border-bottom: 2px solid rgba(var(--gold), 1); */
+		width: var(--vis-container-width);
+		height: var(--vis-container-height);
+		overflow: hidden;
+
+		/* stack child divs vertically */
+		display: flex;
+		flex-direction: column;
 	}
 
-	.vis-element {
-		padding: 5px 10px 0;
-	}
-
-	.vis-element-container > .header {
-		background-color: rgba(var(--black), 1);
-		color: rgba(var(--white), 1);
-		padding: 2px 5px;
-		font-size: 10px;
+	.close-vis {
+		padding: 0;
+		position: absolute;
+		top: 1px;
+		right: 5px;
 		font-weight: 600;
-		text-transform: uppercase;
-		display: block;
-		border-radius: 8px 8px 0 0;
 	}
 
-	.vis-element-container > .footer {
+	/* .vis-element-container > .footer {
 		font-family: 'DM Sans', sans-serif;
 		background-color: rgba(var(--gold), 0.3);
 		padding: 2px 5px;
 		font-size: 11px;
 		display: block;
 		border-radius: 0 0 8px 8px;
-	}
+	} */
 
 	/* reset map button */
 	.reset-map-container {
