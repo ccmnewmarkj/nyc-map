@@ -18,6 +18,9 @@
 	--yellow-orange: 248, 180, 0; /* #f8b400; */
 	--gold: 226, 162, 0; /* #e2a200; */
 	--light-red: 239, 90, 111; /* #ef5a6f; */
+
+	--vis-container-width: 250px;
+	--vis-container-height: 250px;
 }
 
 /* Source: https://gwfh.mranftl.com/fonts */
