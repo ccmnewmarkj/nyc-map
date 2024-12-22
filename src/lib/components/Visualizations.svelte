@@ -1,122 +1,156 @@
 <script>
-	import { scaleBand, scaleLinear } from 'd3-scale';
-	import { max } from 'd3-array';
-	//import { axisBottom, axisLeft } from 'd3-axis';
+	// Import vis components
+	import BarChart from './visualizations/BarChart.svelte';
+	import BubblesChart from './visualizations/BubblesChart.svelte';
 
 	// Import stores
-	import { filteredDirectory, directoryData } from '$lib/stores.js';
-
-	// Get count of each primary format from $directoryData (i.e. full dataset)
-	function roundUp(number) {
-		// Round up to nearest multiple of 5
-		return Math.ceil(number / 5) * 5;
-	}
-
-	let originalFormatCount = roundUp(
-		max(
-			Object.values(
-				$directoryData.features?.reduce((acc, outlet) => {
-					const format = outlet.properties['PRIMARY FORMAT'];
-					acc[format] = (acc[format] || 0) + 1;
-					return acc;
-				}, {})
-			)
-		)
-	);
-
-	// Get count of each format
-	$: formatCount = $filteredDirectory.features?.reduce((acc, outlet) => {
-		const format = outlet.properties['PRIMARY FORMAT'];
-		acc[format] = (acc[format] || 0) + 1;
-		return acc;
-	}, {});
-
-	const margin = { top: 0, right: 30, bottom: 0, left: 0 };
-	const chartHeight = 200;
-	const chartWidth = 200;
-	const innerWidth = chartWidth - margin.left - margin.right;
-	const innerHeight = chartHeight - margin.top - margin.bottom;
-
-	const formatLabels = Array([
-		...new Set($directoryData.features?.map((outlet) => outlet.properties['PRIMARY FORMAT']))
-	]);
-
-	$: yScale = scaleBand().domain(formatLabels[0]).range([0, innerHeight]).padding(0.5);
-	$: xScale = scaleLinear().domain([0, originalFormatCount]).range([0, innerWidth]);
-
-	// $: yAxisTransform = `translate(${margin.left}, 0)`;
+	import {
+		filteredDirectory,
+		selectedFormat,
+		selectedAudience,
+		selectedLanguage,
+		outletCount
+	} from '$lib/stores.js';
 
 	// Import transition
-	import { fade, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
+
+	// Button variables, default status dependent on any filter selections
+	let toggleFormatChart = true;
+	let toggleEthnicityChart = false;
+	let toggleLanguageChart = false;
+
+	$: filteredOutletCount = $filteredDirectory?.features.length;
 </script>
 
-<div id="bar-chart-container">
-	<svg id="bar-chart" width={chartWidth} height={chartHeight}>
-		<g transform="translate({margin.left}, {margin.top})">
-			{#each formatLabels[0] as format}
-				<rect
-					x={0}
-					y={yScale(format)}
-					width={xScale(formatCount[format] || 0)}
-					height={yScale.bandwidth()}
-					stroke="rgba(var(--gold), 1)"
-					stroke-width="0.75"
-					fill="rgba(var(--gold), 0.35)"
-				/>
+<div class="header">
+	<p>Select a category to see different visual overviews of the outlets.</p>
+	<div class="button-container">
+		<button
+			on:click={() => {
+				toggleFormatChart = !toggleFormatChart;
+				toggleEthnicityChart = null;
+				toggleLanguageChart = null;
+			}}
+			class:active={toggleFormatChart}>Format</button
+		>
+		<button
+			on:click={() => {
+				toggleEthnicityChart = !toggleEthnicityChart;
+				toggleLanguageChart = null;
+				toggleFormatChart = null;
+			}}
+			class:active={toggleEthnicityChart}>Ethnicity</button
+		>
+		<button
+			on:click={() => {
+				toggleLanguageChart = !toggleLanguageChart;
+				toggleEthnicityChart = null;
+				toggleFormatChart = null;
+			}}
+			class:active={toggleLanguageChart}>Language</button
+		>
+	</div>
+</div>
 
-				<!-- Count labels -->
-				<text
-					x={(formatCount[format] || 0) === 0
-						? xScale(formatCount[format] || 0)
-						: xScale(formatCount[format] || 0) + 5}
-					y={yScale(format) + yScale.bandwidth() / 2}
-					text-anchor="start"
-					alignment-baseline="middle"
-					fill="rgba(var(--gold), 1)">{formatCount[format] || 0}</text
-				>
+<div class="vis-element" in:fade={{ duration: 100 }}>
+	{#if toggleFormatChart && !$selectedFormat}
+		<BarChart dataField={'PRIMARY FORMAT'} />
+	{/if}
+	{#if toggleFormatChart && $selectedFormat}
+		<p>To see the chart, clear the <span class="tab">Format</span> filter.</p>
+	{/if}
 
-				<!-- Format labels -->
-				<text
-					x={0}
-					y={yScale(format) + yScale.bandwidth() / 2 - 14}
-					text-anchor="start"
-					alignment-baseline="middle"
-					fill="rgba(var(--gold), 1)"
-					class="format-labels">{format}</text
-				>
-				<title>{format}: {formatCount[format] || 0}</title>
-			{/each}
+	{#if toggleEthnicityChart && !$selectedAudience?.ethnicity}
+		<BubblesChart category={'Ethnicity'} dataField={'TARGET ETHNICITY'} />
+	{/if}
+	{#if toggleEthnicityChart && $selectedAudience?.ethnicity}
+		<p>To see the chart, clear the <span class="tab">Ethnicity</span> filter.</p>
+	{/if}
 
-			<!-- <g class="y-axis" transform={yAxisTransform}>
-				{#each formatLabels as format, i}
-					<text
-						x="-5"
-						y={yScale(format) + yScale.bandwidth() / 2}
-						text-anchor="end"
-						alignment-baseline="middle"
-						transition:fade
-					>
-						{format}
-					</text>
-				{/each}
-			</g> -->
-		</g>
-	</svg>
+	{#if toggleLanguageChart && !$selectedLanguage}
+		<BubblesChart category={'Language'} dataField={'PRIMARY LANGUAGE'} />
+	{/if}
+	{#if toggleLanguageChart && $selectedLanguage}
+		<p>To see the chart, clear the <span class="tab">Language</span> filter.</p>
+	{/if}
+</div>
+
+<div class="footer">
+	<!-- If on Format slide with no format selected in filter -->
+	{#if (toggleFormatChart && !$selectedFormat) || (toggleEthnicityChart && !$selectedAudience?.ethnicity) || (toggleLanguageChart && !$selectedLanguage)}
+		<p>
+			{filteredOutletCount !== $outletCount
+				? `Chart based on ${filteredOutletCount} ${filteredOutletCount > 1 ? 'outlets' : 'outlet'}, with ${($selectedFormat && ($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme)) || ($selectedFormat && $selectedLanguage) || (($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme) && $selectedLanguage) || ($selectedAudience?.ethnicity && $selectedAudience?.religion) || ($selectedAudience?.ethnicity && $selectedAudience?.theme) || ($selectedAudience?.ethnicity && $selectedAudience?.geography) || ($selectedAudience?.religion && $selectedAudience?.theme) || ($selectedAudience?.religion && $selectedAudience?.geography) || ($selectedAudience?.theme && $selectedAudience?.geography) ? 'filters' : 'filter'} applied`
+				: `Chart based on ${filteredOutletCount} ${filteredOutletCount > 1 ? 'outlets' : 'outlet'}`}
+		</p>
+	{/if}
 </div>
 
 <style>
-	#bar-chart {
-		display: block;
-		margin: 0 auto;
+	p {
+		font-size: 0.75rem;
+		line-height: 1.1;
+		font-family: 'Roboto Condensed', sans-serif;
 	}
 
-	.format-labels {
-		font-size: 12px;
-		/* font-weight: 600; */
-		fill: rgba(var(--black), 1);
+	.header {
+		padding-top: 2px;
+		background-color: rgba(111, 196, 236, 0.75);
+		border-radius: 8px 8px 0 0;
+		border-bottom: 1px solid rgba(111, 196, 236, 1);
+		border-bottom: 0.5px solid #4bb6e5;
 	}
 
-	rect {
-		transition: all 0.5s;
+	.header > p {
+		font-weight: 600;
+		padding: 5px 8px 2px;
 	}
+
+	.header > .button-container {
+		padding: 0 5px 5px;
+	}
+
+	.header > .button-container > button {
+		background-color: rgba(var(--white), 1);
+		border-radius: 10px;
+		color: rgba(var(--black), 1);
+		border: 1px solid rgba(var(--black), 1);
+		padding: 1px 8px;
+		font-size: 0.75rem;
+		font-weight: 600;
+		width: fit-content;
+		transition: all 0.25s;
+	}
+
+	.header > .button-container > button.active {
+		background-color: rgba(var(--black), 1);
+		color: rgba(var(--white), 1);
+		cursor: auto;
+		border: 1px solid rgba(var(--black), 1);
+	}
+
+	.vis-element {
+		padding: 5px 0;
+		overflow-y: auto; /* Enables vertical scrolling */
+		overflow-x: hidden; /* Prevents horizontal scrolling */
+		box-shadow: rgba(111, 196, 236, 0.75) 0px 3px 6px -2px inset;
+	}
+
+	.footer {
+		background-color: rgba(var(--gray), 0.15);
+		border-radius: 0 0 8px 8px;
+		border-top: 0.5px solid rgba(var(--gray), 0.5);
+		box-shadow: rgba(var(--gray), 0.25) 0px 3px 6px -2px inset;
+	}
+
+	.footer > p {
+		font-size: 0.7rem;
+		padding: 4px 8px;
+	}
+	/* button.grayedOut {
+		background-color: rgba(var(--gray), 0.5);
+		color: rgba(var(--white), 0.5);
+		cursor: auto;
+	} */
 </style>
