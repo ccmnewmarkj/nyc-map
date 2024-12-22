@@ -103,7 +103,7 @@
 	</div>
 
 	<!-- Outlet search -->
-	<div class="filter outlet-search-container">
+	<div class="outlet-search-container">
 		<OutletSearch />
 	</div>
 </section>
@@ -119,6 +119,7 @@
 		position: relative;
 		border-top: 0.5px solid rgba(var(--gray), 0.5);
 		border-bottom: 0.5px solid rgba(var(--gray), 0.5);
+		box-shadow: rgba(var(--gray), 0.2) 0px 3px 6px -2px inset;
 	}
 
 	.filter:not(:first-of-type) {
@@ -132,7 +133,8 @@
 	}
 
 	.outlet-search-container {
-		padding: 0 1rem 1rem;
+		padding: 1rem;
+		box-shadow: rgba(var(--gray), 0.25) 0px 3px 6px -2px inset;
 	}
 
 	.error-msg {

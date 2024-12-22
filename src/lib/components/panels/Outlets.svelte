@@ -26,35 +26,6 @@
 
 	let searchQuery = ''; // Search through cards via outlet name
 
-	// let formattedCommunityList;
-	// $: if ($selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme) {
-	// 	const communityList = [
-	// 		...($selectedAudience.ethnicity
-	// 			? $selectedAudience.ethnicity
-	// 					.toString()
-	// 					.split(',')
-	// 					.map((item) => item.trim())
-	// 			: []),
-	// 		...($selectedAudience.religion
-	// 			? $selectedAudience.religion
-	// 					.toString()
-	// 					.split(',')
-	// 					.map((item) => item.trim())
-	// 			: []),
-	// 		...($selectedAudience.theme
-	// 			? $selectedAudience.theme
-	// 					.toString()
-	// 					.split(',')
-	// 					.map((item) => item.trim())
-	// 			: [])
-	// 	];
-
-	// 	formattedCommunityList =
-	// 		communityList.length > 1
-	// 			? communityList.slice(0, -1).join(', ') + ', ' + communityList.slice(-1)
-	// 			: communityList[0];
-	// }
-
 	// generating ethnicity tag
 	let formattedEthnicityList;
 	$: if ($selectedAudience?.ethnicity) {
@@ -690,6 +661,7 @@
 		background-color: rgba(var(--light-gray), 0.5);
 		border-top: 0.5px solid rgba(var(--gray), 0.5);
 		border-bottom: 0.5px solid rgba(var(--gray), 0.5);
+		box-shadow: rgba(var(--gray), 0.2) 0px 3px 6px -2px inset;
 	}
 
 	.cards-container > p {
@@ -735,6 +707,7 @@
 		padding: 0.45rem 0.5rem;
 		border-top: 0.5px solid rgba(var(--gray), 0.4);
 		border-radius: 0 0 3px 3px;
+		box-shadow: rgba(var(--gray), 0.1) 0px 3px 6px -2px inset;
 	}
 
 	.body-container {
@@ -847,6 +820,7 @@
 		justify-content: center;
 		align-items: center;
 		font-family: 'Roboto Condensed', sans-serif;
+		box-shadow: rgba(var(--gray), 0.2) 0px 3px 6px -2px inset;
 	}
 
 	.page-btns-container button.disabled {

@@ -109,5 +109,6 @@
 		flex-direction: column;
 		overflow: auto;
 		/* scrollbar-gutter: stable; */
+		box-shadow: rgba(var(--gray), 0.15) 0px 3px 6px -2px inset;
 	}
 </style>

@@ -57,7 +57,7 @@
 <details on:toggle={toggleAccordion} open>
 	<summary>Search by Outlet</summary>
 
-	<div class="content">
+	<div class="content" style="box-shadow: rgba(var(--gray), 0.4) 0px 3px 6px -2px inset;">
 		<p style="padding-bottom: 0.75rem;">
 			Look for an outlet on the map, out of the <strong
 				>{$directoryData.features.filter((d) => d.geometry['coordinates'][0]).length}</strong
