@@ -4,6 +4,7 @@
 	import PolygonToggle from '$lib/components/PolygonToggle.svelte';
 	import Legend from '$lib/components/MapLegend.svelte';
 	import Vis from '$lib/components/Visualizations.svelte';
+	import Draggable from '$lib/components/Draggable.svelte';
 
 	// Import icon components
 	import NYCIcon from '$lib/components/icons/NYC.svelte';
@@ -11,6 +12,8 @@
 	import PlusIcon from './icons/PlusCircle.svelte';
 	import BarChartOpenIcon from './icons/BarChartOpen.svelte';
 	import BarChartCloseIcon from './icons/BarChartClose.svelte';
+	import InsetMapOpenIcon from './icons/InsetMapOpen.svelte';
+	import InsetMapCloseIcon from './icons/InsetMapClose.svelte';
 
 	// Initialize map
 	import { onMount, onDestroy } from 'svelte';
@@ -100,6 +103,86 @@
 
 		// Zoom controls
 		$map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right');
+
+		// Add inset map
+		const insetMap = new mapboxgl.Map({
+			container: 'mapInset',
+			style: 'mapbox://styles/mapbox/dark-v10',
+			center: [centerMap.lng, centerMap.lat],
+			zoom: 4.5, // starting zoom
+			hash: false,
+			interactive: false,
+			attributionControl: false
+		});
+
+		let initLoad = true;
+
+		//Helper functions for inset map
+		function getInsetBounds() {
+			let bounds = $map.getBounds();
+
+			let boundsJson = {
+				type: 'FeatureCollection',
+				features: [
+					{
+						type: 'Feature',
+						properties: {},
+						geometry: {
+							type: 'Polygon',
+							coordinates: [
+								[
+									[bounds._sw.lng, bounds._sw.lat],
+									[bounds._ne.lng, bounds._sw.lat],
+									[bounds._ne.lng, bounds._ne.lat],
+									[bounds._sw.lng, bounds._ne.lat],
+									[bounds._sw.lng, bounds._sw.lat]
+								]
+							]
+						}
+					}
+				]
+			};
+
+			if (initLoad) {
+				addInsetLayer(boundsJson);
+				initLoad = false;
+			} else {
+				updateInsetLayer(boundsJson);
+			}
+		}
+
+		function addInsetLayer(bounds) {
+			insetMap.addSource('boundsSource', {
+				type: 'geojson',
+				data: bounds
+			});
+
+			insetMap.addLayer({
+				id: 'boundsLayer',
+				type: 'fill',
+				source: 'boundsSource',
+				layout: {},
+				paint: {
+					'fill-color': '#fff',
+					'fill-opacity': 0.15
+				}
+			});
+			// Add a black outline around the polygon.
+			insetMap.addLayer({
+				id: 'outlineLayer',
+				type: 'line',
+				source: 'boundsSource',
+				layout: {},
+				paint: {
+					'line-color': 'rgb(111, 196, 236)', // blue
+					'line-width': 1
+				}
+			});
+		}
+
+		function updateInsetLayer(bounds) {
+			insetMap.getSource('boundsSource').setData(bounds);
+		}
 
 		// Geocoder
 		const geocoder = new MapboxGeocoder({
@@ -650,6 +733,9 @@ ${
 
 				// Restrict panning to bounds
 				$map?.setMaxBounds(mapBounds);
+
+				// Update inset map bounds
+				getInsetBounds();
 			});
 
 			$map.on('click', () => {
@@ -662,7 +748,7 @@ ${
 				}
 
 				// If vis popup visible, touching map will close the popup
-				toggleVis ? (toggleVis = false) : null;
+				// toggleVis ? (toggleVis = false) : null;
 			});
 
 			// For mobile
@@ -713,7 +799,8 @@ ${
 	// Toggle vis
 	let toggleVis = false;
 
-	import Draggable from '$lib/components/Draggable.svelte';
+	// Toggle inset map
+	let toggleInsetMap = true;
 </script>
 
 <!-- Geocoder CSS -->
@@ -829,7 +916,7 @@ ${
 	{#if initialCenterLng?.toFixed(1) !== movedCenterLng?.toFixed(1)}
 		<div class="reset-map-container" transition:fade={{ duration: 100 }}>
 			RESET
-			<span>MAP</span>
+			<br />MAP
 
 			<ResetMap {centerMap} {isMobile}><NYCIcon /></ResetMap>
 		</div>
@@ -840,11 +927,14 @@ ${
 		<div class="vis-container">
 			{#if !toggleVis}
 				<div class="vis-btn-container">
-					Charts <button on:click={() => (toggleVis = !toggleVis)}><BarChartOpenIcon /></button>
+					Show <br />Charts
+					<button on:click={() => (toggleVis = !toggleVis)}><BarChartOpenIcon /></button>
 				</div>
 			{:else}
 				<div class="vis-btn-container">
-					Charts<button on:click={() => (toggleVis = !toggleVis)}><BarChartCloseIcon /></button>
+					Hide <br />Charts<button on:click={() => (toggleVis = !toggleVis)}
+						><BarChartCloseIcon /></button
+					>
 				</div>
 
 				<Draggable>
@@ -856,6 +946,22 @@ ${
 			{/if}
 		</div>
 	{/if}
+
+	<!-- Inset map -->
+	<div class="inset-container">
+		{#if toggleInsetMap}
+			<div class="inset-btn-container">
+				Hide <br />mini map
+				<button on:click={() => (toggleInsetMap = !toggleInsetMap)}><InsetMapCloseIcon /></button>
+			</div>
+		{:else}
+			<div class="inset-btn-container">
+				Show <br />mini map
+				<button on:click={() => (toggleInsetMap = !toggleInsetMap)}><InsetMapOpenIcon /></button>
+			</div>
+		{/if}
+		<div id="mapInset" style="display: visible" class:hideInsetMap={!toggleInsetMap}></div>
+	</div>
 </section>
 
 <style>
@@ -901,7 +1007,7 @@ ${
 	}
 
 	.on-screen-elements-container {
-		margin-top: 1.5rem;
+		margin-top: 1rem;
 	}
 
 	/* toggle button for showing/hiding polygon filters + legend*/
@@ -954,11 +1060,19 @@ ${
 
 	/* when filter applied or outlet selected */
 	.reset-container {
-		margin-top: 1.5rem;
+		margin-top: 1rem;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
 		row-gap: 10px;
+	}
+
+	button.reset-selected-outlet {
+		box-shadow: rgba(var(--yellow-orange), 1) 0 -2px 0 inset;
+	}
+
+	button.reset-selected-outlet:hover {
+		color: rgba(var(--yellow-orange), 1);
 	}
 
 	/* elements above zoom controls: vis, reset map */
@@ -969,34 +1083,59 @@ ${
 		pointer-events: auto;
 		display: flex;
 		flex-direction: column;
-		row-gap: 18px;
+		row-gap: 12px;
 	}
 
 	.vis-container,
+	.inset-container,
 	.reset-map-container {
 		margin-left: auto;
 		width: fit-content;
 	}
 
-	/* visualizations */
-	.vis-container {
-		position: relative;
-		right: -5px !important;
-	}
-
-	.vis-btn-container {
+	/* reset map button */
+	.reset-map-container {
+		/* position: absolute; */
+		/* bottom: 100px; */
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		text-align: right;
+		line-height: 1;
+		font-size: 0.75rem;
+		font-weight: 600;
+		font-family: 'Roboto Condensed', sans-serif;
+		text-shadow:
+			0 0 5px #fff,
+			0 0 10px #fff,
+			0 0 20px #fff,
+			0 0 30px #fff,
+			0 0 40px #fff;
+	}
+
+	/* visualizations */
+	.vis-container,
+	.inset-container {
+		position: relative;
+		right: -2px !important;
+	}
+
+	.vis-btn-container,
+	.inset-btn-container {
+		display: flex;
+		flex-direction: column;
+		align-items: end;
 
 		/* text */
 		font-family: 'Roboto Condensed', sans-serif;
 		font-size: 0.75rem;
 		font-weight: 600;
 		text-transform: uppercase;
+		text-align: right;
+		line-height: 1;
 	}
 
-	.vis-btn-container button {
+	.vis-btn-container button,
+	.inset-btn-container button {
 		background: rgba(var(--black), 1);
 		border-radius: 20px;
 		padding: 5px 5px 3px 5px;
@@ -1007,7 +1146,7 @@ ${
 	.vis-element-container {
 		position: absolute;
 		right: 50px;
-		bottom: 30px;
+		bottom: 50px;
 		background-color: rgba(var(--white), 1);
 		border-radius: 8px;
 		box-shadow: 0 0 5px rgba(var(--black), 0.2);
@@ -1017,6 +1156,7 @@ ${
 		width: var(--vis-container-width);
 		height: var(--vis-container-height);
 		overflow: hidden;
+		z-index: 10;
 
 		/* stack child divs vertically */
 		display: flex;
@@ -1039,33 +1179,6 @@ ${
 		display: block;
 		border-radius: 0 0 8px 8px;
 	} */
-
-	/* reset map button */
-	.reset-map-container {
-		/* position: absolute; */
-		/* bottom: 100px; */
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		line-height: 0.95;
-		font-size: 12px;
-		font-weight: 600;
-		font-family: 'Roboto Condensed', sans-serif;
-		text-shadow:
-			0 0 5px #fff,
-			0 0 10px #fff,
-			0 0 20px #fff,
-			0 0 30px #fff,
-			0 0 40px #fff;
-	}
-
-	button.reset-selected-outlet {
-		box-shadow: rgba(var(--yellow-orange), 1) 0 -2px 0 inset;
-	}
-
-	button.reset-selected-outlet:hover {
-		color: rgba(var(--yellow-orange), 1);
-	}
 
 	@media only screen and (max-device-width: 512px) {
 		.geocoder-container {
@@ -1100,5 +1213,28 @@ ${
 		padding: 0;
 		position: absolute;
 		width: 1px;
+	}
+
+	/* map inset */
+	#mapInset {
+		bottom: -65px;
+		right: 75px;
+		height: 150px;
+		width: 200px;
+		position: absolute;
+		pointer-events: none;
+		border-radius: 4px;
+		box-shadow: 0 0 5px rgba(var(--black), 0.75);
+	}
+
+	@media (max-width: 500px) {
+		.vis-container,
+		#mapInset {
+			display: none;
+		}
+	}
+
+	.hideInsetMap {
+		display: none;
 	}
 </style>
