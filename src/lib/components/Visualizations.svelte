@@ -21,9 +21,17 @@
 	let toggleLanguageChart = false;
 
 	$: filteredOutletCount = $filteredDirectory?.features.length;
+
+	// Toggle (show/hide) vis
+	export let toggleVis;
+
+	function setToggleVisState() {
+		toggleVis = !toggleVis;
+	}
 </script>
 
 <div class="header">
+	<button on:click={setToggleVisState} class="close-vis">✕</button>
 	<p>Select a category to see different visual overviews of the outlets.</p>
 	<div class="button-container">
 		<button
@@ -100,6 +108,20 @@
 		border-radius: 8px 8px 0 0;
 		border-bottom: 1px solid rgba(111, 196, 236, 1);
 		border-bottom: 0.5px solid #4bb6e5;
+	}
+
+	.close-vis {
+		padding: 0 5px;
+		float: inline-end; /* Source: K. Powell: youtube.com/watch?v=nZ05Oqccq6g */
+		margin-inline-start: 0.5rem;
+		/* position: absolute;
+		top: 1px;
+		right: 5px; */
+		font-weight: 600;
+	}
+
+	.close-vis:hover {
+		color: rgba(var(--black), 0.75);
 	}
 
 	.header > p {

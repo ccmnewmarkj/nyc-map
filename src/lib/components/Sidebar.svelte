@@ -22,9 +22,24 @@
 	let audienceTypeSelection = 'community';
 	// And for tab set for selecting type of community
 	let selectedCommunityType = 'ethnicity';
+
+	// Change color of close button icon on hover
+	let fillColor = 'rgba(var(--black), 1)';
 </script>
 
 <header>
+	<!-- Close button -->
+	<button
+		class="close-button"
+		aria-label="Hide sidebar"
+		on:click|stopPropagation={() => {
+			sidebarVisible = false;
+		}}
+		on:mouseover={() => (fillColor = '#454545')}
+		on:mouseout={() => (fillColor = 'rgba(var(--black), 1)')}
+	>
+		<CloseFilledIcon {fillColor} />
+	</button>
 	<h1 id="sidebar-title">Many Voices, One City</h1>
 	<p style="font-size: 0.85rem;">
 		A map of media outlets in the New York City metro area, created by the <strong
@@ -55,20 +70,14 @@
 	</main>
 {/if}
 
-<!-- Close button -->
-<button
-	class="close-button"
-	aria-label="Hide sidebar"
-	on:click|stopPropagation={() => {
-		sidebarVisible = false;
-	}}><CloseFilledIcon /></button
->
-
 <style>
 	.close-button {
-		position: absolute;
+		float: inline-end;
+		margin-top: -0.5rem;
+		margin-right: -1rem;
+		/* position: absolute;
 		top: 6px;
-		right: 0px;
+		right: 0px; */
 		background-color: transparent;
 		border: 0;
 		cursor: pointer;

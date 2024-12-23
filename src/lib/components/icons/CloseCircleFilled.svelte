@@ -2,7 +2,7 @@
 	export let ariaHidden = false;
 	export let width = '23px';
 	export let height = '23px';
-	export let fillColor = '#333333';
+	export let fillColor = 'rgba(var(--black), 1)';
 	export let iconTitle = 'Hide sidebar';
 </script>
 

@@ -796,11 +796,14 @@ ${
 	// Toggle on-screen map elements (excludes "clear filters" and "reset" buttons)
 	let mapElementsVisible = true;
 
-	// Toggle vis
+	// Toggle (show/hide) vis
 	let toggleVis = false;
 
 	// Toggle inset map
 	let toggleInsetMap = true;
+
+	// Change color of close button icon on hover
+	let fillColor = 'rgba(var(--dark-cerulean), 1)';
 </script>
 
 <!-- Geocoder CSS -->
@@ -831,13 +834,16 @@ ${
 
 	<!-- Button + toggles + legend -->
 	<div class="on-screen-elements-container">
-		<button on:click|stopPropagation={() => (mapElementsVisible = !mapElementsVisible)}
+		<button
+			on:click|stopPropagation={() => (mapElementsVisible = !mapElementsVisible)}
+			on:mouseover={() => (fillColor = 'rgba(var(--dark-cerulean), 0.9)')}
+			on:mouseout={() => (fillColor = 'rgba(var(--dark-cerulean), 1)')}
 			>Map Features
 			{#if mapElementsVisible}
 				<CloseFilledIcon
 					width={'20px'}
 					height={'20px'}
-					fillColor={'rgba(var(--dark-cerulean), 1)'}
+					{fillColor}
 					iconTitle={'Hide the option to show neighborhood and county borders and the color legend for the map markers'}
 				/>
 			{:else}
@@ -939,8 +945,7 @@ ${
 
 				<Draggable>
 					<div class="vis-element-container">
-						<Vis />
-						<button on:click={() => (toggleVis = !toggleVis)} class="close-vis">✕</button>
+						<Vis bind:toggleVis />
 					</div>
 				</Draggable>
 			{/if}
@@ -1161,14 +1166,6 @@ ${
 		/* stack child divs vertically */
 		display: flex;
 		flex-direction: column;
-	}
-
-	.close-vis {
-		padding: 0;
-		position: absolute;
-		top: 1px;
-		right: 5px;
-		font-weight: 600;
 	}
 
 	/* .vis-element-container > .footer {
