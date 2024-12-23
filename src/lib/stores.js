@@ -90,3 +90,10 @@ export let filteredDirectory = derived(
 		}
 	}
 );
+
+// Get number of outlets in directory based on filteredDirectory
+// export let filteredOutletCount = derived([directoryData], ([$filteredDirectory]) => {
+// 	if ($filteredDirectory.features) {
+// 		return $filteredDirectory.features.length;
+// 	}
+// });
