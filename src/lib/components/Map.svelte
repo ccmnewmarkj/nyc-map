@@ -799,6 +799,9 @@ ${
 	// Toggle (show/hide) vis
 	let toggleVis = false;
 
+	// Toggle option to drag vis panel
+	let toggleDrag = false;
+
 	// Toggle inset map
 	let toggleInsetMap = true;
 
@@ -943,11 +946,17 @@ ${
 					>
 				</div>
 
-				<Draggable>
+				{#if toggleDrag}
+					<Draggable>
+						<div class="vis-element-container">
+							<Vis bind:toggleVis bind:toggleDrag />
+						</div>
+					</Draggable>
+				{:else}
 					<div class="vis-element-container">
-						<Vis bind:toggleVis />
+						<Vis bind:toggleVis bind:toggleDrag />
 					</div>
-				</Draggable>
+				{/if}
 			{/if}
 		</div>
 	{/if}
@@ -1091,24 +1100,27 @@ ${
 		row-gap: 12px;
 	}
 
-	.vis-container,
-	.inset-container,
-	.reset-map-container {
+	/* button-specific containers */
+	.reset-map-container,
+	.vis-btn-container,
+	.inset-btn-container {
 		margin-left: auto;
 		width: fit-content;
-	}
-
-	/* reset map button */
-	.reset-map-container {
-		/* position: absolute; */
-		/* bottom: 100px; */
 		display: flex;
 		flex-direction: column;
+		align-items: end;
 		text-align: right;
+		text-transform: uppercase;
 		line-height: 1;
 		font-size: 0.75rem;
 		font-weight: 600;
 		font-family: 'Roboto Condensed', sans-serif;
+	}
+
+	/* reset map button */
+	.reset-map-container {
+		position: relative;
+		bottom: 140px;
 		text-shadow:
 			0 0 5px #fff,
 			0 0 10px #fff,
@@ -1126,17 +1138,21 @@ ${
 
 	.vis-btn-container,
 	.inset-btn-container {
-		display: flex;
-		flex-direction: column;
-		align-items: end;
+		/* Prevent vis window from jumping when toggling between dragging option */
+		position: absolute;
+		/* Reserve space for the buttons */
+		/* width: 75px; */
+		/* height: 60px; */
+		right: 0;
+	}
 
-		/* text */
-		font-family: 'Roboto Condensed', sans-serif;
-		font-size: 0.75rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		text-align: right;
-		line-height: 1;
+	.vis-btn-container {
+		bottom: 65px;
+	}
+
+	.inset-btn-container {
+		bottom: 5px;
+		width: 75px;
 	}
 
 	.vis-btn-container button,
@@ -1144,20 +1160,18 @@ ${
 		background: rgba(var(--black), 1);
 		border-radius: 20px;
 		padding: 5px 5px 3px 5px;
-		width: fit-content;
+		/* width: fit-content; */
 		box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1); /* outer glow */
 	}
 
 	.vis-element-container {
 		position: absolute;
-		right: 50px;
-		bottom: 50px;
+		right: 60px;
+		bottom: 90px;
 		background-color: rgba(var(--white), 1);
 		border-radius: 8px;
 		box-shadow: 0 0 5px rgba(var(--black), 0.2);
 		border: 0.5px solid rgba(var(--dark-cerulean), 0.75);
-		/* border-top: 2px solid rgba(var(--cerulean), 1);
-		border-bottom: 2px solid rgba(var(--gold), 1); */
 		width: var(--vis-container-width);
 		height: var(--vis-container-height);
 		overflow: hidden;
@@ -1215,7 +1229,7 @@ ${
 	/* map inset */
 	#mapInset {
 		bottom: -65px;
-		right: 75px;
+		right: 60px;
 		height: 150px;
 		width: 200px;
 		position: absolute;
@@ -1226,7 +1240,7 @@ ${
 
 	@media (max-width: 500px) {
 		.vis-container,
-		#mapInset {
+		.inset-container {
 			display: none;
 		}
 	}
