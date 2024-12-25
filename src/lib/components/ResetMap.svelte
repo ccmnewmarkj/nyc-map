@@ -31,9 +31,8 @@
 		width: 30px;
 		height: 30px;
 		/* box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15); */
-		border: 0px solid rgba(0, 0, 0, 0.25);
-		border: 1px solid rgba(249, 232, 151, 1);
+		border: 1px solid rgba(var(--black), 0.2);
 		cursor: pointer;
-		box-shadow: 0 0 4px 4px rgba(249, 232, 151, 0.55); /* outer glow */
+		box-shadow: 0 0 4px 4px rgba(var(--black), 0.05);
 	}
 </style>
