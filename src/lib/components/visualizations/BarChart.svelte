@@ -2,6 +2,9 @@
 	import { scaleBand, scaleLinear } from 'd3-scale';
 	import { max } from 'd3-array';
 
+	// Import components
+	import Table from '$lib/components/visualizations/Table.svelte';
+
 	// Import stores
 	import { filteredDirectory, directoryData } from '$lib/stores.js';
 
@@ -14,6 +17,7 @@
 		return Math.ceil(number / 5) * 5;
 	}
 
+	// Use format counts from unfiltered directory to establish x-axis width
 	let originalitemCount = roundUp(
 		max(
 			Object.values(
@@ -46,56 +50,63 @@
 		...new Set($directoryData.features?.map((outlet) => outlet.properties[dataField]))
 	]);
 
-	$: yScale = scaleBand().domain(sortedItemLabels).range([0, innerHeight]).padding(0.5);
 	$: xScale = scaleLinear().domain([0, originalitemCount]).range([0, innerWidth]);
+	$: yScale = scaleBand().domain(sortedItemLabels).range([0, innerHeight]).padding(0.5);
+
+	// Swap to table version of data
+	export let toggleTable;
+
+	// Import transition
+	import { fade } from 'svelte/transition';
 </script>
 
-<div id="bar-chart-container">
-	<svg id="bar-chart" width={chartWidth} height={chartHeight}>
-		<g transform="translate({margin.left}, {margin.top})">
-			{#each sortedItemLabels as item}
-				<rect
-					x={0}
-					y={yScale(item)}
-					width={xScale(itemCount[item] || 0)}
-					height={yScale.bandwidth()}
-					stroke="rgba(var(--gold), 1)"
-					stroke-width="0.75"
-					fill="rgba(var(--gold), 0.65)"
-				/>
+{#if !toggleTable}
+	<div id="bar-chart-container" in:fade>
+		<svg id="bar-chart" width={chartWidth} height={chartHeight}>
+			<g transform="translate({margin.left}, {margin.top})">
+				{#each sortedItemLabels as item}
+					<rect
+						x={0}
+						y={yScale(item)}
+						width={xScale(itemCount[item] || 0)}
+						height={yScale.bandwidth()}
+						stroke="rgba(var(--gold), 1)"
+						stroke-width="0.75"
+						fill="rgba(var(--gold), 0.65)"
+					/>
 
-				<!-- Count labels -->
-				<text
-					x={(itemCount[item] || 0) === 0
-						? xScale(itemCount[item] || 0)
-						: xScale(itemCount[item] || 0) + 5}
-					y={yScale(item) + yScale.bandwidth() / 2}
-					text-anchor="start"
-					alignment-baseline="middle"
-					fill="rgba(var(--gold), 1)">{itemCount[item] || 0}</text
-				>
+					<!-- Count labels -->
+					<text
+						x={(itemCount[item] || 0) === 0
+							? xScale(itemCount[item] || 0)
+							: xScale(itemCount[item] || 0) + 5}
+						y={yScale(item) + yScale.bandwidth() / 2}
+						text-anchor="start"
+						alignment-baseline="middle"
+						fill="rgba(var(--gold), 1)">{itemCount[item] || 0}</text
+					>
 
-				<!-- item labels -->
-				<text
-					x={0}
-					y={yScale(item) + yScale.bandwidth() / 2 - 14}
-					text-anchor="start"
-					alignment-baseline="middle"
-					fill="rgba(var(--gold), 1)"
-					class="item-labels">{item}</text
-				>
-				<title>{item}: {itemCount[item] || 0}</title>
-			{/each}
-		</g>
-	</svg>
-</div>
+					<!-- item labels -->
+					<text
+						x={0}
+						y={yScale(item) + yScale.bandwidth() / 2 - 14}
+						text-anchor="start"
+						alignment-baseline="middle"
+						fill="rgba(var(--gold), 1)"
+						class="item-labels">{item}</text
+					>
+					<title>{item}: {itemCount[item] || 0}</title>
+				{/each}
+			</g>
+		</svg>
+	</div>
+{:else}
+	<div id="table-container" in:fade>
+		<Table data={itemCount} filter={'Format'} />
+	</div>
+{/if}
 
 <style>
-	#bar-chart {
-		display: block;
-		margin: 0 auto;
-	}
-
 	.item-labels {
 		font-size: 12px;
 		fill: rgba(var(--black), 1);
@@ -103,5 +114,10 @@
 
 	rect {
 		transition: all 0.5s;
+	}
+
+	#bar-chart-container,
+	#table-container {
+		padding: 3px;
 	}
 </style>

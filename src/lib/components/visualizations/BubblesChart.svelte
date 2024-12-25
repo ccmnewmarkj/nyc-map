@@ -1,8 +1,9 @@
 <script>
 	import { hierarchy, pack } from 'd3-hierarchy';
 
-	// Import component
+	// Import components
 	import BubblesTooltip from '$lib/components/visualizations/BubblesTooltip.svelte';
+	import Table from '$lib/components/visualizations/Table.svelte';
 
 	// Import stores
 	import { filteredDirectory } from '$lib/stores.js';
@@ -32,7 +33,7 @@
 
 	let nodes = [];
 
-	const plotPack = pack().size([width, height]).padding(1.5);
+	const plotPack = pack().size([width, height]).padding(2.5);
 
 	$: if (itemCount) {
 		const root = hierarchy({ children: itemCount }).sum((d) => d.value);
@@ -44,37 +45,49 @@
 
 	// Prop from tooltip, to add to label (ethnicity, language)
 	export let category;
+
+	// Swap to table version of data
+	export let toggleTable;
+
+	// Import transition
+	import { fade } from 'svelte/transition';
 </script>
 
-<svg {width} {height}>
-	{#each nodes as node}
-		<g
-			transform={`translate(${node.x - 75},${node.y + 0})`}
-			on:mouseover={() => {
-				hoverData = node;
-			}}
-			on:mouseleave={() => (hoverData = null)}
-		>
-			<circle r={node.r}></circle>
+{#if !toggleTable}
+	<svg {width} {height}>
+		{#each nodes as node}
+			<g
+				transform={`translate(${node.x - 75},${node.y + 0})`}
+				on:mouseover={() => {
+					hoverData = node;
+				}}
+				on:mouseleave={() => (hoverData = null)}
+			>
+				<circle r={node.r}></circle>
 
-			<text dy="0.3em">
-				<!-- Add label to bubble if bubble radius is certain width -->
-				{#if node.r >= 15}
-					<!-- Split label onto two lines if it contains more than one word -->
-					{#if node.data.name.split(' ').length > 1}
-						<tspan x="0" dy="0">{node.data.name.split(' ')[0]}</tspan>
-						<tspan x="0" dy="0.75rem">{node.data.name.split(' ').slice(1).join(' ')}</tspan>
-					{:else}
-						{node.data.name}
+				<text dy="0.3em">
+					<!-- Add label to bubble if bubble radius is certain width -->
+					{#if node.r >= 15}
+						<!-- Split label onto two lines if it contains more than one word -->
+						{#if node.data.name.split(' ').length > 1}
+							<tspan x="0" dy="0">{node.data.name.split(' ')[0]}</tspan>
+							<tspan x="0" dy="0.75rem">{node.data.name.split(' ').slice(1).join(' ')}</tspan>
+						{:else}
+							{node.data.name}
+						{/if}
 					{/if}
-				{/if}
-			</text>
-		</g>
-	{/each}
-</svg>
+				</text>
+			</g>
+		{/each}
+	</svg>
 
-{#if hoverData}
-	<BubblesTooltip {category} data={hoverData} />
+	{#if hoverData}
+		<BubblesTooltip {category} data={hoverData} />
+	{/if}
+{:else}
+	<div id="table-container" in:fade>
+		<Table data={itemCount} filter={category} />
+	</div>
 {/if}
 
 <style>
@@ -82,15 +95,17 @@
 		display: block;
 		margin: auto;
 	}
+
 	circle,
 	text {
 		cursor: pointer;
 	}
 
 	circle {
-		fill: rgba(var(--gold), 0.8);
-		/* stroke: rgba(var(--gold), 1);
-		stroke-width: 1.1; */
+		fill: rgba(var(--gold), 0.75);
+		stroke: rgba(var(--gold), 1);
+		stroke-width: 1;
+		transition: all 0.75s;
 	}
 
 	text {
@@ -98,5 +113,9 @@
 		font-size: 12px;
 		fill: rgba(var(--black), 1);
 		text-anchor: middle;
+	}
+
+	#table-container {
+		padding: 3px;
 	}
 </style>
