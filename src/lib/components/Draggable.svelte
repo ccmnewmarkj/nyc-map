@@ -1,6 +1,6 @@
 <script>
-	export let left = 40;
-	export let top = 25;
+	export let left = 0;
+	export let top = 0;
 
 	let dragging = false;
 
@@ -23,7 +23,7 @@
 <div
 	on:mousedown={startDragging}
 	style="margin-left: {left}px; margin-top: {top}px;"
-	class="draggable"
+	class="draggable-element"
 >
 	<slot />
 </div>
@@ -31,7 +31,7 @@
 <svelte:window on:mouseup={stopDragging} on:mousemove={dragElement} />
 
 <style>
-	.draggable {
+	.draggable-element {
 		position: absolute;
 		user-select: none;
 		cursor: move;
