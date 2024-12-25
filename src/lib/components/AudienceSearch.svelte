@@ -158,7 +158,7 @@
 		},
 		{
 			value: 'theme',
-			text: 'Theme'
+			text: 'Subject'
 		}
 	];
 
@@ -343,7 +343,7 @@
 					--item-hover-bg="rgba(var(--cerulean), 0.1)"
 					id="audience-search"
 					items={themeList}
-					placeholder="Select theme"
+					placeholder="Select subject"
 					multiple
 					clearable={false}
 					bind:value={valueTheme}
