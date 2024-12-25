@@ -14,8 +14,12 @@
 	<p>
 		This map of <span style="font-weight: 800;"
 			>community media outlets in the New York City metro area</span
-		>, includes {$outletCount}
-		outlets serving communities of color, immigrants, and hyperlocal audiences. Accompanying the
+		>, includes
+		<strong
+			>{$outletCount}
+			outlets</strong
+		>
+		serving communities of color, immigrants, and hyperlocal audiences. Accompanying the
 		<strong
 			><a href="https://directory-ccm.journalism.cuny.edu" target="_blank"
 				>Many Voices, One City directory</a
@@ -103,6 +107,7 @@
 		background-color: rgba(var(--light-gray), 0.5);
 		font-size: 0.85rem;
 		border-top: 0.5px solid rgba(var(--gray), 0.5);
+		box-shadow: rgba(var(--gray), 0.15) 0px 3px 6px -2px inset;
 	}
 
 	@media only screen and (max-device-width: 512px) {

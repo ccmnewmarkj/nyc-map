@@ -462,20 +462,3 @@ hr.outlet-card-divider {
 	font-family: 'Roboto Condensed', sans-serif;
 	font-weight: 800;
 } */
-
-/* map inset */
-#mapInset {
-	bottom: -65px;
-	right: 75px;
-	height: 150px;
-	width: 200px;
-	position: absolute;
-	pointer-events: none;
-	border-radius: 4px;
-}
-
-@media (max-width: 500px) {
-	#mapInset {
-		display: none;
-	}
-}
