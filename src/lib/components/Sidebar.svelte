@@ -3,7 +3,7 @@
 	import PanelBtns from '$lib/components/PanelBtns.svelte';
 	// panels
 	import AboutPanel from '$lib/components/panels/About.svelte';
-	import SearchPanel from '$lib/components/panels/Filters.svelte';
+	import SearchPanel from '$lib/components/panels/Search.svelte';
 	import OutletPanel from '$lib/components/panels/Outlets.svelte';
 
 	// Import icon components
