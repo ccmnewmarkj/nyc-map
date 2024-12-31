@@ -92,6 +92,7 @@ body {
 	color: rgba(var(--black), 1);
 	background-color: rgba(var(--white), 1);
 	-webkit-font-smoothing: antialiased;
+	overflow: hidden;
 }
 
 a {

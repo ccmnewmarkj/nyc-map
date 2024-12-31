@@ -21,6 +21,8 @@
 </script>
 
 <div
+	role="dialog"
+	aria-label="Drag window"
 	on:mousedown={startDragging}
 	style="margin-left: {left}px; margin-top: {top}px;"
 	class="draggable-element"
