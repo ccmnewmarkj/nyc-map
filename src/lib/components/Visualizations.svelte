@@ -112,7 +112,7 @@
 	<span
 		><button class="table-btn" on:click={() => (toggleTable = !toggleTable)}>
 			{#if !toggleTable}
-				<TableIcon />
+				<span><TableIcon /> Table view</span>
 			{:else}
 				<BarChartIcon />
 			{/if}
@@ -183,26 +183,28 @@
 		overflow-y: auto; /* Enables vertical scrolling */
 		overflow-x: hidden; /* Prevents horizontal scrolling */
 		box-shadow: rgba(111, 196, 236, 0.75) 0px 3px 6px -2px inset;
+		background-color: rgba(var(--off-white), 1);
 		/* pointer-events: all;
 		user-select: text;
 		cursor: text; */
+
+		/* fill up window height regardless of amount of content */
+		height: 100%;
+		/* display: flex;
+		flex: 1; */
 	}
 
-	.vis-element:has(p) {
+	/* .vis-element {
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		flex: 1;
-	}
-	/* 
-	.vis-element:has(table) {
-		display: flex;
-		flex: 1;
 	} */
 
+	/* clear filter msg */
 	.vis-element > p {
-		margin-top: -2rem;
-		padding: 0 10px 10px;
+		padding: 10px;
 		text-align: center;
 		font-family: 'DM Sans', sans-serif;
 	}
@@ -215,10 +217,22 @@
 		padding: 0 5px;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 	}
 
 	/* .footer > p {
 		font-size: 0.7rem;
 		padding: 4px 8px;
 	} */
+
+	/* footer buttons */
+	.table-btn > span {
+		display: flex;
+		align-items: end;
+		gap: 3px;
+		font-family: 'Roboto Condensed', 'sans-serif;';
+		text-transform: uppercase;
+		font-size: 0.7rem;
+		font-weight: 800;
+	}
 </style>

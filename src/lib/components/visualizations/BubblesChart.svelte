@@ -8,7 +8,7 @@
 	// Import stores
 	import { filteredDirectory } from '$lib/stores.js';
 
-	let width = 400;
+	let width = 250;
 	let height = 200;
 
 	// ex. Ethnicity, language
@@ -57,7 +57,7 @@
 	<svg {width} {height}>
 		{#each nodes as node}
 			<g
-				transform={`translate(${node.x - 75},${node.y + 0})`}
+				transform={`translate(${node.x - 10},${node.y})`}
 				on:mouseover={() => {
 					hoverData = node;
 				}}

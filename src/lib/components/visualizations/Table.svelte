@@ -3,7 +3,7 @@
 	export let filter;
 
 	// Add column names to data (if Format filter):
-	const dataFormatted = Object.entries(data)
+	$: dataFormatted = Object.entries(data)
 		.map(([key, value]) => ({ [filter]: key, Count: value }))
 		// Sort by count in descending order:
 		.sort((a, b) => b.Count - a.Count);
@@ -13,7 +13,7 @@
 <table>
 	<thead>
 		<tr>
-			<th style="width: 3px;"></th>
+			<th></th>
 			<th>{filter}</th>
 			<th style="width: 85px;"># of Outlets</th>
 		</tr>
@@ -42,8 +42,7 @@
 		text-align: left;
 		font-family: 'Roboto Condensed', sans-serif;
 		text-transform: uppercase;
-		/* border-bottom: 1.5px solid rgba(var(--black), 1); */
-		background-color: rgba(var(--yellow-orange), 0.8);
+		border-bottom: 1px solid rgba(var(--black), 1);
 		font-size: 0.8rem;
 	}
 
@@ -59,14 +58,15 @@
 	}
 
 	/* Add gray line to bottom of table */
-	tbody > tr:last-child {
+	/* tbody > tr:last-child {
 		border-bottom: 1px solid rgba(var(--gray), 0.5);
-	}
+	} */
 
 	/* Format row # column */
 	tbody > tr > td:first-child {
 		color: rgba(var(--gray), 0.75);
 		font-family: 'Roboto Condensed', sans-serif;
+		padding-right: 0;
 	}
 
 	/* Make count values bold */
@@ -87,11 +87,11 @@
 	}
 
 	/* Add rounded corners to top of header row */
-	thead th:first-child {
+	/* thead th:first-child {
 		border-top-left-radius: 5px;
 	}
 
 	thead th:last-child {
 		border-top-right-radius: 5px;
-	}
+	} */
 </style>

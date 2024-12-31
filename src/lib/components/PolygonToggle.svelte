@@ -115,12 +115,13 @@
 	/* switch */
 	label input[role='switch'] ~ .toggle-state > .toggle-container > .switch {
 		position: relative;
-		top: 1.5px;
+		top: 2px;
 		left: 3px;
 		display: inline-block;
 		border-radius: 9px;
 		width: 14px;
 		height: 14px;
+		border: 1px solid rgba(var(--gray), 1);
 		background: rgba(var(--white), 1);
 		-webkit-transition: 0.4s;
 		transition: 0.4s;

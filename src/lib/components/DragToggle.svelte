@@ -31,15 +31,16 @@
 	label {
 		display: flex;
 		align-items: center;
-		padding: 4px 0 4px;
+		/* padding: 2px 0; */
 		cursor: pointer;
 		font-family: 'Roboto Condensed', 'sans-serif;';
 	}
 
 	label > .toggle-text {
 		margin-right: 0.2rem;
+		margin-top: 1px;
 		text-transform: uppercase;
-		font-size: 0.8rem;
+		font-size: 0.7rem;
 		font-weight: 800;
 		text-shadow:
 			0 0 5px rgba(var(--white), 1),
@@ -63,8 +64,8 @@
 		border: 1.5px solid rgba(var(--white), 1);
 		background-color: rgba(204, 204, 204, 0.75);
 		/* background-color: rgba(var(--blue-gray), 0.5); */
-		width: 42px;
-		height: 21px;
+		width: 40px;
+		height: 18px;
 		border-radius: 10px;
 	}
 
@@ -77,12 +78,13 @@
 	/* switch */
 	label input[role='switch'] ~ .toggle-state > .toggle-container > .switch {
 		position: relative;
-		top: 1.5px;
-		left: 3px;
+		top: 0;
+		left: 2px;
 		display: inline-block;
 		border-radius: 9px;
-		width: 14px;
-		height: 14px;
+		width: 12px;
+		height: 12px;
+		border: 1px solid rgba(var(--gray), 1);
 		background: rgba(var(--white), 1);
 		-webkit-transition: 0.4s;
 		transition: 0.4s;
@@ -93,20 +95,20 @@
 		font-size: 0.7rem;
 		text-transform: uppercase;
 		position: absolute;
-		top: 2.5px;
-		right: 3px;
+		top: 1px;
+		right: 4px;
 	}
 
 	/* switch on/off label when checked */
 	label input[role='switch'] ~ .toggle-state > .toggle-container > .active {
 		right: auto;
-		left: 4px;
+		left: 5px;
 		color: rgba(var(--white), 1);
 	}
 
 	/* switch checked */
 	label input[role='switch']:checked ~ .toggle-state > .toggle-container > .switch {
-		left: 22px;
+		left: 23px;
 	}
 
 	/* label:focus-within {
