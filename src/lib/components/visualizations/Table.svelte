@@ -19,9 +19,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each filter === 'Format' ? dataFormatted : data
-					.map(({ name, value }) => ({ [filter]: name, Count: value }))
-					.sort((a, b) => b.Count - a.Count) as row, index}
+		{#each dataFormatted as row, index}
 			<tr>
 				<td>{index + 1}</td>
 				<td>{row[filter]}</td>

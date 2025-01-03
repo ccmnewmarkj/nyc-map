@@ -3,7 +3,7 @@
 	aria-label="Go to bar chart view"
 	xmlns="http://www.w3.org/2000/svg"
 	height="18px"
-	viewBox="0 -960 960 960"
+	viewBox="0 -1060 960 960"
 	width="18px"
 	fill="#5f6368"
 	><path

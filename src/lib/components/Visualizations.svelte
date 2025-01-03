@@ -1,7 +1,6 @@
 <script>
 	// Import vis components
 	import BarChart from '$lib/components/visualizations/BarChart.svelte';
-	import BubblesChart from '$lib/components/visualizations/BubblesChart.svelte';
 	import DragToggle from '$lib/components/DragToggle.svelte';
 
 	// Import icon components
@@ -77,21 +76,21 @@
 
 <div class="vis-element" in:fade={{ duration: 100 }}>
 	{#if toggleFormatChart && !$selectedFormat}
-		<BarChart {toggleTable} dataField={'PRIMARY FORMAT'} />
+		<BarChart {toggleTable} category={'format'} dataField={'PRIMARY FORMAT'} />
 	{/if}
 	{#if toggleFormatChart && $selectedFormat}
 		<p>To see the chart, clear the <span class="tab">Format</span> filter.</p>
 	{/if}
 
 	{#if toggleEthnicityChart && !$selectedAudience?.ethnicity}
-		<BubblesChart {toggleTable} category={'Ethnicity'} dataField={'TARGET ETHNICITY'} />
+		<BarChart {toggleTable} category={'ethnicity'} dataField={'TARGET ETHNICITY'} />
 	{/if}
 	{#if toggleEthnicityChart && $selectedAudience?.ethnicity}
 		<p>To see the chart, clear the <span class="tab">Ethnicity</span> filter.</p>
 	{/if}
 
 	{#if toggleLanguageChart && !$selectedLanguage}
-		<BubblesChart {toggleTable} category={'Language'} dataField={'PRIMARY LANGUAGE'} />
+		<BarChart {toggleTable} category={'language'} dataField={'PRIMARY LANGUAGE'} />
 	{/if}
 	{#if toggleLanguageChart && $selectedLanguage}
 		<p>To see the chart, clear the <span class="tab">Language</span> filter.</p>
@@ -114,7 +113,7 @@
 			{#if !toggleTable}
 				<span><TableIcon /> Table view</span>
 			{:else}
-				<BarChartIcon />
+				<span><BarChartIcon /> Chart view</span>
 			{/if}
 		</button></span
 	>

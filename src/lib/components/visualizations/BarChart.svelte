@@ -4,6 +4,7 @@
 
 	// Import components
 	import Table from '$lib/components/visualizations/Table.svelte';
+	import VisHeader from '$lib/components/visualizations/VisHeader.svelte';
 
 	// Import stores
 	import { filteredDirectory, directoryData } from '$lib/stores.js';
@@ -17,41 +18,76 @@
 		return Math.ceil(number / 5) * 5;
 	}
 
-	// Use format counts from unfiltered directory to establish x-axis width
-	let originalitemCount = roundUp(
-		max(
-			Object.values(
-				$directoryData.features?.reduce((acc, outlet) => {
-					const item = outlet.properties[dataField];
+	// Use max of format counts (rounded up) from unfiltered directory to establish x-axis width
+	let originalItemCount = $directoryData.features?.reduce((acc, outlet) => {
+		const items = outlet.properties[dataField];
+		if (Array.isArray(items)) {
+			items.forEach((item) => {
+				if (item !== undefined) {
 					acc[item] = (acc[item] || 0) + 1;
-					return acc;
-				}, {})
-			)
-		)
-	);
+				}
+			});
+		} else if (items !== undefined) {
+			acc[items] = (acc[items] || 0) + 1;
+		}
+		return acc;
+	}, {});
+	let originalitemCountMax = roundUp(max(Object.values(originalItemCount)));
 
 	// Get count of each item
 	$: itemCount = $filteredDirectory.features?.reduce((acc, outlet) => {
-		const item = outlet.properties[dataField];
-		acc[item] = (acc[item] || 0) + 1;
+		const items = outlet.properties[dataField];
+		if (Array.isArray(items)) {
+			items.forEach((item) => {
+				if (item !== undefined) {
+					acc[item] = (acc[item] || 0) + 1;
+				}
+			});
+		} else if (items !== undefined) {
+			acc[items] = (acc[items] || 0) + 1;
+		}
 		return acc;
 	}, {});
+	// Format:
+	// $: itemCount = $filteredDirectory.features?.reduce((acc, outlet) => {
+	// 	const item = outlet.properties[dataField];
+	// 	acc[item] = (acc[item] || 0) + 1;
+	// 	return acc;
+	// }, {});
 
 	// Sort itemLabels based on itemCount
 	$: sortedItemLabels = itemLabels[0].sort((a, b) => (itemCount[b] || 0) - (itemCount[a] || 0));
 
-	const margin = { top: 0, right: 30, bottom: 0, left: 2 };
-	const chartHeight = 200;
-	const chartWidth = 225;
-	const innerWidth = chartWidth - margin.left - margin.right;
-	const innerHeight = chartHeight - margin.top - margin.bottom;
+	const margin = { top: 20, right: 10, bottom: 0, left: 2 };
 
-	let itemLabels = Array([
-		...new Set($directoryData.features?.map((outlet) => outlet.properties[dataField]))
+	export let category;
+
+	$: itemLabels = Array([
+		...new Set(
+			$directoryData?.features
+				// .filter((item) => {
+				// 	if (category === 'ethnicity' || category === 'language') {
+				// 		return Object.keys(itemCount).includes(item);
+				// 	}
+				// 	return true;
+				// })
+				.flatMap((outlet) => outlet.properties[dataField])
+				.filter((item) => item !== undefined)
+		)
 	]);
 
-	$: xScale = scaleLinear().domain([0, originalitemCount]).range([0, innerWidth]);
-	$: yScale = scaleBand().domain(sortedItemLabels).range([0, innerHeight]).padding(0.5);
+	// let itemLabels = Array([
+	// 	...new Set($directoryData.features?.map((outlet) => outlet.properties[dataField]))
+	// ]);
+
+	$: chartHeight = itemLabels[0]?.length * 40;
+	//itemLabels[0]?.length > 1 ? itemLabels[0]?.length * 40 : itemLabels[0]?.length * 50;
+	const chartWidth = 225;
+	const innerWidth = chartWidth - margin.left - margin.right;
+	$: innerHeight = chartHeight - margin.top - margin.bottom;
+
+	$: xScale = scaleLinear().domain([0, originalitemCountMax]).range([0, innerWidth]);
+	$: yScale = scaleBand().domain(sortedItemLabels).range([0, innerHeight]).paddingInner(0.55);
 
 	// Swap to table version of data
 	export let toggleTable;
@@ -60,11 +96,22 @@
 	import { fade } from 'svelte/transition';
 </script>
 
+<VisHeader filterCategory={category} />
 {#if !toggleTable}
 	<div id="bar-chart-container" in:fade>
 		<svg id="bar-chart" width={chartWidth} height={chartHeight}>
 			<g transform="translate({margin.left}, {margin.top})">
 				{#each sortedItemLabels as item}
+					<!-- Gray background bars, at width of unfiltered directory format counts -->
+					<rect
+						x={0}
+						y={yScale(item)}
+						width={xScale(originalItemCount[item] || 0)}
+						height={yScale.bandwidth()}
+						fill="rgba(var(--light-gray), 1)"
+					/>
+
+					<!-- Filtered format bars -->
 					<rect
 						x={0}
 						y={yScale(item)}
@@ -79,11 +126,14 @@
 					<text
 						x={(itemCount[item] || 0) === 0
 							? xScale(itemCount[item] || 0)
-							: xScale(itemCount[item] || 0) + 5}
-						y={yScale(item) + yScale.bandwidth() / 2}
+							: xScale(itemCount[item]) > innerWidth - 10
+								? xScale(itemCount[item] || 0) - 25
+								: xScale(itemCount[item] || 0) + 5}
+						y={yScale(item) + yScale.bandwidth() / 2 + 1}
 						text-anchor="start"
 						alignment-baseline="middle"
-						fill="rgba(var(--gold), 1)">{itemCount[item] || 0}</text
+						fill="rgba(var(--black), 1)"
+						class="count-labels">{itemCount[item] || 0}</text
 					>
 
 					<!-- item labels -->
@@ -102,22 +152,28 @@
 	</div>
 {:else}
 	<div id="table-container" in:fade>
-		<Table data={itemCount} filter={'Format'} />
+		<Table data={itemCount} filter={category} />
 	</div>
 {/if}
 
 <style>
+	#bar-chart-container,
+	#table-container {
+		padding: 0 5px;
+	}
+
+	.count-labels {
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+
 	.item-labels {
-		font-size: 12px;
+		font-size: 0.85rem;
 		fill: rgba(var(--black), 1);
+		font-family: 'DM Sans', sans-serif;
 	}
 
 	rect {
 		transition: all 0.5s;
-	}
-
-	#bar-chart-container,
-	#table-container {
-		padding: 3px;
 	}
 </style>
