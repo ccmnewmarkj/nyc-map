@@ -1172,8 +1172,8 @@ ${
 		border-radius: 8px;
 		box-shadow: 0 0 5px rgba(var(--black), 0.2);
 		border: 0.5px solid rgba(var(--dark-cerulean), 0.75);
-		width: var(--vis-container-width);
-		height: var(--vis-container-height);
+		width: 250px;
+		height: 290px;
 		overflow: hidden;
 		z-index: 10;
 
