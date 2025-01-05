@@ -55,9 +55,6 @@
 	// 	return acc;
 	// }, {});
 
-	// Sort itemLabels based on itemCount
-	$: sortedItemLabels = itemLabels[0].sort((a, b) => (itemCount[b] || 0) - (itemCount[a] || 0));
-
 	const margin = { top: 20, right: 10, bottom: 0, left: 2 };
 
 	export let category;
@@ -65,12 +62,6 @@
 	$: itemLabels = Array([
 		...new Set(
 			$directoryData?.features
-				// .filter((item) => {
-				// 	if (category === 'ethnicity' || category === 'language') {
-				// 		return Object.keys(itemCount).includes(item);
-				// 	}
-				// 	return true;
-				// })
 				.flatMap((outlet) => outlet.properties[dataField])
 				.filter((item) => item !== undefined)
 		)
@@ -80,9 +71,11 @@
 	// 	...new Set($directoryData.features?.map((outlet) => outlet.properties[dataField]))
 	// ]);
 
-	$: chartHeight = itemLabels[0]?.length * 40;
-	//itemLabels[0]?.length > 1 ? itemLabels[0]?.length * 40 : itemLabels[0]?.length * 50;
+	// Sort itemLabels based on itemCount
+	$: sortedItemLabels = itemLabels[0].sort((a, b) => (itemCount[b] || 0) - (itemCount[a] || 0));
+
 	const chartWidth = 225;
+	$: chartHeight = itemLabels[0]?.length * 40;
 	const innerWidth = chartWidth - margin.left - margin.right;
 	$: innerHeight = chartHeight - margin.top - margin.bottom;
 
