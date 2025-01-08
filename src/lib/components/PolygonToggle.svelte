@@ -35,9 +35,10 @@
 	aria-label={checked ? `Hide boundaries for ${polygonType}` : `Show boundaries for ${polygonType}`}
 	><span class="toggle-text">Show {polygonType}</span>
 	<input
+		id={polygonType}
+		name={polygonType}
 		type="checkbox"
 		role="switch"
-		id={polygonType}
 		bind:checked
 		on:change={() => {
 			if (checked) {

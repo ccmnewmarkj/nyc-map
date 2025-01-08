@@ -325,22 +325,24 @@
 			</p>
 		{:else}
 			<p>
-				This list of all <span style="font-weight: 600;"
-					>{$outletCount}
-					outlets</span
+				This <strong
+					>list of all {$outletCount}
+					outlets</strong
 				>
 				includes those without a known location and do not appear on the map. Apply filters in the
 				<span class="tab">Search</span> tab to narrow down the list or search for an outlet below.
 			</p>
 		{/if}
 
+		<hr style="margin: 10px 0 0 0; background-color: rgba(var(--gray), 0.25);" />
 		<!-- Search cards by outlet name -->
 		{#if $filteredDirectory.features.length > 1}
 			<div class="search-field">
 				<label for="search-input">Search cards for an outlet name</label>
 				<input
-					type="text"
 					id="search-input"
+					name="search_input"
+					type="text"
 					placeholder="Enter outlet name"
 					bind:value={searchQuery}
 					aria-label="Enter outlet name to find it in the list"
@@ -377,7 +379,7 @@
 				/> icon will take you to the outlet's entry in the Many Voices, One City directory, where you
 				can find information about the staff and audience.
 			{:else}
-				No outlets found. Please try a different search term.
+				No outlets found. Please change your filter selections.
 			{/if}
 		</p>
 		{#each paginatedDirectory as outlet}

@@ -16,7 +16,9 @@
 	class="toggle"
 	aria-label={checked ? `Turn off option to drag the window` : `Turn on option to drag the window`}
 	><span class="toggle-text">Move window</span>
-	<input type="checkbox" role="switch" id={dragName} bind:checked /><span class="toggle-state">
+	<input type="checkbox" role="switch" name={dragName} id={dragName} bind:checked /><span
+		class="toggle-state"
+	>
 		<span class="toggle-container">
 			<span class="text" class:active={checked} aria-hidden="true"
 				>{#if checked}On

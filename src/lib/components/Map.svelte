@@ -841,6 +841,8 @@ ${
 			on:click|stopPropagation={() => (mapElementsVisible = !mapElementsVisible)}
 			on:mouseover={() => (fillColor = 'rgba(var(--dark-cerulean), 0.9)')}
 			on:mouseout={() => (fillColor = 'rgba(var(--dark-cerulean), 1)')}
+			on:focus={() => (fillColor = 'rgba(var(--dark-cerulean), 0.9)')}
+			on:blur={() => (fillColor = 'rgba(var(--dark-cerulean), 1)')}
 			>Map Features
 			{#if mapElementsVisible}
 				<CloseFilledIcon

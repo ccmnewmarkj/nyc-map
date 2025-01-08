@@ -13,9 +13,9 @@
 <table>
 	<thead>
 		<tr>
-			<th></th>
-			<th>{filter}</th>
-			<th style="width: 85px;"># of Outlets</th>
+			<th scope="col"></th>
+			<th scope="col">{filter}</th>
+			<th scope="col" style="width: 85px;"># of Outlets</th>
 		</tr>
 	</thead>
 	<tbody>
