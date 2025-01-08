@@ -88,7 +88,7 @@
 	</p>
 
 	<div class="btn-scroll-container">
-		<button on:click={scrollLeft} class="left" class:active={showLeftButton}>«</button>
+		<button on:click={scrollLeft} class="left {showLeftButton ? 'active' : 'inactive'}">«</button>
 
 		<div class="button-container" bind:this={scrollContainer}>
 			<button
@@ -145,44 +145,49 @@
 			>
 		</div>
 
-		<button on:click={scrollRight} class="right" class:active={showRightButton}>»</button>
+		<button on:click={scrollRight} class="right {showRightButton ? 'active' : 'inactive'}">»</button
+		>
 	</div>
 </div>
 
 <div class="vis-element" in:fade={{ duration: 100 }}>
-	{#if toggleFormatChart && !$selectedFormat}
-		<BarChart {toggleTable} category={'format'} dataField={'PRIMARY FORMAT'} />
-	{/if}
-	{#if toggleFormatChart && $selectedFormat}
-		<p>To see the chart, clear the <span class="tab">Format</span> filter.</p>
-	{/if}
+	{#if $filteredDirectory?.features.length > 0}
+		{#if toggleFormatChart && !$selectedFormat}
+			<BarChart {toggleTable} category={'format'} dataField={'PRIMARY FORMAT'} />
+		{/if}
+		{#if toggleFormatChart && $selectedFormat}
+			<p>To see the chart, clear the <span class="tab">Format</span> filter.</p>
+		{/if}
 
-	{#if toggleEthnicityChart && !$selectedAudience?.ethnicity}
-		<BarChart {toggleTable} category={'ethnicity'} dataField={'TARGET ETHNICITY'} />
-	{/if}
-	{#if toggleEthnicityChart && $selectedAudience?.ethnicity}
-		<p>To see the chart, clear the <span class="tab">Ethnicity</span> filter.</p>
-	{/if}
+		{#if toggleEthnicityChart && !$selectedAudience?.ethnicity}
+			<BarChart {toggleTable} category={'ethnicity'} dataField={'TARGET ETHNICITY'} />
+		{/if}
+		{#if toggleEthnicityChart && $selectedAudience?.ethnicity}
+			<p>To see the chart, clear the <span class="tab">Ethnicity</span> filter.</p>
+		{/if}
 
-	{#if toggleReligionChart && !$selectedAudience?.religion}
-		<BarChart {toggleTable} category={'religion'} dataField={'TARGET RELIGION'} />
-	{/if}
-	{#if toggleReligionChart && $selectedAudience?.religion}
-		<p>To see the chart, clear the <span class="tab">Religion</span> filter.</p>
-	{/if}
+		{#if toggleReligionChart && !$selectedAudience?.religion}
+			<BarChart {toggleTable} category={'religion'} dataField={'TARGET RELIGION'} />
+		{/if}
+		{#if toggleReligionChart && $selectedAudience?.religion}
+			<p>To see the chart, clear the <span class="tab">Religion</span> filter.</p>
+		{/if}
 
-	{#if toggleSubjectChart && !$selectedAudience?.theme}
-		<BarChart {toggleTable} category={'theme'} dataField={'TARGET THEME'} />
-	{/if}
-	{#if toggleSubjectChart && $selectedAudience?.theme}
-		<p>To see the chart, clear the <span class="tab">Subject</span> filter.</p>
-	{/if}
+		{#if toggleSubjectChart && !$selectedAudience?.theme}
+			<BarChart {toggleTable} category={'theme'} dataField={'TARGET THEME'} />
+		{/if}
+		{#if toggleSubjectChart && $selectedAudience?.theme}
+			<p>To see the chart, clear the <span class="tab">Subject</span> filter.</p>
+		{/if}
 
-	{#if toggleLanguageChart && !$selectedLanguage}
-		<BarChart {toggleTable} category={'language'} dataField={'PRIMARY LANGUAGE'} />
-	{/if}
-	{#if toggleLanguageChart && $selectedLanguage}
-		<p>To see the chart, clear the <span class="tab">Language</span> filter.</p>
+		{#if toggleLanguageChart && !$selectedLanguage}
+			<BarChart {toggleTable} category={'language'} dataField={'PRIMARY LANGUAGE'} />
+		{/if}
+		{#if toggleLanguageChart && $selectedLanguage}
+			<p>To see the chart, clear the <span class="tab">Language</span> filter.</p>
+		{/if}
+	{:else}
+		<p>No outlets found. Please change the filter selections.</p>
 	{/if}
 </div>
 
@@ -233,6 +238,7 @@
 
 	/* horizontally scroll buttons */
 	.header > .btn-scroll-container {
+		padding: 0 5px 1px;
 		overflow: hidden;
 
 		display: flex;
@@ -242,10 +248,10 @@
 
 	.header > .btn-scroll-container > button {
 		font-size: 1rem;
-		cursor: auto;
-		user-select: none;
-		color: rgba(var(--white), 1);
 		padding: 0 5px;
+		/* cursor: auto;
+		user-select: none;
+		color: rgba(var(--white), 1); */
 
 		/* position: absolute;
 		top: 50%;
@@ -257,6 +263,10 @@
 		color: rgba(var(--black), 1);
 		cursor: pointer;
 		pointer-events: all;
+	}
+
+	.header > .btn-scroll-container > button.inactive {
+		display: none;
 	}
 
 	.header > .btn-scroll-container > button.left {
