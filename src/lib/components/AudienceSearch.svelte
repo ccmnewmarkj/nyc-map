@@ -287,12 +287,6 @@
 					on:clear={() => {
 						$popup?.remove();
 						$selectedAudience.ethnicity = undefined;
-						// if (valueEthnicity === undefined) {
-						// 	$selectedAudience.ethnicity = undefined;
-						// 	//$filteredDirectory = $directoryData;
-						// } else {
-						// 	$selectedAudience = valueEthnicity.map((d) => d.value);
-						// }
 					}}
 				/>
 			{/if}

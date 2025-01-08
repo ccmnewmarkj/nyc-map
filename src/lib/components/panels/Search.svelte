@@ -77,7 +77,7 @@
 		{#if $filteredDirectory?.features.length === 0}
 			<hr />
 			<div class="error-msg" transition:fade={{ duration: 100 }}>
-				<p style="">No outlets found. Please change your filter selections.</p>
+				<p>No outlets found. Please change the filter selections.</p>
 			</div>
 		{/if}
 

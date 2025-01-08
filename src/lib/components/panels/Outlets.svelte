@@ -379,7 +379,7 @@
 				/> icon will take you to the outlet's entry in the Many Voices, One City directory, where you
 				can find information about the staff and audience.
 			{:else}
-				No outlets found. Please change your filter selections.
+				No outlets found. Please change the filter selections.
 			{/if}
 		</p>
 		{#each paginatedDirectory as outlet}
