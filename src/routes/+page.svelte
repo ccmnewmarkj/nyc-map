@@ -65,7 +65,7 @@
 					};
 					return obj;
 				})
-				.filter((d) => d.properties['STATUS'] === 'Active')
+				.filter((d) => d.properties['STATUS'].includes('Active'))
 				// When sorting only, remove "The ", "La ", or "El " from the beginning of outlet name for alphabetizing
 				.sort((a, b) => {
 					const nameA = a.properties['OUTLET'].replace(/^(The|La|El)\s+/i, '');
@@ -124,6 +124,9 @@
 		// Set to store
 		ntaPolygons.set(nta);
 	});
+
+	// Change color of show sidebar icon on hover
+	let fillColor = 'rgba(var(--black), 1)';
 </script>
 
 <!-- Map -->
@@ -141,8 +144,12 @@
 			aria-label="Show sidebar"
 			class="sidebar-collapsed"
 			on:click|stopPropagation={() => (sidebarVisible = !sidebarVisible)}
+			on:mouseover={() => (fillColor = '#5d5d5d')}
+			on:mouseout={() => (fillColor = 'rgba(var(--black), 1)')}
+			on:focus={() => (fillColor = '#5d5d5d')}
+			on:blur={() => (fillColor = 'rgba(var(--black), 1)')}
 		>
-			<ListIcon />
+			<ListIcon strokeFill={fillColor} />
 		</button>
 	{/if}
 </div>

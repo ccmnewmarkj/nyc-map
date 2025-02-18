@@ -1,5 +1,10 @@
-<!-- Source: https://iconoir.com/ --><svg
-	aria-labelledby="iconTitle"
+<!-- Source: https://iconoir.com/ -->
+<script>
+	export let strokeFill = '#000000';
+</script>
+
+<svg
+	aria-hidden="true"
 	role="img"
 	width="20px"
 	height="20px"
@@ -10,25 +15,25 @@
 	color="#000000"
 	><title id="iconTitle">Show sidebar</title><path
 		d="M22 17.5L18.5 20V15L22 17.5Z"
-		stroke="#000000"
+		stroke={strokeFill}
 		stroke-width="2.1"
 		stroke-linecap="round"
 		stroke-linejoin="round"
 	></path><path
 		d="M2 5L20 5"
-		stroke="#000000"
+		stroke={strokeFill}
 		stroke-width="2.1"
 		stroke-linecap="round"
 		stroke-linejoin="round"
 	></path><path
 		d="M2 11L20 11"
-		stroke="#000000"
+		stroke={strokeFill}
 		stroke-width="2.1"
 		stroke-linecap="round"
 		stroke-linejoin="round"
 	></path><path
 		d="M2 17L14 17"
-		stroke="#000000"
+		stroke={strokeFill}
 		stroke-width="2.1"
 		stroke-linecap="round"
 		stroke-linejoin="round"
