@@ -32,11 +32,14 @@
 	<button
 		class="close-button"
 		aria-label="Hide sidebar"
+		aria-pressed={sidebarVisible}
 		on:click|stopPropagation={() => {
 			sidebarVisible = false;
 		}}
 		on:mouseover={() => (fillColor = '#454545')}
 		on:mouseout={() => (fillColor = 'rgba(var(--black), 1)')}
+		on:focus={() => (fillColor = '#454545')}
+		on:blur={() => (fillColor = 'rgba(var(--black), 1)')}
 	>
 		<CloseFilledIcon {fillColor} />
 	</button>

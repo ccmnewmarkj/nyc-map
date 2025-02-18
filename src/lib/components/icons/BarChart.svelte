@@ -1,6 +1,6 @@
 <!-- Icon from Google Fonts -->
 <svg
-	aria-label="Go to bar chart view"
+	aria-hidden="true"
 	xmlns="http://www.w3.org/2000/svg"
 	height="18px"
 	viewBox="0 -1060 960 960"

@@ -2,13 +2,11 @@
 	export let width = '23px';
 	export let height = '23px';
 	export let fillColor = '#333333';
-	export let iconTitle;
 </script>
 
 <!-- Source: https://iconoir.com/ -->
 <svg
-	role="img"
-	aria-labelledby="iconTitle"
+	aria-hidden="true"
 	{width}
 	{height}
 	viewBox="0 0 24 24"

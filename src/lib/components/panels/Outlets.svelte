@@ -199,7 +199,8 @@
 
 								$popup?.remove();
 								$map.getSource('outlets').setData($filteredDirectory);
-							}}>×</button
+							}}
+							aria-label="Remove filter showing outlets in {$selectedFormat} format">×</button
 						></span
 					>
 				{/if}
@@ -222,7 +223,9 @@
 								$selectedAudience.ethnicity = undefined;
 								$popup?.remove();
 								$map.getSource('outlets').setData($filteredDirectory);
-							}}>×</button
+							}}
+							aria-label="Remove filter showing outlets serving the{formattedEthnicityList} community"
+							>×</button
 						></span
 					>
 				{/if}
@@ -246,7 +249,9 @@
 
 								$popup?.remove();
 								$map.getSource('outlets').setData($filteredDirectory);
-							}}>×</button
+							}}
+							aria-label="Remove filter showing outlets serving the{formattedReligionList} community"
+							>×</button
 						></span
 					>
 				{/if}
@@ -270,7 +275,8 @@
 
 								$popup?.remove();
 								$map.getSource('outlets').setData($filteredDirectory);
-							}}>×</button
+							}}
+							aria-label="Remove filter showing outlets covering{formattedThemeList}">×</button
 						></span
 					>
 				{/if}
@@ -294,7 +300,8 @@
 
 								$popup?.remove();
 								$map.getSource('outlets').setData($filteredDirectory);
-							}}>×</button
+							}}
+							aria-label="Remove filter showing outlets covering{formattedGeographyList}">×</button
 						></span
 					>
 				{/if}
@@ -318,7 +325,8 @@
 
 								$popup?.remove();
 								$map.getSource('outlets').setData($filteredDirectory);
-							}}>×</button
+							}}
+							aria-label="Remove filter showing outlets reporting in{selectedLanguage}">×</button
 						></span
 					>
 				{/if}
@@ -375,7 +383,7 @@
 					width={'16px'}
 					height={'14px'}
 					minY={-1100}
-					ariaLabel={'Book symbol next to outlet names in list below'}
+					ariaLabel={'Book symbol found next to outlet names in list below'}
 				/> icon will take you to the outlet's entry in the Many Voices, One City directory, where you
 				can find information about the staff and audience.
 			{:else}
@@ -388,7 +396,6 @@
 				<div class="header-row">
 					<p class="outlet-name">
 						<span>
-							<!-- <span style="display: flex; align-items: center; column-gap: 5px;"> -->
 							{outlet.properties['OUTLET']}
 							<a href={outlet.properties['DIRECTORY URL']}><OpenBookIcon /></a>
 						</span>

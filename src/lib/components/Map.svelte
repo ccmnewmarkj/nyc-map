@@ -608,7 +608,7 @@
 
 				let linkValue = e.features[0].properties['URL']
 					? `<a href="${e.features[0].properties['URL']}" target="_blank" class="popup-link-btn" style="color: rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 1); border: 1px solid rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 1); box-shadow: rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 0.25) 0 -2px 0 inset;"  onmouseover="this.style.boxShadow='rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 0.5) 0 -2px 0 inset';"
-   onmouseout="this.style.boxShadow='rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 0.25) 0 -2px 0 inset';">Visit Website ${openLinkIcon}</a>`
+   onmouseout="this.style.boxShadow='rgba(${e.features[0].properties['PRIMARY FORMAT'] === 'Digital-only' ? digitalFormatText : popupColor}, 0.25) 0 -2px 0 inset';" aria-label="Go to website for ${e.features[0].properties['OUTLET']} (opens in a new tab)" rel="noopener noreferrer">Visit Website ${openLinkIcon}</a>`
 					: '';
 
 				let locationNotes =
@@ -843,6 +843,8 @@ ${
 			on:mouseout={() => (fillColor = 'rgba(var(--dark-cerulean), 1)')}
 			on:focus={() => (fillColor = 'rgba(var(--dark-cerulean), 0.9)')}
 			on:blur={() => (fillColor = 'rgba(var(--dark-cerulean), 1)')}
+			aria-label={mapElementsVisible ? 'Hide map features' : 'Show map features'}
+			aria-pressed={mapElementsVisible}
 			>Map Features
 			{#if mapElementsVisible}
 				<CloseFilledIcon
@@ -938,13 +940,19 @@ ${
 		<div class="vis-container">
 			{#if !toggleVis}
 				<div class="vis-btn-container">
-					Show <br />Charts
-					<button on:click={() => (toggleVis = !toggleVis)}><BarChartOpenIcon /></button>
+					<span id="toggle-vis-text">Show Charts</span>
+					<button
+						on:click={() => (toggleVis = !toggleVis)}
+						aria-labelledby="toggle-vis-text"
+						aria-pressed={toggleVis}><BarChartOpenIcon /></button
+					>
 				</div>
 			{:else}
 				<div class="vis-btn-container">
-					Hide <br />Charts<button on:click={() => (toggleVis = !toggleVis)}
-						><BarChartCloseIcon /></button
+					<span id="toggle-vis-text">Hide Charts</span><button
+						on:click={() => (toggleVis = !toggleVis)}
+						aria-labelledby="toggle-vis-text"
+						aria-pressed={toggleVis}><BarChartCloseIcon /></button
 					>
 				</div>
 
@@ -967,13 +975,21 @@ ${
 	<div class="inset-container">
 		{#if toggleInsetMap}
 			<div class="inset-btn-container">
-				Hide <br />mini map
-				<button on:click={() => (toggleInsetMap = !toggleInsetMap)}><InsetMapCloseIcon /></button>
+				<span id="toggle-inset-text">Hide <br />mini map</span>
+				<button
+					on:click={() => (toggleInsetMap = !toggleInsetMap)}
+					aria-labelledby="toggle-inset-text"
+					aria-pressed={toggleInsetMap}><InsetMapCloseIcon /></button
+				>
 			</div>
 		{:else}
 			<div class="inset-btn-container">
-				Show <br />mini map
-				<button on:click={() => (toggleInsetMap = !toggleInsetMap)}><InsetMapOpenIcon /></button>
+				<span id="toggle-inset-text">Show <br />mini map</span>
+				<button
+					on:click={() => (toggleInsetMap = !toggleInsetMap)}
+					aria-labelledby="toggle-inset-text"
+					aria-pressed={toggleInsetMap}><InsetMapOpenIcon /></button
+				>
 			</div>
 		{/if}
 		<div id="mapInset" style="display: visible" class:hideInsetMap={!toggleInsetMap}></div>
@@ -1122,7 +1138,7 @@ ${
 	/* reset map button */
 	.reset-map-container {
 		position: relative;
-		bottom: 140px;
+		bottom: 130px;
 		text-shadow:
 			0 0 5px #fff,
 			0 0 10px #fff,
@@ -1184,15 +1200,6 @@ ${
 		flex-direction: column;
 	}
 
-	/* .vis-element-container > .footer {
-		font-family: 'DM Sans', sans-serif;
-		background-color: rgba(var(--gold), 0.3);
-		padding: 2px 5px;
-		font-size: 11px;
-		display: block;
-		border-radius: 0 0 8px 8px;
-	} */
-
 	@media only screen and (max-device-width: 512px) {
 		.geocoder-container {
 			display: none;
@@ -1249,5 +1256,9 @@ ${
 
 	.hideInsetMap {
 		display: none;
+	}
+
+	#toggle-inset-text {
+		width: 75px;
 	}
 </style>

@@ -1,5 +1,5 @@
 <script>
-	export let ariaHidden = false;
+	export let ariaHidden = true;
 	export let width = '23px';
 	export let height = '23px';
 	export let fillColor = 'rgba(var(--black), 1)';

@@ -212,8 +212,9 @@
 				id="community"
 				value="community"
 				bind:group={audienceTypeSelection}
+				aria-label="Audience by community"
 			/>
-			<label for="community"
+			<label id="community-label" for="community"
 				>{#if $selectedAudience?.ethnicity || $selectedAudience?.religion || $selectedAudience?.theme}Community<span
 						style="font-weight: 400;">*</span
 					>{:else}Community{/if}</label
@@ -226,8 +227,9 @@
 				id="geography"
 				value="geography"
 				bind:group={audienceTypeSelection}
+				aria-label="Audience by geography"
 			/>
-			<label for="geography"
+			<label id="geography-label" for="geography"
 				>{#if $selectedAudience?.geography}Geography<span style="font-weight: 400;">*</span
 					>{:else}Geography{/if}</label
 			>

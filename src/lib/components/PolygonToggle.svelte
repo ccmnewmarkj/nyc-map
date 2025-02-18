@@ -40,6 +40,7 @@
 		type="checkbox"
 		role="switch"
 		bind:checked
+		aria-checked={checked}
 		on:change={() => {
 			if (checked) {
 				showPolygons();

@@ -44,7 +44,7 @@
 </script>
 
 <!-- Intro -->
-<section id="search-filters" aria-labelledby="search-btn">
+<section id="search-filters">
 	<div class="header" in:fade>
 		<p>
 			Select options from one or more of the three filters to narrow down your search. Once you make

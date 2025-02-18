@@ -38,7 +38,7 @@
 	// Toggle option to drag vis panel (and export to Map parent)
 	export let toggleDrag;
 
-	// Toggle table
+	// Toggle table (show table when true)
 	let toggleTable = false;
 
 	// Buttons to serve as horizontal scrollbar
@@ -46,12 +46,10 @@
 
 	function scrollLeft() {
 		scrollContainer.scrollBy({ left: -200, behavior: 'smooth' });
-		//console.log('left:', scrollContainer?.scrollWidth);
 	}
 
 	function scrollRight() {
 		scrollContainer.scrollBy({ left: 200, behavior: 'smooth' });
-		//console.log('right:', scrollContainer?.scrollWidth);
 	}
 
 	let showLeftButton;
@@ -88,7 +86,11 @@
 	</p>
 
 	<div class="btn-scroll-container">
-		<button on:click={scrollLeft} class="left {showLeftButton ? 'active' : 'inactive'}">«</button>
+		<button
+			on:click={scrollLeft}
+			class="left {showLeftButton ? 'active' : 'inactive'}"
+			aria-label="Scroll to the left">«</button
+		>
 
 		<div class="button-container" bind:this={scrollContainer}>
 			<button
@@ -98,7 +100,9 @@
 					toggleReligionChart = null;
 					toggleLanguageChart = null;
 				}}
-				class:active={toggleFormatChart}>Format</button
+				class:active={toggleFormatChart}
+				aria-label="Show {toggleTable ? 'table' : 'bar chart'} with number of outlets by format"
+				>Format</button
 			>
 			<button
 				on:click={() => {
@@ -109,7 +113,9 @@
 					toggleFormatChart = null;
 				}}
 				class:active={toggleEthnicityChart}
-				class="audience-btn-gp first">Ethnicity</button
+				class="audience-btn-gp first"
+				aria-label="Show {toggleTable ? 'table' : 'bar chart'} with number of outlets by ethnicity"
+				>Ethnicity</button
 			>
 			<button
 				on:click={() => {
@@ -120,7 +126,9 @@
 					toggleEthnicityChart = null;
 				}}
 				class:active={toggleReligionChart}
-				class="audience-btn-gp second">Religion</button
+				class="audience-btn-gp second"
+				aria-label="Show {toggleTable ? 'table' : 'bar chart'} with number of outlets by religion"
+				>Religion</button
 			>
 			<button
 				on:click={() => {
@@ -131,7 +139,9 @@
 					toggleReligionChart = null;
 				}}
 				class:active={toggleSubjectChart}
-				class="audience-btn-gp third">Subject</button
+				class="audience-btn-gp third"
+				aria-label="Show {toggleTable ? 'table' : 'bar chart'} with number of outlets by subject"
+				>Subject</button
 			>
 			<button
 				on:click={() => {
@@ -141,11 +151,16 @@
 					toggleSubjectChart = null;
 					toggleFormatChart = null;
 				}}
-				class:active={toggleLanguageChart}>Language</button
+				class:active={toggleLanguageChart}
+				aria-label="Show {toggleTable ? 'table' : 'bar chart'} with number of outlets by language"
+				>Language</button
 			>
 		</div>
 
-		<button on:click={scrollRight} class="right {showRightButton ? 'active' : 'inactive'}">»</button
+		<button
+			on:click={scrollRight}
+			class="right {showRightButton ? 'active' : 'inactive'}"
+			aria-label="Scroll to the right">»</button
 		>
 	</div>
 </div>
@@ -193,15 +208,20 @@
 
 <div class="footer">
 	<span
-		><button class="table-btn" on:click={() => (toggleTable = !toggleTable)}>
+		><button
+			class="vis-icon-btn"
+			on:click={() => (toggleTable = !toggleTable)}
+			aria-labelledby="toggle-vis-text"
+			aria-pressed={toggleTable}
+		>
 			{#if !toggleTable}
-				<span><TableIcon /> Table view</span>
+				<span id="toggle-vis-text"><TableIcon /> View table</span>
 			{:else}
-				<span><BarChartIcon /> Chart view</span>
+				<span id="toggle-vis-text"><BarChartIcon /> View chart</span>
 			{/if}
 		</button></span
 	>
-	<span><DragToggle bind:checked={toggleDrag} /></span>
+	<span aria-hidden="true"><DragToggle bind:checked={toggleDrag} /></span>
 </div>
 
 <style>
@@ -249,14 +269,6 @@
 	.header > .btn-scroll-container > button {
 		font-size: 1rem;
 		padding: 0 5px;
-		/* cursor: auto;
-		user-select: none;
-		color: rgba(var(--white), 1); */
-
-		/* position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		z-index: 10; */
 	}
 
 	.header > .btn-scroll-container > button.active {
@@ -315,6 +327,7 @@
 		background-color: rgba(var(--black), 1);
 		color: rgba(var(--white), 1);
 		cursor: auto;
+		pointer-events: none;
 		border: 1px solid rgba(var(--black), 1);
 	}
 
@@ -382,7 +395,7 @@
 	} */
 
 	/* footer buttons */
-	.table-btn > span {
+	.vis-icon-btn > span {
 		display: flex;
 		align-items: end;
 		gap: 3px;

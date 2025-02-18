@@ -26,6 +26,7 @@
 					$selectedFormat = item.label;
 					$map.getSource('outlets').setData($filteredDirectory);
 				}}
+				aria-label="Show only outlets in {item} format on the map"
 			>
 				<span class="label">{item.label}</span>
 				<span
@@ -60,6 +61,7 @@
 			0 0 20px #fff,
 			0 0 30px #fff,
 			0 0 40px #fff;
+		padding-right: 0;
 	}
 
 	.bullet {
