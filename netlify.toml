@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/nyc"
-  to = "/nyc/"
-  status = 301
-  force = true
